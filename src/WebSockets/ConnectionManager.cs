@@ -26,9 +26,10 @@ namespace FF.Magdalena.WebSockets
         {
             return _sockets.FirstOrDefault(p => p.Value == socket).Key;
         }
-        public void AddSocket(WebSocket socket)
+        public Task AddSocket(WebSocket socket)
         {
             _sockets.TryAdd(CreateConnectionId(), socket);
+            return Task.FromResult(true);
         }
 
         public async Task RemoveSocket(string id)

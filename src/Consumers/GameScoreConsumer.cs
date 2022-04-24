@@ -1,6 +1,7 @@
 using FF.Feeds.Messages;
 using FF.Magdalena.Handlers;
 using MassTransit;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace FF.Magdalena.Consumers
             try
             {
                 
-                    await this.scoreMessageHandler.SendMessageToAllAsync(context.Message.ToString());
+                    await this.scoreMessageHandler.SendMessageToAllAsync(JsonConvert.SerializeObject(context.Message));
  
             }
             catch (Exception exc)

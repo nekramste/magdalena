@@ -50,6 +50,9 @@ namespace FF.Magdalena
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            var serviceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -69,6 +72,7 @@ namespace FF.Magdalena
             }
             app.UseMassTransit();
             app.UseWebSockets();
+            app.MapWebSocketManager("/scores", serviceProvider.GetService<ScoreMessageHandler>());
             app.UseMiddleware<ChatWebSocketMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -79,12 +83,6 @@ namespace FF.Magdalena
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
             });
 
-            app.UseWebSockets();
-
-            var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-            var serviceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
-
-            app.MapWebSocketManager("/ws", serviceProvider.GetService<ScoreMessageHandler>());
         }
     }
 }
