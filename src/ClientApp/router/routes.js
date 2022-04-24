@@ -4,6 +4,6 @@ import About from 'components/about'
 
 export const routes = [
   { name: 'home', path: '/', component: HomePage, display: 'Home', icon: 'home' },
-  { name: 'about', path: '/about', component: About, display: 'About Template', icon: 'info' }, 
+  { name: 'about', path: '/about', component: About, display: 'About', icon: 'info' }, 
   { name: 'fetch-data', path: '/fetch-data', component: FetchData, display: 'Data', icon: 'list' }
 ]

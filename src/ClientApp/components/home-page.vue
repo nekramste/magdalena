@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="row">
-        <div class="col-12" v-for="(item, index) in currentScores" :index="index" :key="index">
+        <div class="col-lg-6 col-12" v-for="(item, index) in currentScores" :index="index" :key="index">
           <!-- {{item.Message.Header.ExternalGameNumber}} -->
           <ScoreRow :item="item"/> 
         </div>        
