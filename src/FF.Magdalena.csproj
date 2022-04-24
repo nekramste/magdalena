@@ -8,6 +8,7 @@
     <PackageReference Include="MassTransit" Version="5.3.2" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="5.3.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.24" />
   </ItemGroup>
   <ItemGroup>
     <!-- Files not to show in IDE -->

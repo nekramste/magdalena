@@ -8,6 +8,7 @@ using FF.Magdalena.Providers;
 using FF.Magdalena.Middleware;
 using FF.Magdalena.Consumers;
 using FF.Magdalena.Configuration;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 
 namespace FF.Magdalena
 {
@@ -51,10 +52,10 @@ namespace FF.Magdalena
                 app.UseDeveloperExceptionPage();
 
                 // Webpack initialization with hot-reload.
-                /*app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacement = true,
-                });*/
+                });
             }
             else
             {
