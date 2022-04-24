@@ -9,6 +9,7 @@ using FF.Magdalena.Middleware;
 using FF.Magdalena.Consumers;
 using FF.Magdalena.Configuration;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using FF.Magdalena.Handlers;
 
 namespace FF.Magdalena
 {
@@ -41,6 +42,8 @@ namespace FF.Magdalena
             {
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
             }));
+            services.AddWebSocketManager();
+
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -75,6 +78,13 @@ namespace FF.Magdalena
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
             });
+
+            app.UseWebSockets();
+
+            var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            var serviceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
+
+            app.MapWebSocketManager("/ws", serviceProvider.GetService<ScoreMessageHandler>());
         }
     }
 }

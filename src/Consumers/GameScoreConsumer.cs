@@ -1,4 +1,5 @@
 using FF.Feeds.Messages;
+using FF.Magdalena.Handlers;
 using MassTransit;
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,21 @@ namespace FF.Magdalena.Consumers
     {
         #region Private Fields
         static readonly object _object = new object();
+        private ScoreMessageHandler scoreMessageHandler { get; set; }
         #endregion
+
+        public GameScoreConsumer(ScoreMessageHandler scoreMessageHandler)
+        {
+            this.scoreMessageHandler = scoreMessageHandler;
+        }
 
         public async Task Consume(ConsumeContext<EventRaisedMessage<GameScoreDTO>> context)
         {
             try
             {
-                lock (_object)
-                {
-                }
+                
+                    await this.scoreMessageHandler.SendMessageToAllAsync(context.Message.ToString());
+ 
             }
             catch (Exception exc)
             {

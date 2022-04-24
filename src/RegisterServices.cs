@@ -11,6 +11,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 using FF.Magdalena.MassTransit;
 using MassTransit.RabbitMqTransport;
+using FF.Magdalena.WebSockets;
+using System.Reflection;
 
 namespace FF.Magdalena
 {
@@ -63,7 +65,22 @@ namespace FF.Magdalena
                
             });
         }
-          
+
+        public static IServiceCollection AddWebSocketManager(this IServiceCollection services)
+        {
+            services.AddTransient<ConnectionManager>();
+
+            foreach (var type in Assembly.GetEntryAssembly().ExportedTypes)
+            {
+                if (type.GetTypeInfo().BaseType == typeof(WebSocketHandler))
+                {
+                    services.AddSingleton(type);
+                }
+            }
+
+            return services;
+        }
+
 
         private static IRabbitMqHostConfigurator SetHostCredentials(this IRabbitMqHostConfigurator configurator, RabbitMqConfiguration settings)
         {
