@@ -12,8 +12,6 @@
 </template>
 <script>
 
-//+ ' period ' + item.Message.Score.Period.Description
-
   import { mapActions, mapState } from 'vuex';
   import ScoreRow from './score-row';
 

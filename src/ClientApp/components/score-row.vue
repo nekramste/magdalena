@@ -22,12 +22,12 @@
       <div class="col-12">
           <div class="row">
               <div class="col-5 text-center">
-                  {{item.Message.Participants.Home.Participant.Name }}
+                  {{item.Message.Participants.Home.Name }}
               </div> 
               <div class="col-2 text-center">                 
               </div>   
               <div class="col-5 text-center">
-                {{item.Message.Participants.Away.Participant.Name}}
+                {{item.Message.Participants.Away.Name}}
               </div>  
               <div class="col-3 text-center click">
                   <icon v-if="item.Message.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
