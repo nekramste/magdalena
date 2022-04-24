@@ -2,57 +2,49 @@
   <div>
     <div class="container">
       <div class="row">
-        <!--<div class="col-6">
-    <div>
-      <h3>Messages</h3>
-      <form name="publish">
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea v-model="chatMess" id="MessageField" name="message" class="form-control" placeholder="Enter your message" />
-        </div>
-        <input type="button" @click="send" class="btn btn-primary" value="Send">
-      </form>
-    </div>
-  </div>-->
-        <div class="col-12">
-          <h3>History</h3>
-          <div id="subscribe"></div>
-        </div>
+        <div class="col-lg-6 col-12" v-for="(item, index) in currentScores" :index="index" :key="index">
+          <!-- {{item.Message.Header.ExternalGameNumber}} -->
+          <ScoreRow :item="item"/> 
+        </div>        
       </div>
     </div>
   </div>
 </template>
 <script>
-  var protocol = location.protocol === "https:" ? "wss:" : "ws:";
-  var wsUri = protocol + "//" + window.location.host+'/scores';
-  var socket = new WebSocket(wsUri);
-  // incoming message handler
-  socket.onmessage = function (event) {
-    var incomingMessage = event.data;
-    showMessage(incomingMessage);
-  };
-  // показать сообщение в div#subscribe
-  function showMessage(message) {
-    console.log(message);
-    var messageElem = document.createElement('div');
-    messageElem.appendChild(document.createTextNode(JSON.stringify(message)));
-    document.getElementById('subscribe').appendChild(messageElem);
-  }
+
+//+ ' period ' + item.Message.Score.Period.Description
+
+  import { mapActions, mapState } from 'vuex';
+  import ScoreRow from './score-row';
 
   export default {
+    components: {ScoreRow},
     data() {
       return {
-        chatMess: ''
       }
     },
 
+    computed: {
+      ...mapState({
+        currentScores: state => state.scores
+      })
+    },
+
     methods: {
-      // отправить сообщение из формы publish
-      send() {
-        socket.send(this.chatMess)
-        this.chatMess = ''
-        return false
-      }
+      ...mapActions(['setReceivedScore']),
+    },
+
+    mounted: function(){
+
+      var protocol = location.protocol === "https:" ? "wss:" : "ws:";
+      var wsUri = protocol + "//" + window.location.host+'/scores';
+      var socket = new WebSocket(wsUri);      
+      const v = this;
+      
+      socket.onmessage = function (event) {
+        var incomingScore = event.data;        
+        v.setReceivedScore({score: incomingScore});
+      };
     }
   }
 </script>
