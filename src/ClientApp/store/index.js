@@ -10,7 +10,8 @@ const state = {
 }
 
 const mutations = {
-  [SCORES] (state, obj) {
+  [SCORES](state, obj) {
+
     let score = obj.score.includes('{')?JSON.parse(obj.score):null;
     if(score){
       let index = state.scores.findIndex(item => item.Message.Header.ExternalGameNumber === score.Message.Header.ExternalGameNumber);
