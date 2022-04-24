@@ -18,8 +18,8 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="FF.Feeds.Messages">
-      <HintPath>packages\Feeds.Messages\FF.Feeds.Messages.dll</HintPath>
+    <Reference Include="FF.Clarke.ServiceModel">
+      <HintPath>Packages\FF.Clarke.ServiceModel\FF.Clarke.ServiceModel.dll</HintPath>
     </Reference>
     <Reference Include="FF.Macau.Core">
       <HintPath>packages\Feeds.Messages\FF.Macau.Core.dll</HintPath>

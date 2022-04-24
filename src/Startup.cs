@@ -57,11 +57,13 @@ namespace FF.Magdalena
             {
                 app.UseDeveloperExceptionPage();
 
+#if !DEBUG
                 // Webpack initialization with hot-reload.
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacement = true,
                 });
+#endif
             }
             else
             {

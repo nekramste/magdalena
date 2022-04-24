@@ -1,4 +1,4 @@
-using FF.Feeds.Messages;
+using FF.Clarke.ServiceModel;
 using FF.Magdalena.Handlers;
 using MassTransit;
 using Newtonsoft.Json;
