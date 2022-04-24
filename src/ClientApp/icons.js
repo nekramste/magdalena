@@ -13,6 +13,7 @@ library.add(
   require('@fortawesome/free-solid-svg-icons').faInfo,
   require('@fortawesome/free-solid-svg-icons').faList,
   require('@fortawesome/free-solid-svg-icons').faSpinner,
+  require('@fortawesome/free-solid-svg-icons').faCheck,
   // Brands
   require('@fortawesome/free-brands-svg-icons').faFontAwesome,
   require('@fortawesome/free-brands-svg-icons').faMicrosoft,
