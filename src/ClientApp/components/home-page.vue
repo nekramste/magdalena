@@ -14,7 +14,7 @@
       </form>
     </div>
   </div>-->
-        <div class="col-6">
+        <div class="col-12">
           <h3>History</h3>
           <div id="subscribe"></div>
         </div>
