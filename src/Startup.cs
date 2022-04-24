@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using FF.Magdalena.Providers;
 using FF.Magdalena.Middleware;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 
 namespace blog
 {
@@ -46,10 +47,10 @@ namespace blog
                 app.UseDeveloperExceptionPage();
 
                 // Webpack initialization with hot-reload.
-                /*app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
                     HotModuleReplacement = true,
-                });*/
+                });
             }
             else
             {
