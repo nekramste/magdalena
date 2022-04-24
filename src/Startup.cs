@@ -6,8 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using FF.Magdalena.Providers;
 using FF.Magdalena.Middleware;
+using FF.Magdalena.Consumers;
+using FF.Magdalena.Configuration;
 
-namespace blog
+namespace FF.Magdalena
 {
     public class Startup
     {
@@ -24,13 +26,16 @@ namespace blog
             // Add framework services.
             //services.AddMvc()
             //    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMassTransitSettings(this.Configuration);
 
             services.AddControllers();
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
             // Simple example with dependency injection for a data provider.
-            services.AddSingleton<IWeatherProvider, WeatherProviderFake>();
-            //services.services<GameScoreConsumer, GameScoreConsumer>();
+            services.AddServices(sc =>
+            {
+                sc.Configure<RabbitMqConfiguration>(opt => Configuration.GetSection("RabbitMqConfiguration").Bind(opt));
+            });
             services.AddCors(o => o.AddPolicy("LocalPolicy", builder =>
             {
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
@@ -58,6 +63,7 @@ namespace blog
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseMassTransit();
             app.UseWebSockets();
             app.UseMiddleware<ChatWebSocketMiddleware>();
             app.UseHttpsRedirection();

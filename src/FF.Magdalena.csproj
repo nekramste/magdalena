@@ -5,7 +5,8 @@
     <RootNamespace>FF.Magdalena</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MassTransit" Version="8.0.1" />
+    <PackageReference Include="MassTransit" Version="5.3.2" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="5.3.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
@@ -16,17 +17,12 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Configuration\RabbitMqConfiguration.cs" />
-    <Compile Remove="Consumers\GameScoreConsumer.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="FF.Feeds.Messages">
       <HintPath>packages\Feeds.Messages\FF.Feeds.Messages.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Configuration\" />
-    <Folder Include="Consumers\" />
+    <Folder Include="WebSockets\" />
   </ItemGroup>
 
   <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">

@@ -1,66 +1,22 @@
 #region Libraries
+using System;
 using System.Configuration;
 #endregion
 
-namespace FF.MagdalenaConfiguration
+namespace FF.Magdalena.Configuration
 {
-    public class RabbitMqConfiguration : ConfigurationSection
+    public class RabbitMqConfiguration
     {
-        #region Private Constants
-        private const string SECTION_NAME = "rabbitMqConfiguration";
-        private const string SUBSECTION_HOST = "host";
-        private const string SUBSECTION_USERNAME = "username";
-        private const string SUBSECTION_PASSWD = "password";
-        private const string SUBSECTION_QUEUES = "queues";
-        private const string SUBSECTION_NODES = "nodeNames";
-        #endregion
 
-        #region Main Section Name
-        internal static string SectionName
-        {
-            get
-            {
-                return SECTION_NAME;
-            }
-        }
-        #endregion
+        #region
+        public Uri Host { get; set; }
 
-        #region Elements
+        public string UserName { get; set; }
 
-        [ConfigurationProperty(SUBSECTION_HOST, IsRequired = true)]
-        public GenericConfigurationElement<string> Host
-        {
-            get => this[SUBSECTION_HOST] as GenericConfigurationElement<string>;
-            set => this[SUBSECTION_HOST] = value;
-        }
+        public string Password { get; set; }
 
-        [ConfigurationProperty(SUBSECTION_USERNAME, IsRequired = true)]
-        public GenericConfigurationElement<string> UserName
-        {
-            get => this[SUBSECTION_USERNAME] as GenericConfigurationElement<string>;
-            set => this[SUBSECTION_USERNAME] = value;
-        }
-
-        [ConfigurationProperty(SUBSECTION_PASSWD, IsRequired = true)]
-        public GenericConfigurationElement<string> Password
-        {
-            get => this[SUBSECTION_PASSWD] as GenericConfigurationElement<string>;
-            set => this[SUBSECTION_PASSWD] = value;
-        }
-
-        [ConfigurationProperty(SUBSECTION_NODES, IsRequired = false)]
-        public GenericConfigurationElement<string> NodeNames
-        {
-            get => this[SUBSECTION_NODES] as GenericConfigurationElement<string>;
-            set => this[SUBSECTION_NODES] = value;
-        }
-
-        [ConfigurationProperty(SUBSECTION_QUEUES, IsRequired = true)]
-        public QueueConfigurationCollection Queues
-        {
-            get { return this[SUBSECTION_QUEUES] as QueueConfigurationCollection; }
-            set { base[SUBSECTION_QUEUES] = value; }
-        }
+        public string Queue { get; set; }
+        public string Nodes { get; set; }
         #endregion
     }
 }

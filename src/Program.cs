@@ -2,7 +2,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace blog
+namespace FF.Magdalena
 {
     public class Program
     {
