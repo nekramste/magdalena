@@ -51,8 +51,6 @@ namespace FF.Magdalena
                       configurator.ConfigureConsumers(host, settings.Queue, provider, consumerTypes);
                   }
                   configurator.Durable = true;
-
-                  configurator.Durable = true;
               });
 
         public static IRabbitMqHost CreateHost(this IRabbitMqBusFactoryConfigurator configurator, RabbitMqConfiguration settings)

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace FF.Magdalena.Consumers
 {
-    public class GameScoreConsumer : IConsumer<MessageCommand<GameScoreDTO>>
+    public class GameScoreConsumer : IConsumer<EventRaisedMessage<GameScoreDTO>>
     {
         #region Private Fields
         static readonly object _object = new object();
         #endregion
 
-        public async Task Consume(ConsumeContext<MessageCommand<GameScoreDTO>> context)
+        public async Task Consume(ConsumeContext<EventRaisedMessage<GameScoreDTO>> context)
         {
             try
             {

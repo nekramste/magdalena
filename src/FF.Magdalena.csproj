@@ -21,6 +21,9 @@
     <Reference Include="FF.Feeds.Messages">
       <HintPath>packages\Feeds.Messages\FF.Feeds.Messages.dll</HintPath>
     </Reference>
+    <Reference Include="FF.Macau.Core">
+      <HintPath>packages\Feeds.Messages\FF.Macau.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="WebSockets\" />
