@@ -9,7 +9,6 @@
             <span class="score-period">{{item.Message.CurrentScore.Period.Description}}</span>
           </div>
         </div>
-
         <div class="row">
             <div class="col-5 text-center score">
               {{item.Message.CurrentScore.Home.Score }}
@@ -24,12 +23,12 @@
       </div>
       <div class="col-12">
           <div class="row">
-              <div class="col-5 text-center">
+              <div class="col-5 text-center team">
                   {{item.Message.Participants.Home.Name }}
               </div> 
               <div class="col-2 text-center">                 
               </div>   
-              <div class="col-5 text-center">
+              <div class="col-5 text-center team">
                 {{item.Message.Participants.Away.Name}}
               </div>  
               <div class="col-3 text-center click">
@@ -117,5 +116,10 @@
     font-size: 13px;
     font-weight: bold;
     color: #fc0
+  }
+
+  .team{
+    font-weight: bold;
+    color: white;
   }
 </style>

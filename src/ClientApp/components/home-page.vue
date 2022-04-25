@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="home">
     <div class="container">
       <div class="row">
         <div class="col-12" v-for="(item, index) in currentSports" :index="index" :key="index">          
           <div class="row">
-            <div class="col-12">{{item}}</div>            
+            <div class="col-12 sport">{{item}}</div>            
             <div class="col-lg-6 col-12" v-for="(subitem, index_) in getScoresBySportType(item)" :index="index_" :key="index_">            
               <ScoreRow :item="subitem"/> 
             </div>
@@ -55,5 +55,21 @@
   }
 </script>
 <style>
+
+  html {
+    background-color: #05162a;
+  }
+
+  .home {
+    background-color: #05162a;
+    padding-bottom: 40px;
+  }
+
+  .sport {
+    padding-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fc0
+  }
 
 </style>
