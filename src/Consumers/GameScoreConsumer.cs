@@ -25,8 +25,7 @@ namespace FF.Magdalena.Consumers
         {
             try
             {
-                
-                    await this.scoreMessageHandler.SendMessageToAllAsync(JsonConvert.SerializeObject(context.Message));
+                await this.scoreMessageHandler.SendMessageToAllAsync(JsonConvert.SerializeObject(context.Message));
  
             }
             catch (Exception exc)
