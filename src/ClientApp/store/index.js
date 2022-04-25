@@ -6,21 +6,35 @@ Vue.use(Vuex)
 const SCORES = 'SCORES'
 
 const state = {
-  scores: []
+  scores: [],
+  sports: []
 }
 
 const mutations = {
   [SCORES](state, obj) {
 
-    let score = obj.score.includes('{')?JSON.parse(obj.score):null;
+    console.log('score')
+    console.log(obj)
+
+    let score = obj.score.includes('{')?(JSON.parse(obj.score)):null;
+    
     if(score){
       let index = state.scores.findIndex(item => item.Message.Header.ExternalGameNumber === score.Message.Header.ExternalGameNumber);
       if(index>-1){
-        state.scores[index]=JSON.parse(obj.score);
+        state.scores[index]=score;
       }else{
-        state.scores.push(JSON.parse(obj.score));
+
+        if(!(state.sports.findIndex(sport => score.Message.Header.SportType === sport)>-1)){
+          state.sports.push(score.Message.Header.SportType);
+        }
+
+        state.scores.push(score);                        
+        
       }
-      console.log(JSON.parse(obj.score))
+      console.log('score added')
+      console.log(score)
+      console.log('sports')
+      console.log(state.sports)
     }
   }
 }
