@@ -2,11 +2,11 @@
     <div class="row detail">
       <div class="col-12">
         <div class="row">
-            <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail">
+            <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail-header">
                 {{'Team'}}
             </div>
             <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right">
-                <div class="period-cell" v-for="(score, index) in item.Message.Scores" :index="index" :key="index">
+                <div class="period-cell-header" v-for="(score, index) in item.Message.Scores" :index="index" :key="index">
                     <span class="">{{score.Period.Number}}</span>
                 </div>
             </div>
@@ -57,11 +57,14 @@
         font-size: 12px;
         color: white
     }
-
-    .team{
-        font-weight: bold;
-        color: transparent;
+    .detail-header{
+        color: #CCC;
     }
+
+  .team {
+    font-weight: bold;
+    color: transparent;
+  }
 
     .period-cell{
         text-align: center;
@@ -69,4 +72,7 @@
         padding-top: 5px;
         width:35px;
     }
+  .period-cell-header {
+    color: #CCC;
+  }
 </style>
