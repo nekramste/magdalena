@@ -20,8 +20,8 @@ const mutations = {
       let index = state.scores.findIndex(item => item.Message.Header.EventNumber === score.Message.Header.EventNumber);
       if(index>-1){
         state.scores.splice(index, 1, score);
-        console.log('update')
-        console.log(score)
+        /* console.log('update')
+        console.log(score) */
       }else{
         if(!(state.sports.findIndex(sport => score.Message.Header.SportType === sport)>-1)){
           if(score.Message.Header.SportType){
