@@ -5,7 +5,7 @@
             <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail-header">
                 {{'Team'}}
             </div>
-            <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right">
+            <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right detail-header">
                 <div class="period-cell" v-for="(score, index) in item.Message.Scores" :index="index" :key="index">
                     {{score.Period.Number}}
                 </div>
@@ -58,10 +58,10 @@
       color: white;
       line-height: 13px;
   }
-      .detail-header {
-       color: #CCC;
-        font-size: 12px;
-    }
+  .detail-header {
+    color: #6c757d;
+    font-size: 12px;
+  }
 
     .team {
         font-weight: bold;

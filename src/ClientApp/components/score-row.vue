@@ -85,7 +85,7 @@
   .score {
     font-size: 26px;
     font-weight: bold;
-    color: #ff4a70;
+    color: #17a2b8;
   }
   .score-row {
     margin-top: 10px;
@@ -100,11 +100,10 @@
       cursor:pointer;
   }
   .score-period {
-    
-    color: #0fa810;
+    color: #28a745;
     font-size: 12px;
     font-weight: bold;
-     padding-bottom: 3px;
+    padding-bottom: 3px;
   }
     .score-period:after {
       content: '';
@@ -130,8 +129,8 @@
   .league {
     font-size: 13px;
     font-weight: bold;
-    color: #fc0;
-    text-transform:uppercase;
+    color: #ffc107;
+    text-transform: uppercase;
   }
 
   .team{
