@@ -15,6 +15,7 @@ const mutations = {
   [SCORES](state, obj) {   
 
     let score = obj.score.includes('{')?(JSON.parse(obj.score)):null;
+    console.log('received')
     
     if(score && score.Message.Header.EventNumber !== 0){
       let index = state.scores.findIndex(item => item.Message.Header.ExternalGameNumber === score.Message.Header.ExternalGameNumber);
@@ -24,12 +25,11 @@ const mutations = {
         if(!(state.sports.findIndex(sport => score.Message.Header.SportType === sport)>-1)){
           if(score.Message.Header.SportType){
             state.sports.push(score.Message.Header.SportType);
+            state.sports.sort((a, b) => (a > b) - (a < b));
           }
         }        
         state.scores.push(score);        
-      }
-      console.log('added score')
-      console.log(score)
+      }      
     }
   }
 }

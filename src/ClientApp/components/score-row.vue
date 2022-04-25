@@ -36,11 +36,16 @@
               </div>   
           </div>              
       </div>
+      <div class="col-12">
+        <ScoreDetail :item="JSON.parse(JSON.stringify(item))" />
+      </div>
     </div>
 </template>
 
 <script>
+    import ScoreDetail from './score-detail';
     export default {
+      components: {ScoreDetail},
       data () {
         return {          
         }
