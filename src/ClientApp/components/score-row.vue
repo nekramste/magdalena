@@ -2,10 +2,13 @@
     <div class="row card score-row">
       <div class="col-12">
         <div class="row">
-          <div class="col-12 text-right score-period">
-            {{item.Message.CurrentScore.Period.Description}} -{{item.Message.Detail}}
+          <div class="col-8 text-left league">
+            {{item.Message.Header.SportSubType}}
           </div>
+          <div class="col-4 text-right">
+            <span class="score-period">{{item.Message.CurrentScore.Period.Description}}</span>
           </div>
+        </div>
 
         <div class="row">
             <div class="col-5 text-center score">
@@ -65,25 +68,54 @@
     }
 </script>
 
-<style scoped>    
-    .score{
-        font-size: 24px;
-        font-weight: bold;
-    }
-    .score-row{
-        margin-top:10px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        min-height:120px;
-        margin-left:10px;
-        margin-right:10px
-    }
+<style scoped>
+  .score {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff4a70;
+  }
+  .score-row {
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    min-height: 120px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: #182f49;
+  }
     .click{
         cursor:pointer;
     }
-    .score-period {
-      color: #188038;
-      font-size: 12px;
-      font-weight: bold
+  .score-period {
+    
+    color: #0fa810;
+    font-size: 12px;
+    font-weight: bold;
+      padding-bottom: 3px;
+  }
+  .score-period:after {
+    content: '';
+    display: block;
+    margin: auto;
+    height: 2px;
+    animation: underline 2s infinite;
+  }
+
+  @keyframes underline {
+    0% {
+      width: 0%;
+      background-color: #188038;
     }
+
+    100% {
+      width: 100%;
+      background-color: transparent;
+    }
+  }
+
+  .league {
+    font-size: 13px;
+    font-weight: bold;
+    color: #fc0
+  }
 </style>
