@@ -3,6 +3,7 @@ using FF.Macau;
 using FF.Magdalena.Agents;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FF.Magdalena.Controllers
@@ -32,6 +33,19 @@ namespace FF.Magdalena.Controllers
             catch (Exception exc)
             {
 
+            }
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<GameScoreDTO>> GetScores()
+        {
+            try
+            {
+               return await clarkeAgent.GetScore();
+            }
+            catch (Exception exc)
+            {
+                return null;
             }
         }
     }
