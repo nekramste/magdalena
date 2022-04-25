@@ -17,9 +17,11 @@ const mutations = {
     let score = obj.score.includes('{')?(JSON.parse(obj.score)):null;
     
     if(score && score.Message.Header.EventNumber !== 0){
-      let index = state.scores.findIndex(item => item.Message.Header.ExternalGameNumber === score.Message.Header.ExternalGameNumber);
+      let index = state.scores.findIndex(item => item.Message.Header.EventNumber === score.Message.Header.EventNumber);
       if(index>-1){
-        state.scores[index]=score;
+        state.scores[index]=score;        
+        console.log('update')
+        console.log(score)
       }else{
         if(!(state.sports.findIndex(sport => score.Message.Header.SportType === sport)>-1)){
           if(score.Message.Header.SportType){

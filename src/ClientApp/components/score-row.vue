@@ -30,11 +30,20 @@
               </div>   
               <div class="col-5 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
                 {{item.Message.Participants.Home.Name}}
-              </div>  
-              <div class="col-3 text-center click">
-                  <icon v-if="item.Message.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
-              </div>   
-          </div>              
+              </div>                
+          </div>
+      </div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-5 text-center click">
+            <icon v-if="item.Message.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
+          </div>   
+          <div class="col-2 text-center click">
+          </div>
+          <div class="col-5 text-center click">
+            <icon v-if="item.Message.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
+          </div>   
+        </div>
       </div>
       <div class="col-12">
         <ScoreDetail :item="JSON.parse(JSON.stringify(item))" />
@@ -87,9 +96,9 @@
     margin-right: 10px;
     background: #182f49;
   }
-    .click{
-        cursor:pointer;
-    }
+  .click{
+      cursor:pointer;
+  }
   .score-period {
     
     color: #0fa810;
@@ -132,6 +141,14 @@
     font-size:12px;
     font-weight: bold;
     color: white;
+  }
+
+  .menu-icon{
+    color: white;
+  }
+
+  .menu-icon:hover{
+    color: #ff4a70;
   }
 
 </style>
