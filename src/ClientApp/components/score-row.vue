@@ -11,25 +11,25 @@
         </div>
         <div class="row">
             <div class="col-5 text-center score">
-              {{item.Message.CurrentScore.Home.Score }}
+              {{item.Message.CurrentScore.Away.Score }}
             </div>
             <div class="col-2 text-center score">
               {{' - '}}
             </div>
             <div class="col-5 text-center score">
-              {{item.Message.CurrentScore.Away.Score}}
+              {{item.Message.CurrentScore.Home.Score}}
             </div>
           </div>
       </div>
       <div class="col-12">
           <div class="row">
-              <div class="col-5 text-center team">
-                  {{item.Message.Participants.Home.Name }}
+              <div class="col-5 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
+                  {{item.Message.Participants.Away.Name }}
               </div> 
               <div class="col-2 text-center">                 
               </div>   
-              <div class="col-5 text-center team">
-                {{item.Message.Participants.Away.Name}}
+              <div class="col-5 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
+                {{item.Message.Participants.Home.Name}}
               </div>  
               <div class="col-3 text-center click">
                   <icon v-if="item.Message.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
@@ -127,4 +127,11 @@
     font-weight: bold;
     color: white;
   }
+
+  .team-mobile{
+    font-size:12px;
+    font-weight: bold;
+    color: white;
+  }
+
 </style>

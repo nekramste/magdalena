@@ -15,7 +15,6 @@ const mutations = {
   [SCORES](state, obj) {   
 
     let score = obj.score.includes('{')?(JSON.parse(obj.score)):null;
-    console.log('received')
     
     if(score && score.Message.Header.EventNumber !== 0){
       let index = state.scores.findIndex(item => item.Message.Header.ExternalGameNumber === score.Message.Header.ExternalGameNumber);
