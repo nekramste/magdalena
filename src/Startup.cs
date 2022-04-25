@@ -10,6 +10,8 @@ using FF.Magdalena.Consumers;
 using FF.Magdalena.Configuration;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using FF.Magdalena.Handlers;
+using FF.Magdalena.Mappings;
+using FF.Magdalena.Registration;
 
 namespace FF.Magdalena
 {
@@ -29,7 +31,9 @@ namespace FF.Magdalena
             //services.AddMvc()
             //    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMassTransitSettings(this.Configuration);
-
+            services.AddNewtonsoftJsonSerializer();
+            services.AddHttpAgents();
+            services.AddAutoMapper();
             services.AddControllers();
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
