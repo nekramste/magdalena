@@ -1,13 +1,13 @@
 {
   "name": "aspnetcore-vuejs",
-  "description": "ASP.NET Core & VueJS Starter project - Brought to you by Trilon.io",
+  "description": "Score Center",
   "author": {
-    "name": "Mark Pieszak | Trilon Consulting",
-    "email": "hello@trilon.io",
-    "url": "https://trilon.io"
+    "name": "Nelson Badilla Diaz",
+    "email": "nelbadiaz@gmal.com",
+    "url": "https://nekramste.xyz"
   },
   "repository": {
-    "url": "https://github.com/TrilonIO/aspnetcore-Vue-starter"
+    "url": "https://github.com/nekramste/magdalena"
   },
   "license": "MIT",
   "scripts": {
