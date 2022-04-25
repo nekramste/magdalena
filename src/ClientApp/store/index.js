@@ -12,10 +12,7 @@ const state = {
 }
 
 const mutations = {
-  [SCORES](state, obj) {
-
-    console.log('score')
-    console.log(obj)
+  [SCORES](state, obj) {   
 
     let score = obj.score.includes('{')?(JSON.parse(obj.score)):null;
     
@@ -28,11 +25,11 @@ const mutations = {
           if(score.Message.Header.SportType){
             state.sports.push(score.Message.Header.SportType);
           }
-        }
-        if(score.Message.Header.EventNumber === 0){
-          state.scores_other.push(score);
-        }
-      }      
+        }        
+        state.scores.push(score);        
+      }
+      console.log('added score')
+      console.log(score)
     }
   }
 }
