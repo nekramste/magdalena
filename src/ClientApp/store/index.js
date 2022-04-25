@@ -19,7 +19,7 @@ const mutations = {
     if(score && score.Message.Header.EventNumber !== 0){
       let index = state.scores.findIndex(item => item.Message.Header.EventNumber === score.Message.Header.EventNumber);
       if(index>-1){
-        state.scores[index]=score;        
+        state.scores.splice(index, 1, score);
         console.log('update')
         console.log(score)
       }else{

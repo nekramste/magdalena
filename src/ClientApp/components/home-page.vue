@@ -2,13 +2,8 @@
   <div class="home">
     <div class="container">
       <div class="row">
-        <div class="col-12" v-for="(item, index) in currentSports" :index="index" :key="index">
-          <div class="row">
-            <div class="col-12 sport">{{item}}</div>            
-            <div class="col-lg-6 col-12" v-for="(subitem, index_) in getScoresBySportType(item)" :index="index_" :key="index_">            
-              <ScoreRow :item="subitem"/> 
-            </div>
-          </div>
+        <div class="col-lg-6 col-12" v-for="(subitem, index_) in currentScores" :index="index_" :key="index_">            
+          <ScoreRow :item="subitem"/> 
         </div>        
       </div>
     </div>
@@ -30,14 +25,11 @@
       ...mapState({
         currentScores: state => state.scores,
         currentSports: state => state.sports
-      })
+      })      
     },
 
     methods: {
       ...mapActions(['setReceivedScore']),
-      getScoresBySportType(SportType){
-        return this.currentScores.filter(item => item.Message.Header.SportType === SportType)
-      }
     },
 
     mounted: function(){

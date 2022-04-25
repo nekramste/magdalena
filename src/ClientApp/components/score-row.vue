@@ -46,7 +46,7 @@
         </div>
       </div>
       <div class="col-12">
-        <ScoreDetail :item="JSON.parse(JSON.stringify(item))" />
+        <ScoreDetail :item="item" />
       </div>
     </div>
 </template>

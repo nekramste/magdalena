@@ -6,8 +6,8 @@
                 {{'Team'}}
             </div>
             <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right">
-                <div class="period-cell-header" v-for="(score, index) in item.Message.Scores" :index="index" :key="index">
-                    <span class="">{{score.Period.Number}}</span>
+                <div class="period-cell" v-for="(score, index) in item.Message.Scores" :index="index" :key="index">
+                    {{score.Period.Number}}
                 </div>
             </div>
         </div>
