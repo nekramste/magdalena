@@ -5,8 +5,8 @@
           <div class="col-8 text-left league">
             {{item.Message.Header.SportSubType}}
           </div>
-          <div class="col-4 text-right">
-            <span class="score-period">{{item.Message.CurrentScore.Period.Description}}</span>
+          <div class="col-4">
+            <span class="score-period  float-right">{{item.Message.CurrentScore.Period.Description}}</span>
           </div>
         </div>
         <div class="row">
@@ -83,7 +83,7 @@
 
 <style scoped>
   .score {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
     color: #ff4a70;
   }
@@ -91,7 +91,7 @@
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    min-height: 120px;
+    min-height: 200px;
     margin-left: 10px;
     margin-right: 10px;
     background: #182f49;
@@ -104,15 +104,16 @@
     color: #0fa810;
     font-size: 12px;
     font-weight: bold;
-      padding-bottom: 3px;
+     padding-bottom: 3px;
   }
-  .score-period:after {
-    content: '';
-    display: block;
-    margin: auto;
-    height: 2px;
-    animation: underline 2s infinite;
-  }
+    .score-period:after {
+      content: '';
+      display: block;
+      margin: auto;
+      height: 2px;
+      animation: underline 2s infinite;
+      max-width: 85px;
+    }
 
   @keyframes underline {
     0% {
@@ -129,7 +130,8 @@
   .league {
     font-size: 13px;
     font-weight: bold;
-    color: #fc0
+    color: #fc0;
+    text-transform:uppercase;
   }
 
   .team{

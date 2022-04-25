@@ -1,5 +1,5 @@
 <template>    
-    <div class="row detail">
+    <div class="row scores-detail" v-if="item.Message.Scores.length">
       <div class="col-12">
         <div class="row">
             <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail-header">
@@ -51,20 +51,22 @@
     }
 </script>
 
-<style scoped>    
-    .detail {
-        padding-top: 5px;
+<style scoped>
+  .scores-detail {
+      padding-top: 5px;
+      font-size: 13px;
+      color: white;
+      line-height: 13px;
+  }
+      .detail-header {
+       color: #CCC;
         font-size: 12px;
-        color: white
-    }
-    .detail-header{
-        color: #CCC;
     }
 
-  .team {
-    font-weight: bold;
-    color: transparent;
-  }
+    .team {
+        font-weight: bold;
+        font-size:14px;
+      }
 
     .period-cell{
         text-align: center;
@@ -72,7 +74,7 @@
         padding-top: 5px;
         width:35px;
     }
-  .period-cell-header {
-    color: #CCC;
-  }
+    .period-cell-header {
+      color: #CCC;
+    }
 </style>
