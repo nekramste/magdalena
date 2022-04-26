@@ -8,6 +8,6 @@ namespace FF.Magdalena.Agents
     {
         Task VerifyGrade(VerifiedGameScoreDTO gameScore);
 
-        Task<IEnumerable<GameScoreDTO>> GetScore();
+        Task<IEnumerable<GameScoreDTO>> GetScores();
     }
 }
