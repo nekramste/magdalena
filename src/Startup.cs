@@ -63,10 +63,10 @@ namespace FF.Magdalena
 
 
                 // Webpack initialization with hot-reload.
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true,
-                });
+                //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                //{
+                //    HotModuleReplacement = true,
+                //});
             }
             else
             {
