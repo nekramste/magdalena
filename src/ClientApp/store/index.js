@@ -1,16 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import config from  '../common/config.js'
 
 Vue.use(Vuex)
 
-function replacePort(host){
-  return host? host.split(':')[0]+':44328':'';
-}
-
 async function notifyInit(id){
-  try {     
-    var protocol = "https:";
-    var uri = `${protocol}//${replacePort(window.location.host)}/connection/ready?connectionId=${id}`;    
+  try {
+    var uri = `${config.API_URL}/grader/connection/ready?connectionId=${id}`;    
     fetch(uri).then(response => response.json())
   } catch (err) {
     console.log(err)
@@ -29,6 +25,8 @@ const mutations = {
 
     let data = obj.score.includes('{')?(JSON.parse(obj.score)):obj.score;
     let score = obj.score.includes('{')?(JSON.parse(obj.score)):null;
+
+    console.log(score)
 
     // ALL
     if (score) {

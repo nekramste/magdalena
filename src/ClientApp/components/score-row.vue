@@ -34,18 +34,6 @@
           </div>
       </div>
       <div class="col-12">
-        <div class="row">
-          <div class="col-5 text-center click">
-            <icon v-if="item.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
-          </div>   
-          <div class="col-2 text-center click">
-          </div>
-          <div class="col-5 text-center click">
-            <icon v-if="item.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
-          </div>   
-        </div>
-      </div>
-      <div class="col-12">
         <ScoreDetail :item="item" />
       </div>
     </div>
@@ -60,24 +48,7 @@
         }
       },
       props:['item'],
-      methods: {
-        send: function () {
-            var url = location.protocol + window.location.host;            
-            try {
-                const requestOptions = {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(this.item)
-            };
-            fetch(url+'/posts', requestOptions)
-                .then(response => response.json())
-                .then(data => (this.postId = data.id));
-            } catch (err) {
-                window.alert(err)
-                console.log(err)
-            }
-        }
-      }
+      methods: { }
     }
 </script>
 
@@ -97,7 +68,7 @@
     background: #182f49;
   }
   .click{
-      cursor:pointer;
+    cursor:pointer;
   }
   .score-period {
     color: #28a745;

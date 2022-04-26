@@ -5,7 +5,7 @@
         <div class="col-12">
           <div class="options_bar" v-for="(item, index) in buttons" :index="index" :key="index">
             <button class="option_button" v-bind:class="{'selected':selected === item}" @click="select_option(item)">{{item}}</button>
-          </div>  
+          </div>
         </div>
       </div>
       <div class="row">
@@ -20,6 +20,7 @@
 
   import { mapActions, mapState } from 'vuex';
   import ScoreRow from './score-row';
+  import config from '../common/config';
 
   export default {
     components: {ScoreRow},
@@ -51,9 +52,8 @@
     },
 
     mounted: function(){
-
-      var protocol = location.protocol === "https:" ? "wss:" : "ws:";
-      var wsUri = protocol + "//" + window.location.host+'/scores';
+      
+      var wsUri = `${config.WS_URL}/scores`;
       var socket = new WebSocket(wsUri);
       const v = this;
       
