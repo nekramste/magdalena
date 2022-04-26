@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace blog.Controllers
+namespace FF.Magdalena.Controllers
 {
     public class HomeController : Controller
     {

@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using FF.Magdalena.Handlers;
 using FF.Magdalena.Mappings;
 using FF.Magdalena.Registration;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace FF.Magdalena
 {
@@ -27,15 +30,13 @@ namespace FF.Magdalena
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            //services.AddMvc()
-            //    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMassTransitSettings(this.Configuration);
             services.AddNewtonsoftJsonSerializer();
             services.AddHttpAgents();
             services.AddAutoMapper();
             services.AddControllers();
             services.AddMvc(options => options.EnableEndpointRouting = false);
+
 
             // Simple example with dependency injection for a data provider.
             services.AddServices(sc =>
@@ -48,7 +49,12 @@ namespace FF.Magdalena
             }));
             services.AddWebSocketManager();
 
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            JsonConvert.DefaultSettings = (() =>
+            {
+                var settings = new JsonSerializerSettings();
+                settings.Converters.Add(new StringEnumConverter { AllowIntegerValues = false });
+                return settings;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +68,7 @@ namespace FF.Magdalena
                 app.UseDeveloperExceptionPage();
 
 
-                // Webpack initialization with hot-reload.
+                //Webpack initialization with hot-reload.
                 //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 //{
                 //    HotModuleReplacement = true,

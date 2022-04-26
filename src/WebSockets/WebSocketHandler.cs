@@ -1,3 +1,4 @@
+using FF.Magdalena.Agents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace FF.Magdalena.WebSockets
 
         public WebSocketHandler(ConnectionManager webSocketConnectionManager)
         {
-            WebSocketConnectionManager = webSocketConnectionManager;
+            this.WebSocketConnectionManager = webSocketConnectionManager;
         }
 
         public virtual async Task OnConnected(WebSocket socket)

@@ -10,8 +10,11 @@ namespace FF.Magdalena.WebSockets
 {
     public class ConnectionManager
     {
-        private ConcurrentDictionary<string, WebSocket> _sockets = new ConcurrentDictionary<string, WebSocket>();
+        #region Properties
+        private ConcurrentDictionary<string, WebSocket> _sockets = new ConcurrentDictionary<string, WebSocket>(); 
+        #endregion
 
+        #region Methods
         public WebSocket GetSocketById(string id)
         {
             return _sockets.FirstOrDefault(p => p.Key == id).Value;
@@ -40,7 +43,8 @@ namespace FF.Magdalena.WebSockets
             await socket.CloseAsync(closeStatus: WebSocketCloseStatus.NormalClosure,
                                     statusDescription: "Closed by the ConnectionManager",
                                     cancellationToken: CancellationToken.None);
-        }
+        } 
+        #endregion
 
         private string CreateConnectionId()
         {
