@@ -30,6 +30,9 @@ namespace FF.Magdalena.Agents
         {
             try
             {
+
+
+
                 using (var client = this.httpClientFactory.Create(uri))
                 {
                     await client.PostAsync("/api/grade", gameScore).ConfigureAwait(false);
@@ -57,12 +60,6 @@ namespace FF.Magdalena.Agents
                 throw new Exception("There was an issue", ex);
             }
         }
-
-        public Task<IEnumerable<GameScoreDTO>> GetScore()
-        {
-            throw new NotImplementedException();
-        }
-
 
         #endregion
     }
