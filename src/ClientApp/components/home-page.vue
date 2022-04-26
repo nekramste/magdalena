@@ -36,9 +36,9 @@
       }),
       filteredScores:function () {      
         return this.selected === 'LIVE'?
-          this.currentScores.filter(item => item.Message.Header.EventNumber != 0) :
+          this.currentScores.filter(item => item.Header.EventNumber != 0) :
           this.selected === 'UNMATCH'?
-            this.currentScores.filter(item => item.Message.Header.EventNumber === 0) :
+            this.currentScores.filter(item => item.Header.EventNumber === 0) :
             this.currentScores 
       }
     },

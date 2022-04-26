@@ -32,7 +32,7 @@ const mutations = {
 
     // ALL
     if (score) {
-      let index = state.scores_all.findIndex(item => item.Message.Header.EventNumber === score.Message.Header.EventNumber);
+      let index = state.scores_all.findIndex(item => item.Header.EventNumber === score.Header.EventNumber);
       if(index>-1){
         state.scores_all.splice(index, 1, score);        
       }else{        

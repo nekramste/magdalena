@@ -1,12 +1,12 @@
 <template>    
-    <div class="row scores-detail" v-if="item.Message.Scores.length">
+    <div class="row scores-detail" v-if="item.Scores.length">
       <div class="col-12">
         <div class="row">
             <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail-header">
                 {{'Team'}}
             </div>
             <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right detail-header">
-                <div class="period-cell" v-for="(score, index) in item.Message.Scores" :index="index" :key="index">
+                <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
                     {{score.Period.Abbr}}
                 </div>
             </div>
@@ -15,11 +15,11 @@
       <div class="col-12">
         <div class="row">
             <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail">
-                {{item?item.Message.Participants.Away.Name:''}}
+                {{item?item.Participants.Away.Name:''}}
             </div>
             <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right">
                 <div style="display: inline-block">
-                    <div class="period-cell" v-for="(score, index) in item.Message.Scores" :index="index" :key="index">                    
+                    <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">                    
                         {{score.Away.Score}}
                     </div>
                 </div>
@@ -27,10 +27,10 @@
         </div>
         <div class="row">
             <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail">
-                {{item?item.Message.Participants.Home.Name:''}}
+                {{item?item.Participants.Home.Name:''}}
             </div>
             <div v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" v-if="item" class="text-right">
-                <div class="period-cell" v-for="(score, index) in item.Message.Scores" :index="index" :key="index">                    
+                <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
                     <span class="">{{score.Home.Score}}</span>
                 </div>
             </div>

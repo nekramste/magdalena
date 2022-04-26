@@ -3,45 +3,45 @@
       <div class="col-12">
         <div class="row">
           <div class="col-8 text-left league">
-            {{item.Message.Header.SportSubType}}
+            {{item.Header.SportSubType}}
           </div>
           <div class="col-4">
-            <span class="score-period  float-right">{{item.Message.CurrentScore.Period.Description}} {{item.Message.Detail}}</span>
+            <span class="score-period  float-right">{{item.CurrentScore.Period.Description}} {{item.Detail}}</span>
           </div>
         </div>
         <div class="row">
             <div class="col-5 text-center score">
-              {{item.Message.CurrentScore.Away.Score }}
+              {{item.CurrentScore.Away.Score }}
             </div>
             <div class="col-2 text-center">
               {{' - '}}
             </div>
             <div class="col-5 text-center score">
-              {{item.Message.CurrentScore.Home.Score}}
+              {{item.CurrentScore.Home.Score}}
             </div>
           </div>
       </div>
       <div class="col-12">
           <div class="row">
               <div class="col-5 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
-                  {{item.Message.Participants.Away.Name }}
+                  {{item.Participants.Away.Name }}
               </div> 
               <div class="col-2 text-center">                 
               </div>   
               <div class="col-5 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
-                {{item.Message.Participants.Home.Name}}
+                {{item.Participants.Home.Name}}
               </div>                
           </div>
       </div>
       <div class="col-12">
         <div class="row">
           <div class="col-5 text-center click">
-            <icon v-if="item.Message.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
+            <icon v-if="item.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
           </div>   
           <div class="col-2 text-center click">
           </div>
           <div class="col-5 text-center click">
-            <icon v-if="item.Message.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
+            <icon v-if="item.CurrentScore.IsFinal" @click="send()" :icon="'check'" class="mr-2 menu-icon" />
           </div>   
         </div>
       </div>
