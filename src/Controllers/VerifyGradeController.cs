@@ -10,7 +10,7 @@ namespace FF.Magdalena.Controllers
 {
     [Route("api/grade")]
     [ApiController]
-    public class VerifyGradeController : ControllerBase
+    public class VerifyGradeController : Controller
     {
         #region Members
         private readonly IClarkeAgent clarkeAgent;
@@ -24,11 +24,13 @@ namespace FF.Magdalena.Controllers
         }
 
         [HttpPost]
-        public async Task Verify(VerifiedGameScoreDTO gameScore)
+        public async Task Verify(VerifiedGameScoreDTO verifiedGameScore)
         {
             try
             {
-                await clarkeAgent.VerifyGrade(gameScore);
+                verifiedGameScore.Context.User = this.GetUserName() ?? "UserAdmin" ;
+
+                await clarkeAgent.VerifyGrade(verifiedGameScore);
             }
             catch (Exception exc)
             {
