@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-6 col-12" v-for="(subitem, index_) in currentScores" :index="index_" :key="index_">            
+        <div class="col-xl-4 col-md-6 col-12" v-for="(subitem, index_) in currentScores" :index="index_" :key="index_">            
           <ScoreRow :item="subitem"/> 
         </div>        
       </div>

@@ -7,7 +7,7 @@
             </div>
             <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right detail-header">
                 <div class="period-cell" v-for="(score, index) in item.Message.Scores" :index="index" :key="index">
-                    {{score.Period.Number}}
+                    {{score.Period.Abbr}}
                 </div>
             </div>
         </div>

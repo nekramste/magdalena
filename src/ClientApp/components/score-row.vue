@@ -6,14 +6,14 @@
             {{item.Message.Header.SportSubType}}
           </div>
           <div class="col-4">
-            <span class="score-period  float-right">{{item.Message.CurrentScore.Period.Description}}</span>
+            <span class="score-period  float-right">{{item.Message.CurrentScore.Period.Description}} {{item.Message.Detail}}</span>
           </div>
         </div>
         <div class="row">
             <div class="col-5 text-center score">
               {{item.Message.CurrentScore.Away.Score }}
             </div>
-            <div class="col-2 text-center score">
+            <div class="col-2 text-center">
               {{' - '}}
             </div>
             <div class="col-5 text-center score">

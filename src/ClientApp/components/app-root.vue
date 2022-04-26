@@ -1,13 +1,13 @@
 <template>
     <div id="app" class="container-fluid">
-        <div class="row">
-            <div class="col-md-2">
-                <nav-menu params="route: route"></nav-menu>
-            </div>
-            <div class="col-sm-10">
-                <router-view></router-view>
-            </div>
+      <div class="row">
+        <!--<div class="col-md-2">
+      <nav-menu params="route: route"></nav-menu>
+  </div>-->
+        <div class="col-sm-12">
+          <router-view></router-view>
         </div>
+      </div>
     </div>
 </template>
 
