@@ -41,7 +41,7 @@ namespace FF.Magdalena.Controllers
         {
             try
             {
-               return await clarkeAgent.GetScore();
+               return await clarkeAgent.GetRecentScores();
             }
             catch (Exception exc)
             {

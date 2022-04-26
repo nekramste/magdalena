@@ -30,10 +30,5 @@ namespace FF.Magdalena.Handlers
 
             await SendMessageToAllAsync(message);
         }
-
-        /*public override Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
-        {
-            throw new NotImplementedException();
-        }*/
     }
 }

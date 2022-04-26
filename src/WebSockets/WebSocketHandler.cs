@@ -1,3 +1,4 @@
+using FF.Magdalena.Agents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace FF.Magdalena.WebSockets
     public abstract class WebSocketHandler
     {
         protected ConnectionManager WebSocketConnectionManager { get; set; }
+        private readonly IClarkeAgent scoresRepository;
 
-        public WebSocketHandler(ConnectionManager webSocketConnectionManager)
+        public WebSocketHandler(ConnectionManager webSocketConnectionManager/*, IClarkeAgent scoresRepository*/)
         {
             WebSocketConnectionManager = webSocketConnectionManager;
+            //scoresRepository = scoresRepository;
         }
 
         public virtual async Task OnConnected(WebSocket socket)

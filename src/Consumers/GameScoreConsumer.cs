@@ -12,20 +12,21 @@ namespace FF.Magdalena.Consumers
     public class GameScoreConsumer : IConsumer<EventRaisedMessage<GameScoreDTO>>
     {
         #region Private Fields
-        static readonly object _object = new object();
-        private ScoreMessageHandler scoreMessageHandler { get; set; }
+        private readonly ScoreMessageHandler scoreMessageHandler;
         #endregion
 
+        #region Constructor
         public GameScoreConsumer(ScoreMessageHandler scoreMessageHandler)
         {
             this.scoreMessageHandler = scoreMessageHandler;
-        }
+        } 
+        #endregion
 
         public async Task Consume(ConsumeContext<EventRaisedMessage<GameScoreDTO>> context)
         {
             try
             {
-                await this.scoreMessageHandler.SendMessageToAllAsync(JsonConvert.SerializeObject(context.Message));
+                await this.scoreMessageHandler.SendMessageToAllAsync(JsonConvert.SerializeObject(context.Message.Message));
  
             }
             catch (Exception exc)
