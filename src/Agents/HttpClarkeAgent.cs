@@ -42,7 +42,7 @@ namespace FF.Magdalena.Agents
             }
         }
 
-        public async Task<IEnumerable<GameScoreDTO>> GetScores()
+        public async Task<IEnumerable<GameScoreDTO>> GetRecentScores()
         {
             try
             {
@@ -56,11 +56,6 @@ namespace FF.Magdalena.Agents
             {
                 throw new Exception("There was an issue", ex);
             }
-        }
-
-        public Task<IEnumerable<GameScoreDTO>> GetScore()
-        {
-            throw new NotImplementedException();
         }
 
 

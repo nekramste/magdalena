@@ -54,7 +54,7 @@
 
       var protocol = location.protocol === "https:" ? "wss:" : "ws:";
       var wsUri = protocol + "//" + window.location.host+'/scores';
-      var socket = new WebSocket(wsUri);      
+      var socket = new WebSocket(wsUri);
       const v = this;
       
       socket.onmessage = function (event) {        

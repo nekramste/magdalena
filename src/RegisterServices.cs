@@ -68,7 +68,7 @@ namespace FF.Magdalena
 
         public static IServiceCollection AddWebSocketManager(this IServiceCollection services)
         {
-            services.AddTransient<ConnectionManager>();
+            services.AddSingleton<ConnectionManager>();
 
             foreach (var type in Assembly.GetEntryAssembly().ExportedTypes)
             {
