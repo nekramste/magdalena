@@ -6,32 +6,29 @@ Vue.use(Vuex)
 const SCORES = 'SCORES'
 
 const state = {
-  scores: [],
-  scores_other: [],
-  sports: []
+  scores_all: [],
+  id: ''
 }
 
 const mutations = {
   [SCORES](state, obj) {   
 
-    let score = obj.score.includes('{') ? (JSON.parse(obj.score)) : null;
-    console.log(JSON.stringify(score));
-    if (score && score.Message.Header.EventNumber !== 0) {
-      let index = state.scores.findIndex(item => item.Message.Header.EventNumber === score.Message.Header.EventNumber);
+    let data = obj.score.includes('{')?(JSON.parse(obj.score)):obj.score;
+    let score = obj.score.includes('{')?(JSON.parse(obj.score)):null;    
+
+    // ALL
+    if (score) {
+      let index = state.scores_all.findIndex(item => item.Message.Header.EventNumber === score.Message.Header.EventNumber);
       if(index>-1){
-        state.scores.splice(index, 1, score);
-        /* console.log('update')
-        console.log(score) */
-      }else{
-        if(!(state.sports.findIndex(sport => score.Message.Header.SportType === sport)>-1)){
-          if(score.Message.Header.SportType){
-            state.sports.push(score.Message.Header.SportType);
-            state.sports.sort((a, b) => (a > b) - (a < b));
-          }
-        }        
-        state.scores.push(score);        
+        state.scores_all.splice(index, 1, score);        
+      }else{        
+        state.scores_all.push(score);        
       }      
-    }
+    }else{ // FIRST CONNECTION - GET ID
+      state.id = data.split(' ')[0];
+      console.log(state.id);
+    }    
+
   }
 }
 
