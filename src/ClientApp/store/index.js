@@ -15,8 +15,8 @@ const mutations = {
   [SCORES](state, obj) {   
 
     let score = obj.score.includes('{')?(JSON.parse(obj.score)):null;
-    
-    if(score && score.Message.Header.EventNumber !== 0){
+    console.log(score);
+    if (score && score.Message.Header.EventNumber !== 0) {
       let index = state.scores.findIndex(item => item.Message.Header.EventNumber === score.Message.Header.EventNumber);
       if(index>-1){
         state.scores.splice(index, 1, score);

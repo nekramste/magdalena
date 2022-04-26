@@ -5,15 +5,15 @@
           <div class="col-8 text-left league">
             {{item.Message.Header.SportSubType}}
           </div>
-          <div class="col-4 text-right">
-            <span class="score-period">{{item.Message.CurrentScore.Period.Description}}</span>
+          <div class="col-4">
+            <span class="score-period  float-right">{{item.Message.CurrentScore.Period.Description}} {{item.Message.Detail}}</span>
           </div>
         </div>
         <div class="row">
             <div class="col-5 text-center score">
               {{item.Message.CurrentScore.Away.Score }}
             </div>
-            <div class="col-2 text-center score">
+            <div class="col-2 text-center">
               {{' - '}}
             </div>
             <div class="col-5 text-center score">
@@ -83,15 +83,15 @@
 
 <style scoped>
   .score {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
-    color: #ff4a70;
+    color: #17a2b8;
   }
   .score-row {
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    min-height: 120px;
+    min-height: 200px;
     margin-left: 10px;
     margin-right: 10px;
     background: #182f49;
@@ -100,19 +100,19 @@
       cursor:pointer;
   }
   .score-period {
-    
-    color: #0fa810;
+    color: #28a745;
     font-size: 12px;
     font-weight: bold;
-      padding-bottom: 3px;
+    padding-bottom: 3px;
   }
-  .score-period:after {
-    content: '';
-    display: block;
-    margin: auto;
-    height: 2px;
-    animation: underline 2s infinite;
-  }
+    .score-period:after {
+      content: '';
+      display: block;
+      margin: auto;
+      height: 2px;
+      animation: underline 2s infinite;
+      max-width: 85px;
+    }
 
   @keyframes underline {
     0% {
@@ -129,7 +129,8 @@
   .league {
     font-size: 13px;
     font-weight: bold;
-    color: #fc0
+    color: #ffc107;
+    text-transform: uppercase;
   }
 
   .team{

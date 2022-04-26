@@ -58,6 +58,11 @@ namespace FF.Magdalena.Agents
             }
         }
 
+        public Task<IEnumerable<GameScoreDTO>> GetScore()
+        {
+            throw new NotImplementedException();
+        }
+
 
         #endregion
     }
