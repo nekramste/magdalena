@@ -31,8 +31,6 @@ namespace FF.Magdalena.Agents
             try
             {
 
-
-
                 using (var client = this.httpClientFactory.Create(uri))
                 {
                     await client.PostAsync("/api/grade", gameScore).ConfigureAwait(false);
@@ -51,9 +49,24 @@ namespace FF.Magdalena.Agents
             {
                 using (var client = this.httpClientFactory.Create(uri))
                 {
-                   return await client.GetAsync<IEnumerable<GameScoreDTO>>("/api/grade/scores").ConfigureAwait(false);
+                   return await client.GetAsync<IEnumerable<GameScoreDTO>>("/api/scores").ConfigureAwait(false);
                 }
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("There was an issue", ex);
+            }
+        }
+
+        public async Task<GameScoreDTO> GetScores(long externalGameNumber)
+        {
+            try
+            {
+                using (var client = this.httpClientFactory.Create(uri))
+                {
+                    return await client.GetAsync<GameScoreDTO>($"/api/scores/{externalGameNumber}").ConfigureAwait(false);
+                }
             }
             catch (Exception ex)
             {
