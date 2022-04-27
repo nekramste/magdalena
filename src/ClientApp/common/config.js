@@ -1,9 +1,9 @@
 const isProduction = 0;
 
-const API_ROUTE_DEVELOPMENT ='https://localhost:5001';
+const API_ROUTE_DEVELOPMENT ='https://localhost:44328';
 const API_ROUTE_PRODUCTION = 'https://i.preprod.youwager.lv/webs';
 
-const WS_ROUTE_DEVELOPMENT ='wss://localhost:5001';
+const WS_ROUTE_DEVELOPMENT ='wss://localhost:44328';
 const WS_ROUTE_PRODUCTION = 'https://i.preprod.youwager.lv/webs';
 
 export default {

@@ -33,18 +33,29 @@ namespace FF.Magdalena.Controllers
 
             if (socket != null)
             {
-                var scores = await this.scoreRepository.GetRecentScores();
-
-                foreach (var score in scores)
+                try
                 {
-                    await this.scoreMessageHandler.SendMessageAsync(socket, JsonConvert.SerializeObject(score));
+                    var scores = await this.scoreRepository.GetRecentScores();
+
+                    foreach (var score in scores)
+                    {
+                        await this.scoreMessageHandler.SendMessageAsync(socket, JsonConvert.SerializeObject(score));
+                    }
+
+                    return new ReadyResult()
+                    {
+                        Success = true,
+                        Message = "Queued"
+                    };
                 }
-
-                return new ReadyResult()
+                catch
                 {
-                    Success = true,
-                    Message = "Queued"
-                };
+                    return new ReadyResult()
+                    {
+                        Message = "Could not connect to API",
+                        Success = false
+                    };
+                }
             }
 
             return new ReadyResult()
