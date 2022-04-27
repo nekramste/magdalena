@@ -3,12 +3,23 @@ using FF.Magdalena.Handlers;
 using FF.Magdalena.WebSockets;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FF.Magdalena.Controllers
 {
-    public class ConnectionController : Controller
+    [ApiController]
+    [Route("[controller]")]
+
+    public class ConnectionController : ControllerBase
     {
+            private static readonly string[] Summaries = new[]
+            {
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
+
 
         #region Private Fields
         private readonly ScoreMessageHandler scoreMessageHandler;
@@ -25,7 +36,8 @@ namespace FF.Magdalena.Controllers
         }
         #endregion
 
-        [HttpGet]
+
+        [HttpGet("ready/{connectionId}")]
         public async Task<ReadyResult> Ready(string connectionId)
         {
             var socket = this.connectionManager.GetSocketById(connectionId);

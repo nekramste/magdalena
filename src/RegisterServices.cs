@@ -1,5 +1,4 @@
 using FF.Magdalena.Consumers;
-using FF.Magdalena.Providers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,9 +19,6 @@ namespace FF.Magdalena
     {
         public static IServiceCollection AddServices(this IServiceCollection services, Action<IServiceCollection> actionRegisterOptions = null)
         {
-            services.AddSingleton<IWeatherProvider, WeatherProviderFake>();
-
-
             services.AddSingleton<IBusManager, MassTransitManager>();
             services.AddSingleton<IBusControl>(provider =>
             {
