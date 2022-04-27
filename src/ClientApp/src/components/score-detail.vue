@@ -49,10 +49,8 @@
 </template>
 
 <script>
-
-    import config from '../common/config';
-    import IconGrade from './icon-grade.vue';
-    const axios = require('axios');
+    
+    import IconGrade from './icon-grade.vue';    
 
     export default {
       components: {IconGrade},
