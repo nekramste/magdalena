@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 async function notifyInit(id){
   try {
-    var uri = `${config.API_URL}/grader/connection/ready?connectionId=${id}`;    
+    var uri = `${config.API_URL}/connection/ready?connectionId=${id}`;    
     fetch(uri).then(response => response.json())
   } catch (err) {
     console.log(err)
