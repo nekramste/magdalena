@@ -50,7 +50,7 @@ export default {
     },
 
     methods: {
-      ...mapActions(['setReceivedScore']),
+      ...mapActions(['setReceivedScore','startCounter']),
       select_option(option){
         this.selected = option;
       }
@@ -64,6 +64,8 @@ export default {
       //var wsUri = `${config.WS_URL}/scores`;
       var socket = new WebSocket(wsUri);
       const v = this;
+
+      this.startCleaner();
       
       socket.onmessage = function (event) {        
         var incomingScore = event.data;
