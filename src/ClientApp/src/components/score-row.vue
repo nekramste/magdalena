@@ -4,7 +4,7 @@
         <div class="row">
           <div class="col-8 text-left league">
             <div style="display:inline-block">
-              <div style="display: table-cell;" :class="SearchIcon(item.Header.SportType)"></div> <div style="display: table-cell; padding-left:10px;"> {{item.Header.SportSubType}} </div>
+              <div style="display: table-cell;" :class="SearchIcon(item.Header.SportType)"></div> <div style="display: table-cell; padding-left:10px; padding-top:2px;"> {{item.Header.SportSubType}} </div>
             </div>
           </div>
           <div class="col-4">
@@ -188,73 +188,74 @@
     background-color:transparent;
     background-repeat:no-repeat;
     display:block;
+    filter: invert(80%) sepia(20%) saturate(2462%) hue-rotate(349deg) brightness(120%) contrast(108%);
     zoom: 0.45;
       -moz-transform: scale(0.45);
       -moz-transform-origin: left center;
   }
 
   .icon-soccer{          
-    background-position: -55px -55px;   
+    background-position: -55px 0px;   
   }
 
   .icon-hockey{      
-    background-position: -110px -55px;
+    background-position: -110px 0px;
   }
 
   .icon-football{      
-    background-position: -165px -55px;
+    background-position: -165px 0px;
   }
 
   .icon-boxing{      
-    background-position: -220px -55px;
+    background-position: -220px 0px;
   }
 
   .icon-basketball{      
-    background-position: -275px -55px;  
+    background-position: -275px 0px;  
   }
 
   .icon-golf{      
-    background-position: -330px -55px; 
+    background-position: -330px 0px; 
   }
 
   .icon-baseball{      
-    background-position: -385px -55px;
+    background-position: -385px 0px;
   }
 
   .icon-motor{      
-    background-position: -440px -55px;  
+    background-position: -440px 0px;  
   }
 
   .icon-esport{      
-    background-position: -495px -55px; 
+    background-position: -495px 0px; 
   }
 
   .icon-rugby{      
-    background-position: -550px -55px; 
+    background-position: -550px 0px; 
   }
 
   .icon-horse{      
-    background-position: -605px -55px;  
+    background-position: -605px 0px;  
   }
 
   .icon-tennis {    
-    background-position: -660px -55px;
+    background-position: -660px 0px;
   }
 
   .icon-mma {      
-    background-position: -715px -55px;
+    background-position: -715px 0px;
   }
 
   .icon-simulation {
-    background-position: -765px -55px;
+    background-position: -765px 0px;
   }
 
   .icon-tabletennis {
-    background-position: -820px -55px;
+    background-position: -820px 0px;
   }
 
   .icon-trophy {
-    background-position: 0px -55px;
+    background-position: 0px 0px;
   }
 
 </style>
