@@ -6,14 +6,14 @@
             {{item.Header.SportSubType}}
           </div>
           <div class="col-4">
-            <span class="score-period  float-right">{{item.CurrentScore.Period.Description}} {{item.Detail}}</span>
+            <span class="score-period float-right">{{item.CurrentScore.Period.Description}} {{item.Detail}}</span>
           </div>
         </div>
         <div class="row">
             <div class="col-5 text-center score">
               {{item.CurrentScore.Away.Score}}
             </div>
-            <div class="col-2 text-center">
+            <div class="col-2 text-center score">
               {{' - '}}
             </div>
             <div class="col-5 text-center score">
@@ -23,12 +23,10 @@
       </div>
       <div class="col-12">
           <div class="row">
-              <div class="col-5 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
+              <div class="col-6 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
                   <span class="rotation">{{item.Participants.Away.Rotation}}</span>{{'  '}}{{item.Participants.Away.Name }}
               </div> 
-              <div class="col-2 text-center">                 
-              </div>   
-              <div class="col-5 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
+              <div class="col-6 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
                   <span class="rotation">{{item.Participants.Home.Rotation}}</span>{{'  '}}{{item.Participants.Home.Name}}
               </div>                
           </div>
