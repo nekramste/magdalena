@@ -2,7 +2,7 @@
     <div class="row scores-detail" v-if="item.Scores.length">
       <div class="col-12">
         <div class="row">
-          <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail-header">
+          <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="col-5 col-md-6 text-left detail-header">
             {{'Team'}}
           </div>
           <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right detail-header">
@@ -19,8 +19,8 @@
           </div>
           <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right">
             <div style="display: inline-block">
-              <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">                    
-                {{score.Away.Score}}
+              <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
+                <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && score.Status === 'Graded')}"> {{score.Away.Score}} </div>
               </div>
             </div>
           </div>
@@ -31,7 +31,7 @@
           </div>
           <div v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" v-if="item" class="text-right">
             <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
-              {{score.Home.Score}}
+              <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && score.Status === 'Graded')}"> {{score.Home.Score}} </div>
             </div>
           </div>
         </div>
@@ -40,10 +40,9 @@
           </div>
           <div v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" v-if="item" class="text-right">
             <div class="period-cell text-center" v-for="(score, index) in item.Scores" :index="index" :key="index">       
-              <i v-if="!loading && score.IsFinal && score.Status === 'Pending'" @click="send(score)" class="fas fa-paper-plane icon-pending click" data-toggle="tooltip" data-placement="top" title="Tooltip on top"/>       
-              <i v-if="!loading && score.IsFinal && score.Status === 'WasSendToGrade'" class="fas fa-task icon-was-send" />
-              <i v-if="!loading && score.IsFinal && score.Status === 'Graded'" class="fas fa-check icon-graded" />
-              <i v-if="loading" :icon="'spinner'" class="fa-pulse fa-3x"/>
+              <i v-if="!loading && score.IsFinal && score.Status === 'Pending'" @click="send(score)" class="fas fa-check icon-pending click" data-toggle="tooltip" data-placement="top" title="Pending"/>
+              <i v-if="!loading && score.IsFinal && score.Status === 'WasSendToGrade'" class="fas fa-task icon-was-send" data-toggle="tooltip" data-placement="top" title="Was send to grade"/>
+              <div v-if="loading"><i class="fas fa-cog fa-spin icon-loading"></i></div>
             </div>
           </div>
         </div>
@@ -146,14 +145,35 @@
   }
 
   .icon-pending{
-    color: white;
+    color: #28A745;
+    font-size: 17px
   }
 
   .icon-was-send{
-    color: #FD7E14;
+    color: #FD7E14;    
   }
 
   .icon-graded{
     color: #20C997;
   }
+
+  .icon-loading{
+    font-weight: 12px;
+  }
+
+  .blink_me {
+    color:#DC3545;
+    animation: blinker 1s linear infinite;
+  }
+
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .graded{
+    color: #20C997;
+  }
+
 </style>
