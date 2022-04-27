@@ -51,7 +51,7 @@
           var url = config.API_URL;
           
           try {
-              this.loading = true;
+              //this.loading = true;
               const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -59,7 +59,7 @@
               };
               fetch(`${url}/api/grade`, requestOptions)
                   .then(response => {
-                    this.loading = false;
+//                    this.loading = false;
                     console.log(response);
                   })
                   .then(data => (this.postId = data.id));
