@@ -40,9 +40,7 @@
           </div>
           <div v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" v-if="item" class="text-right">
             <div class="period-cell text-center" v-for="(score, index) in item.Scores" :index="index" :key="index">       
-              <i v-if="!loading && score.IsFinal && score.Status === 'Pending'" @click="send(score)" class="fas fa-check icon-pending click" data-toggle="tooltip" data-placement="top" title="Pending"/>
-              <i v-if="!loading && score.IsFinal && score.Status === 'WasSendToGrade'" class="fas fa-task icon-was-send" data-toggle="tooltip" data-placement="top" title="Was send to grade"/>
-              <div v-if="loading"><i class="fas fa-cog fa-spin icon-loading"></i></div>
+              <IconGrade :item="item" :score="score"/>
             </div>
           </div>
         </div>
@@ -53,8 +51,10 @@
 <script>
 
     import config from '../common/config';
+    import IconGrade from './icon-grade.vue';
 
     export default {
+      components: {IconGrade},
       data () {
         return {
           loading: false
