@@ -59,9 +59,8 @@ export default {
     mounted: function(){
 
       var protocol = location.protocol === "https:" ? "wss:" : "ws:";
-        var wsUri = protocol + "//" + window.location.host + '/scores';
-        
-      
+      var wsUri = protocol + "//" + window.location.host + '/scores';
+              
       //var wsUri = `${config.WS_URL}/scores`;
       var socket = new WebSocket(wsUri);
       const v = this;
