@@ -12,6 +12,8 @@ namespace FF.Magdalena.Agents
         #region Members
         private readonly Uri uri;
         private readonly IHttpClientFactory httpClientFactory;
+        private const string GET_RECENT_SCORES = "/api/scores";
+        private const string VERIFY_GRADE = "/api/grade";
         #endregion
 
         #region Constructor
@@ -33,7 +35,7 @@ namespace FF.Magdalena.Agents
 
                 using (var client = this.httpClientFactory.Create(uri))
                 {
-                    await client.PostAsync("/api/grade", gameScore).ConfigureAwait(false);
+                    await client.PostAsync(VERIFY_GRADE, gameScore).ConfigureAwait(false);
                 }
 
             }
@@ -49,7 +51,7 @@ namespace FF.Magdalena.Agents
             {
                 using (var client = this.httpClientFactory.Create(uri))
                 {
-                   return await client.GetAsync<IEnumerable<GameScoreDTO>>("/api/scores").ConfigureAwait(false);
+                   return await client.GetAsync<IEnumerable<GameScoreDTO>>(GET_RECENT_SCORES).ConfigureAwait(false);
                 }
 
             }
@@ -65,7 +67,7 @@ namespace FF.Magdalena.Agents
             {
                 using (var client = this.httpClientFactory.Create(uri))
                 {
-                    return await client.GetAsync<GameScoreDTO>($"/api/scores/{gameNumber}").ConfigureAwait(false);
+                    return await client.GetAsync<GameScoreDTO>($"{GET_RECENT_SCORES}/{gameNumber}").ConfigureAwait(false);
                 }
             }
             catch (Exception ex)

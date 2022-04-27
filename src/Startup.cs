@@ -33,6 +33,7 @@ namespace FF.Magdalena
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMassTransitSettings(this.Configuration);
+            services.AddConfiguration(this.Configuration);
             services.AddNewtonsoftJsonSerializer();
             services.AddHttpAgents();
             services.AddAutoMapper();
