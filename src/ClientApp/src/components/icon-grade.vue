@@ -27,7 +27,8 @@
             GameScore : {
               Header : {
                 EventNumber: this.item.Header.EventNumber,
-                ExternalGameNumber: this.item.Header.ExternalGameNumber
+                ExternalGameNumber: this.item.Header.ExternalGameNumber,
+                Source: this.item.Header.Source
               },
               CurrentScore : {
                 Away : {
