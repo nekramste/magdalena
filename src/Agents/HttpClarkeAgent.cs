@@ -59,13 +59,13 @@ namespace FF.Magdalena.Agents
             }
         }
 
-        public async Task<GameScoreDTO> GetScores(long externalGameNumber)
+        public async Task<GameScoreDTO> GetScores(int gameNumber)
         {
             try
             {
                 using (var client = this.httpClientFactory.Create(uri))
                 {
-                    return await client.GetAsync<GameScoreDTO>($"/api/scores/{externalGameNumber}").ConfigureAwait(false);
+                    return await client.GetAsync<GameScoreDTO>($"/api/scores/{gameNumber}").ConfigureAwait(false);
                 }
             }
             catch (Exception ex)

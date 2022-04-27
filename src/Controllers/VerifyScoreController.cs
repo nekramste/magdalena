@@ -35,10 +35,9 @@ namespace FF.Magdalena.Controllers
         {
             try
             {
-                verifiedGameScore.GameScore.Header.ExternalGameNumber = 1381010;
                 verifiedGameScore.Context.User = this.GetUserName() ?? "UserAdmin";
 
-                var score = await this.clarkeAgent.GetScores(verifiedGameScore.GameScore.Header.ExternalGameNumber);
+                var score = await this.clarkeAgent.GetScores(verifiedGameScore.GameScore.Header.EventNumber);
                 this.MarkAsSentToGrade(score, verifiedGameScore);
 
                 await webSocketHandler.SendMessageToAllAsync(JsonConvert.SerializeObject(score));
