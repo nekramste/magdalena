@@ -52,6 +52,7 @@
 
     import config from '../common/config';
     import IconGrade from './icon-grade.vue';
+    const axios = require('axios');
 
     export default {
       components: {IconGrade},
@@ -61,57 +62,7 @@
         }
       },
       props:['item'],
-      methods: {
-
-        getBody(score){
-          let body = {
-            Context : {
-              MustSendToGrade: true
-            },
-            GameScore : {
-              Header : {
-                    EventNumber: this.item.Header.EventNumber,
-                    ExternalGameNumber: this.item.Header.ExternalGameNumber
-
-              },
-              CurrentScore : {
-                Away : {
-                  score: score.Away.Score
-                },
-                Home : {
-                  score: score.Home.Score
-                },
-                Period : {
-                  Number: score.Period.Number
-                }
-              }
-            }
-          };
-          return body;
-        },
-
-        send: function (score) {
-          
-          var url = config.API_URL;
-          
-          try {
-              this.loading = true;
-              const requestOptions = {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(this.getBody(score))
-              };
-              fetch(`${url}/api/grade`, requestOptions)
-                  .then(response => {
-                    this.loading = false;
-                    console.log(response);
-                  })
-                  .then(data => (this.postId = data.id));
-          } catch (err) {
-            this.loading = false;  
-          }
-        }
-      }   
+      methods: { }       
     }
 </script>
 

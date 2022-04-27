@@ -37,9 +37,9 @@ const store = createStore({
           if (score) {
             let index = state.scores_all.findIndex(item => item.Header.EventNumber === score.Header.EventNumber)
             if(index>-1){
-              state.scores_all.splice(index, 1, score)
+              state.scores_all.splice(index, 1, JSON.parse(JSON.stringify(score)))
             }else{
-              state.scores_all.push(score)
+              state.scores_all.push(JSON.parse(JSON.stringify(score)))
             }
           }else{ // FIRST CONNECTION - GET ID
             state.id = data.split(' ')[0];

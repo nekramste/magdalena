@@ -27,10 +27,10 @@
       </div>
       <div class="col-12">
           <div class="row">
-              <div class="col-6 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
+              <div class="col-6 text-center team">
                   <span class="rotation">{{item.Participants.Away.Rotation}}</span>{{'  '}}{{item.Participants.Away.Name }}
               </div> 
-              <div class="col-6 text-center" v-bind:class="{'team-mobile':isOnMobile,'team':!isOnMobile}">
+              <div class="col-6 text-center team">
                   <span class="rotation">{{item.Participants.Home.Rotation}}</span>{{'  '}}{{item.Participants.Home.Name}}
               </div>                
           </div>
