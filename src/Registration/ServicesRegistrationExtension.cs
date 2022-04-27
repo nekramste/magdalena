@@ -17,7 +17,7 @@ namespace FF.Magdalena.Registration
         public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions();
-            //services.Configure<ServiceUriOptions>(opt => configuration.GetSection("ServiceUriOptions").Bind(opt));
+            services.Configure<ServiceUriOptions>(opt => configuration.GetSection("ServiceUriOptions").Bind(opt));
             return services;
         }
     }
