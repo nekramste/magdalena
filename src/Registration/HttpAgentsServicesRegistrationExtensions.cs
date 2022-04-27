@@ -20,8 +20,8 @@ namespace FF.Magdalena.Registration
              () => new JsonSerializer(provider.GetService<Newtonsoft.Json.JsonSerializer>())));
 
             services.AddSingleton<IClarkeAgent>(provider => new HttpClarkeAgent(
-             //uri: new Uri("http://localhost:8008/"),   
-             uri: new Uri("http://nelsonbwks.sport.local:8008/api/grade/scores"),
+              uri: new Uri("http://localhost:8008/"),   
+             //uri: new Uri("http://nelsonbwks.sport.local:8008/"),
              httpClientFactory: provider.GetService<IHttpClientFactory>())
           );
 
