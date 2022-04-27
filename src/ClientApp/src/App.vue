@@ -23,7 +23,7 @@ export default {
   margin-top: 0px;  
 }
 
-html {
-  background-color: #2c3e50;
-}
+    html {
+        background-color: #05162a;
+    }
 </style>
