@@ -71,7 +71,7 @@
             },
             GameScore : {
               Header : {
-                ExternalGameNumber: this.item.Header.ExternalGameNumber
+                EventNumber: this.item.Header.EventNumber
               },
               CurrentScore : {
                 Away : {
