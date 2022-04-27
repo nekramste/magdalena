@@ -40,9 +40,9 @@
           </div>
           <div v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" v-if="item" class="text-right">
             <div class="period-cell text-center" v-for="(score, index) in item.Scores" :index="index" :key="index">       
-              <icon v-if="!loading && score.Status === 'Pending'" @click="send(score)" :icon="'paper-plane'" class="icon-pending click" data-toggle="tooltip" data-placement="top" title="Tooltip on top"/>       
-              <icon v-if="!loading && score.Status === 'WasSendToGrade'" :icon="'bars-progress'" class="icon-was-send" />
-              <icon v-if="!loading && score.Status === 'Graded'" :icon="'check'" class="icon-graded" />
+              <icon v-if="!loading && score.IsFinal && score.Status === 'Pending'" @click="send(score)" :icon="'paper-plane'" class="icon-pending click" data-toggle="tooltip" data-placement="top" title="Tooltip on top"/>       
+              <icon v-if="!loading && score.IsFinal && score.Status === 'WasSendToGrade'" :icon="'bars-progress'" class="icon-was-send" />
+              <icon v-if="!loading && score.IsFinal && score.Status === 'Graded'" :icon="'check'" class="icon-graded" />
               <icon v-if="loading" :icon="'spinner'" class="fa-pulse fa-3x"/>
             </div>
           </div>
