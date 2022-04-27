@@ -1,4 +1,3 @@
-//import * as Vue from 'vue'
 //import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import { createApp } from 'vue'
@@ -6,11 +5,7 @@ import { createStore } from 'vuex'
 import App from './App.vue'
 import router from './router'
 import config from './common/config'
-
-//const constants = {MOBILE_SIZE:991.98, MOBILE_SIZE_XSM:415,MOBILE_SIZE_SM:505}
-
-//const SIZE_LG = 992;
-//const SIZE_XL = 1200;
+import globalMixin from './globalMixin'
 
 async function notifyInit(id){
     try {
@@ -60,24 +55,8 @@ const store = createStore({
     }
 })
 
-/* Vue.mixin({  
-    data() { return {isOnMobile_: false,isOnMobileSM_: false, isOnMobileXSM_: false, isOnXL_: false} },
-    computed: {              
-                isOnMobile: function() {return this.isOnMobile_;},
-                isOnMobileSM: function() {return this.isOnMobileSM_;},
-                isOnMobileXSM: function() {return this.isOnMobileXSM_;},
-                isOnXL: function() {return this.isOnXL_;}
-              },
-    methods: { 
-                onResize () { this.isOnMobile_ = (window.innerWidth <= constants.MOBILE_SIZE);
-                              this.isOnMobileSM_ = (window.innerWidth <= constants.MOBILE_SIZE_SM);
-                              this.isOnMobileXSM_ = (window.innerWidth <= constants.MOBILE_SIZE_XSM);
-                              this.isOnXL_ = ((SIZE_LG < window.innerWidth) & (window.innerWidth <= SIZE_XL))?true:false;
-                            }              
-    },
-    created() {window.addEventListener('resize', this.onResize);},
-    unmounted() {window.removeEventListener('resize', this.onResize );},
-    mounted(){ this.onResize();}
-  }); */
-
-createApp(App).use(router).use(store).mount('#app');
+createApp({
+  extends: App,
+  mixins: [globalMixin],
+  components: {}
+}).use(router).use(store).mount('#app');

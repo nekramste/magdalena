@@ -10,7 +10,7 @@
       </div>
       <div class="row">
         <div class="col-xl-4 col-lg-6 col-md-6 col-12" v-for="(subitem, index_) in filteredScores" :index="index_" :key="index_">            
-          <ScoreRow :item="subitem"/>
+          <ScoreRow v-if="subitem" :item="subitem"/>
         </div>        
       </div>
     </div>

@@ -2,10 +2,10 @@
     <div class="row scores-detail" v-if="item.Scores.length">
       <div class="col-12">
         <div class="row">
-          <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="col-5 col-md-6 text-left detail-header">
+          <div class="col-5 col-md-6 text-left detail-header">
             {{'Team'}}
           </div>
-          <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right detail-header">
+          <div v-if="item" class="col-7 col-md-6 text-right detail-header">
             <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
               {{score.Period.Abbr}}
             </div>
@@ -14,10 +14,10 @@
       </div>     
       <div class="col-12">
         <div class="row">
-          <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail">
+          <div class="col-5 col-md-6 text-left detail">
             {{item?item.Participants.Away.Name:''}}
           </div>
-          <div v-if="item" v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" class="text-right">
+          <div v-if="item" class="col-7 col-md-6 text-right">
             <div style="display: inline-block">
               <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
                 <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && score.Status === 'Graded')}"> {{score.Away.Score}} </div>
@@ -26,19 +26,19 @@
           </div>
         </div>
         <div class="row">
-          <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail">
+          <div class="col-5 col-md-6 text-left detail">
               {{item?item.Participants.Home.Name:''}}
           </div>
-          <div v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" v-if="item" class="text-right">
+          <div v-if="item" class="col-7 col-md-6 text-right">
             <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
               <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && score.Status === 'Graded')}"> {{score.Home.Score}} </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div v-bind:class="{'col-5':isOnMobile,'col-6':!isOnMobile}" class="text-left detail">
+          <div class="col-5 col-md-6  text-left detail">
           </div>
-          <div v-bind:class="{'col-7':isOnMobile,'col-6':!isOnMobile}" v-if="item" class="text-right">
+          <div v-if="item" class="col-7 col-md-6 text-right">
             <div class="period-cell text-center" v-for="(score, index) in item.Scores" :index="index" :key="index">       
               <IconGrade :item="item" :score="score"/>
             </div>
