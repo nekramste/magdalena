@@ -4,10 +4,10 @@
         <div class="row">
           <div class="col-6 text-left league">
             <div class="row">
-              <div class="col-3 col-md-2 pr-0 text-left">
+              <div class="col-4 col-sm-2 col-md-3 col-lg-3 pr-0 text-left">
                 <div style="display: table-cell;" :class="searchIcon(item.Header.SportType)"></div> 
               </div>
-              <div class="col-9 col-md-10 px-0 text-left sportSybType ellipsis">
+              <div class="col-8 col-sm-8 col-md-9 col-lg-9 px-0 text-left sportSybType ellipsis">
                 <span> {{item.Header.SportSubType}} </span>
               </div>
             </div>
