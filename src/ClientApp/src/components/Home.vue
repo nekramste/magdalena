@@ -10,7 +10,7 @@
       </div>
       <div class="row">
         <div class="col-xl-4 col-lg-6 col-md-6 col-12" v-for="(subitem, index_) in filteredScores" :index="index_" :key="index_">            
-          <ScoreRow v-if="subitem" :item="subitem"/>
+          <ScoreRow v-if="subitem" :item="subitem" :isOnMobile="isOnMobile_"/>
         </div>        
       </div>
     </div>
@@ -23,6 +23,10 @@ import { mapActions, mapState } from 'vuex';
 import ScoreRow from './score-row';
 //import config from '../common/config';
 
+const constants = {MOBILE_SIZE:991.98, MOBILE_SIZE_XSM:415,MOBILE_SIZE_SM:505}
+const SIZE_LG = 992;
+const SIZE_XL = 1200;
+
 export default {
   name: 'Home',
   props: {
@@ -31,32 +35,51 @@ export default {
   components: {ScoreRow},
     data() {
       return {
-        buttons: ['ALL','LIVE','UNMATCH'],
-        selected: 'ALL'
+        buttons: ['ALL','LIVE','UNMATCH','GRADED'],
+        selected: 'ALL',
+        isOnMobile_: false,
+        isOnMobileSM_: false,
+        isOnMobileXSM_: false,
+        isOnXL_: false
       }
     },
 
     computed: {
       ...mapState({
-        currentScores: state => state.scores_all,        
+        currentScores: state => state.scores_all,
+        gradedScores: state => state.scores_graded
       }),
       filteredScores:function () {      
         return this.selected === 'LIVE'?
           this.currentScores.filter(item => item.Header.EventNumber != 0) :
           this.selected === 'UNMATCH'?
             this.currentScores.filter(item => item.Header.EventNumber === 0) :
-            this.currentScores 
-      }
+            this.selected === 'GRADED'? this.gradedScores :
+              this.currentScores 
+      },
+      isOnMobile: function() {return this.isOnMobile_;},
+      isOnMobileSM: function() {return this.isOnMobileSM_;},
+      isOnMobileXSM: function() {return this.isOnMobileXSM_;},
+      isOnXL: function() {return this.isOnXL_;}
     },
 
     methods: {
       ...mapActions(['setReceivedScore','startCleaner']),
       select_option(option){
         this.selected = option;
-      }
+      },
+      onResize () { this.isOnMobile_ = (window.innerWidth <= constants.MOBILE_SIZE);
+                    this.isOnMobileSM_ = (window.innerWidth <= constants.MOBILE_SIZE_SM);
+                    this.isOnMobileXSM_ = (window.innerWidth <= constants.MOBILE_SIZE_XSM);
+                    this.isOnXL_ = ((SIZE_LG < window.innerWidth) & (window.innerWidth <= SIZE_XL))?true:false;
+                  }    
     },
 
+    created() {window.addEventListener('resize', this.onResize);},
+
     mounted: function(){
+
+      this.onResize();
 
       var protocol = location.protocol === "https:" ? "wss:" : "ws:";
       var wsUri = protocol + "//" + window.location.host + '/scores';
@@ -71,8 +94,12 @@ export default {
         var incomingScore = event.data;
         v.setReceivedScore({score: incomingScore});
       };
-    }
+    },
+
+    unmounted() {window.removeEventListener('resize', this.onResize );},
+
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -24,6 +24,7 @@ const store = createStore({
     state () {
       return {
         scores_all: [],
+        scores_graded: [],
         id: '',
         keep_checking: true
       }
@@ -73,12 +74,13 @@ const store = createStore({
         while (state.keep_checking) {
           await new Promise(resolve => setTimeout(resolve, CHECK_EVERY_MINUTES*60*1000));     
           let index = 0;
-          console.log('CHECKING FOR OLD VALUES TO REMOVE')
+          console.log('CHECKING FOR OLD VALUES TO MOVE')
           state.scores_all.forEach(element => {
             if(element.toDelete){element.remainingTime--;}
             if(element.toDelete && element.remainingTime <= 0){
-              console.log('Removed')
+              console.log('Moved')
               console.log(element)
+              state.scores_graded.push(JSON.parse(JSON.stringify(element)));
               state.scores_all.splice(index,1); 
             }
             index++;
