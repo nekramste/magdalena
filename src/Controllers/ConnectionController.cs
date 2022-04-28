@@ -1,11 +1,13 @@
+using Common.Logging;
+using FF.Macau;
+using FF.Macau.Logging;
 using FF.Magdalena.Agents;
 using FF.Magdalena.Handlers;
+using FF.Magdalena.Models;
 using FF.Magdalena.WebSockets;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FF.Magdalena.Controllers
@@ -13,26 +15,25 @@ namespace FF.Magdalena.Controllers
     [ApiController]
     [Route("[controller]")]
 
-    public class ConnectionController : ControllerBase
+    public class ConnectionController : Controller
     {
-            private static readonly string[] Summaries = new[]
-            {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-
         #region Private Fields
         private readonly ScoreMessageHandler scoreMessageHandler;
         private readonly ConnectionManager connectionManager;
         private readonly IClarkeAgent scoreRepository;
+        private readonly ILog logger;
         #endregion
 
         #region Constructor
-        public ConnectionController(ScoreMessageHandler scoreMessageHandler, ConnectionManager connectionManager, IClarkeAgent scoreRepository)
+        public ConnectionController(ScoreMessageHandler scoreMessageHandler, ConnectionManager connectionManager, IClarkeAgent scoreRepository, ILoggerProvider loggerProvider)
         {
+            Ensure.IsNotNull(loggerProvider, nameof(loggerProvider));
+
             this.scoreMessageHandler = scoreMessageHandler;
             this.connectionManager = connectionManager;
             this.scoreRepository = scoreRepository;
+            this.logger = loggerProvider.GetLogger<ConnectionController>();
+
         }
         #endregion
 
@@ -40,42 +41,64 @@ namespace FF.Magdalena.Controllers
         [HttpGet("ready/{connectionId}")]
         public async Task<ReadyResult> Ready(string connectionId)
         {
-            var socket = this.connectionManager.GetSocketById(connectionId);
-
-
-            if (socket != null)
+            try
             {
-                try
-                {
-                    var scores = await this.scoreRepository.GetRecentScores();
+                var socket = this.connectionManager.GetSocketById(connectionId);
 
-                    foreach (var score in scores)
+
+                if (socket != null)
+                {
+                    try
                     {
-                        await this.scoreMessageHandler.SendMessageAsync(socket, JsonConvert.SerializeObject(score));
+                        var scores = await this.scoreRepository.GetRecentScores();
+
+                        foreach (var score in scores)
+                        {
+                            await this.scoreMessageHandler.SendMessageAsync(socket, JsonConvert.SerializeObject(score));
+                        }
+
+                        return new ReadyResult()
+                        {
+                            Success = true,
+                            Message = "Queued"
+                        };
                     }
-
-                    return new ReadyResult()
+                    catch
                     {
-                        Success = true,
-                        Message = "Queued"
-                    };
+                        return new ReadyResult()
+                        {
+                            Message = "Could not connect to API",
+                            Success = false
+                        };
+                    }
                 }
-                catch
+
+                return new ReadyResult()
                 {
-                    return new ReadyResult()
-                    {
-                        Message = "Could not connect to API",
-                        Success = false
-                    };
-                }
+                    Success = false,
+                };
             }
-
-            return new ReadyResult()
+            catch (Exception exc)
             {
-                Success = false,
-            };
+                this.logger.Error($"An error occurred while get the Ready.", exc);
+                throw;
+            }
         }
 
+
+        [HttpGet("context/info")]
+        public async Task<Context> GetContext()
+        {
+            try
+            {
+                return new Context(this.GetUserName());
+            }
+            catch (Exception exc)
+            {
+                this.logger.Error($"An error occurred while get the GetContext.", exc);
+                throw;
+            }
+        }
 
         public class ReadyResult 
         {
