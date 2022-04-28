@@ -1,4 +1,4 @@
-const isProduction = 0;
+const isProduction = 1;
 
 const API_ROUTE_DEVELOPMENT ='http://localhost:5000';
 const API_ROUTE_PRODUCTION = 'https://agadmin';
