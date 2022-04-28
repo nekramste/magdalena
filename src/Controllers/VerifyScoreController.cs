@@ -9,6 +9,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Common.Logging;
+using FF.Macau.Logging;
 
 namespace FF.Magdalena.Controllers
 {
@@ -19,15 +21,17 @@ namespace FF.Magdalena.Controllers
         #region Members
         private readonly IClarkeAgent clarkeAgent;
         private readonly ScoreMessageHandler webSocketHandler;
+        private readonly ILog logger;
         #endregion
 
-        public VerifyScoreController(IClarkeAgent agent, ScoreMessageHandler webSocketHandler)
+        public VerifyScoreController(IClarkeAgent agent, ScoreMessageHandler webSocketHandler, ILoggerProvider loggerProvider)
         { 
             Ensure.IsNotNull(agent, nameof(agent));
             Ensure.IsNotNull(webSocketHandler, nameof(webSocketHandler));
 
             this.webSocketHandler = webSocketHandler;
             this.clarkeAgent = agent;
+            this.logger = loggerProvider.GetLogger<VerifyScoreController>();
         }
 
         [HttpPost]
@@ -45,7 +49,8 @@ namespace FF.Magdalena.Controllers
             }
             catch (Exception exc)
             {
-
+                this.logger.Error($"An error occurred while post the Verify.", exc);
+                throw;
             }
         }
 
@@ -54,11 +59,12 @@ namespace FF.Magdalena.Controllers
         {
             try
             {
-               return await clarkeAgent.GetRecentScores();
+                return await clarkeAgent.GetRecentScores();
             }
             catch (Exception exc)
             {
-                return null;
+                this.logger.Error($"An error occurred while get the GetScores.", exc);
+                throw;
             }
         }
 

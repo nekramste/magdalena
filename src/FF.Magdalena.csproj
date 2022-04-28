@@ -13,10 +13,13 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Common.Logging.Serilog" Version="4.4.0" />
     <PackageReference Include="Macau.AutoMapper" Version="2.1.0" />
+    <PackageReference Include="Macau.CrossCuttingConcerns" Version="5.0.0" />
     <PackageReference Include="Macau.Net" Version="10.0.0" />
     <PackageReference Include="MassTransit" Version="5.3.2" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="5.3.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
     <PackageReference Include="VueCliMiddleware" Version="3.0.0" />
   </ItemGroup>
 

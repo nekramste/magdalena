@@ -32,6 +32,7 @@ namespace FF.Magdalena
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSerilog();
             services.AddMassTransitSettings(this.Configuration);
             services.AddConfiguration(this.Configuration);
             services.AddNewtonsoftJsonSerializer();
@@ -77,6 +78,7 @@ namespace FF.Magdalena
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCustomMiddleWares();
             app.UseMassTransit();
             app.UseWebSockets();
             app.MapWebSocketManager("/scores", serviceProvider.GetService<ScoreMessageHandler>());
