@@ -35,7 +35,7 @@ namespace FF.Magdalena.Controllers
         {
             try
             {
-                verifiedGameScore.Context.User = this.GetUserName() ?? "UserAdmin";
+                verifiedGameScore.Context.User = this.GetUserName();
 
                 var score = await this.clarkeAgent.GetScores(verifiedGameScore.GameScore.Header.EventNumber);
                 this.MarkAsSentToGrade(score, verifiedGameScore);
