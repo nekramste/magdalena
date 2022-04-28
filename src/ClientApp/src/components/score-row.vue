@@ -2,15 +2,20 @@
     <div class="row card score-row">
       <div class="col-12">
         <div class="row">
-          <div class="col-8 text-left league">
-            <div style="display:inline-block">
-              <div style="display: table-cell;" :class="SearchIcon(item.Header.SportType)"></div> <div class="sportSybType"> {{item.Header.SportSubType}} </div>
+          <div class="col-6 text-left league">
+            <div class="row">
+              <div class="col-3 col-md-2 pr-0 text-left">
+                <div style="display: table-cell;" :class="searchIcon(item.Header.SportType)"></div> 
+              </div>
+              <div class="col-9 col-md-10 px-0 text-left sportSybType ellipsis">
+                <span> {{item.Header.SportSubType}} </span>
+              </div>
             </div>
           </div>
-          <div class="col-4">
+          <div class="col-6">
             <span v-bind:class="{'score-period': !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0),
                                  'score-final': (item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)}" class=" float-right">
-              {{ (item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)? 'Finished' : item.CurrentScore.Period.Description }} {{item.Detail}}</span>
+              {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{item.Detail}}</span>
           </div>
         </div>
         <div class="row">
@@ -27,11 +32,11 @@
       </div>
       <div class="col-12">
           <div class="row">
-              <div class="col-6 text-center team">
-                  <span class="rotation">{{item.Participants.Away.Rotation}}</span>{{'  '}}{{item.Participants.Away.Name }}
+              <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile}">
+                  <span class="rotation">{{!isOnMobile?item.Participants.Away.Rotation:''}}</span>{{'  '}}{{item.Participants.Away.Name }}
               </div> 
-              <div class="col-6 text-center team">
-                  <span class="rotation">{{item.Participants.Home.Rotation}}</span>{{'  '}}{{item.Participants.Home.Name}}
+              <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile}">
+                  <span class="rotation">{{!isOnMobile?item.Participants.Home.Rotation:''}}</span>{{'  '}}{{item.Participants.Home.Name}}
               </div>                
           </div>
       </div>
@@ -49,10 +54,9 @@
         return {          
         }
       },
-      props:['item'],
+      props:['item','isOnMobile'],
       methods: { 
-
-        SearchIcon(sportName){          
+        searchIcon(sportName){          
 
           var iconName = "";
 
@@ -97,8 +101,9 @@
           }
           
           return iconName;
-        }
-        
+        }        
+      },
+      mounted() {
       }
     }
 </script>
@@ -164,7 +169,7 @@
   }
 
   .team-mobile{
-    font-size:12px;
+    font-size:14px;
     font-weight: bold;
     color: white;
   }
@@ -186,8 +191,14 @@
 
   .sportSybType{
     display: table-cell;
-    padding-left:10px;
-    padding-top:2px;
+    padding-left:0px;
+    padding-top:2px;    
+  }
+
+  .ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;    
   }
 
   .sport{  
