@@ -21,7 +21,7 @@
 
 import { mapActions, mapState } from 'vuex';
 import ScoreRow from './score-row';
-//import config from '../common/config';
+import config from '../common/config';
 
 const constants = {MOBILE_SIZE:991.98, MOBILE_SIZE_XSM:415,MOBILE_SIZE_SM:505}
 const SIZE_LG = 992;
@@ -82,9 +82,8 @@ export default {
       this.onResize();
 
       var protocol = location.protocol === "https:" ? "wss:" : "ws:";
-      var wsUri = protocol + "//" + window.location.host + '/scores';
-              
-      //var wsUri = `${config.WS_URL}/scores`;
+      var wsUri = config.IS_PRODUCTION?`${config.WS_URL}/scores` : protocol + "//" + window.location.host + '/scores';
+
       var socket = new WebSocket(wsUri);
       const v = this;
 
