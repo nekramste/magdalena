@@ -50,7 +50,7 @@ export default {
     },
 
     methods: {
-      ...mapActions(['setReceivedScore','startCounter']),
+      ...mapActions(['setReceivedScore','startCleaner']),
       select_option(option){
         this.selected = option;
       }

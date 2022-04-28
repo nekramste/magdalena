@@ -18,7 +18,7 @@ async function notifyInit(id){
 
 const SCORES = 'SCORES'
 const CHECK_EVERY_MINUTES = 1;
-const MAX_TIME_MINUTES = 10;
+const MINUTES_TO_REMOVE = 10;
 
 const store = createStore({
     state () {
@@ -39,19 +39,22 @@ const store = createStore({
         // ALL
         if (score) {
 
-          let index = state.scores_all.findIndex(item => item.Header.EventNumber === score.Header.EventNumber)
+          let index = state.scores_all.findIndex(item => (item.Header.EventNumber === score.Header.EventNumber &&
+                                                          item.Header.ExternalGameNumber === score.Header.ExternalGameNumber &&
+                                                          item.Header.Source === score.Header.Source
+                                                ))
           if(index>-1){
 
-            if(!state.scores_all[index].score['toDelete']){
+            if(!('toDelete' in state.scores_all[index])){
               score['toDelete'] = (score.CurrentScore.Status === 'Graded');
-              score['remainingTime'] = (score.CurrentScore.Status === 'Graded')?MAX_TIME_MINUTES:0;
+              score['remainingTime'] = (score.CurrentScore.Status === 'Graded')?MINUTES_TO_REMOVE:0;
             }
 
             state.scores_all.splice(index, 1, JSON.parse(JSON.stringify(score)))
           }else{
-
+            
             score['toDelete'] = (score.CurrentScore.Status === 'Graded');
-            score['remainingTime'] = (score.CurrentScore.Status === 'Graded')?MAX_TIME_MINUTES:0;
+            score['remainingTime'] = (score.CurrentScore.Status === 'Graded')?MINUTES_TO_REMOVE:0;            
 
             state.scores_all.push(JSON.parse(JSON.stringify(score)))
           }
