@@ -86,7 +86,7 @@ namespace FF.Magdalena.Controllers
         }
 
 
-        [HttpGet("context/info")]
+        [HttpGet("user")]
         public async Task<Context> GetContext()
         {
             try
