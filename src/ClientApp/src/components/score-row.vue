@@ -133,7 +133,6 @@
     margin: auto;
     height: 2px;
     animation: underline 2s infinite;
-    max-width: 85px;
   }
   .rotation {
     color: #BDBDBD;
