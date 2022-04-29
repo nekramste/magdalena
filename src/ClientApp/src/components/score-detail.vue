@@ -2,10 +2,10 @@
     <div class="row scores-detail" v-if="item.Scores.length">
       <div class="col-12">
         <div class="row">
-          <div class="col-4 col-md-4 text-left detail-header">
+          <div class="col-5 col-md-5 text-left detail-header">
             {{'Team'}}
           </div>
-          <div v-if="item" class="col-8 col-md-8 text-right detail-header">
+          <div v-if="item" class="col-7 col-md-7 text-right detail-header">
             <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
               {{score.Period.Abbr}}
             </div>
@@ -14,10 +14,10 @@
       </div>     
       <div class="col-12">
         <div class="row">
-          <div class="col-4 col-md-4 text-left detail">
+          <div class="col-5 col-md-5 text-left detail">
             {{item?item.Participants.Away.Name:''}}
           </div>
-          <div v-if="item" class="col-8 col-md-8 text-right">
+          <div v-if="item" class="col-7 col-md-7 text-right">
             <div style="display: inline-block">
               <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
                 <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && score.Status === 'Graded')}"> {{score.Away.Score}} </div>
@@ -26,19 +26,19 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-4 col-md-4 text-left detail">
+          <div class="col-5 col-md-5 text-left detail">
               {{item?item.Participants.Home.Name:''}}
           </div>
-          <div v-if="item" class="col-8 col-md-8 text-right">
+          <div v-if="item" class="col-7 col-md-7 text-right">
             <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
               <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && score.Status === 'Graded')}"> {{score.Home.Score}} </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-4 col-md-4  text-left detail">
+          <div class="col-5 col-md-5  text-left detail">
           </div>
-          <div v-if="item" class="col-8 col-md-8 text-right">
+          <div v-if="item" class="col-7 col-md-7 text-right">
             <div class="period-cell text-center" v-for="(score, index) in item.Scores" :index="index" :key="index">       
               <IconGrade :item="item" :score="score"/>
             </div>
@@ -85,7 +85,7 @@
       text-align: center;
       display: inline-block;
       padding-top: 5px;
-      width:35px;
+      width:25px;
   }
   .period-cell-header {
     color: #CCC;
