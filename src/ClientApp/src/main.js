@@ -18,7 +18,7 @@ async function notifyInit(id){
 
 const SCORES = 'SCORES'
 const CHECK_EVERY_MINUTES = 1;
-const MINUTES_TO_REMOVE = 0.5;
+const MINUTES_TO_REMOVE = 10;
 
 const store = createStore({
     state () {
