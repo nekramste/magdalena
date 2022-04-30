@@ -19,24 +19,26 @@
           </div>
         </div>
         <div class="row">
-            <div class="col-5 text-center score">
+            <div class="col-5 text-center score" v-bind:class="{'animation':animate}">
               {{item.CurrentScore.Away.Score}}
             </div>
             <div class="col-2 text-center score">
               {{' - '}}
             </div>
-            <div class="col-5 text-center score">
+            <div class="col-5 text-center score" v-bind:class="{'animation':animate}">
               {{item.CurrentScore.Home.Score}}
             </div>
           </div>
       </div>
       <div class="col-12">
           <div class="row">
-              <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile}">
-                  <span class="rotation">{{!isOnMobile?item.Participants.Away.Rotation:''}}</span>{{'  '}}{{item.Participants.Away.Name }}
-              </div> 
-              <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile}">
-                  <span class="rotation">{{!isOnMobile?item.Participants.Home.Rotation:''}}</span>{{'  '}}{{item.Participants.Home.Name}}
+              <div class="col-5 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
+                  <span class="rotation">{{!isOnMobile?item.Participants.Away.Rotation:''}}</span>{{'  '}}<span>{{item.Participants.Away.Name }}</span>
+              </div>
+              <div class="col-2 text-center score">
+              </div>
+              <div class="col-5 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
+                  <span class="rotation">{{!isOnMobile?item.Participants.Home.Rotation:''}}</span>{{'  '}}<span>{{item.Participants.Home.Name}}</span>
               </div>                
           </div>
       </div>
@@ -48,14 +50,34 @@
 
 <script>
     import ScoreDetail from './score-detail';
+
+    const WAIT_SECONDS = 3;
+
     export default {
       components: {ScoreDetail},
       data () {
-        return {          
+        return {       
+          animate: false
         }
       },
       props:['item','isOnMobile'],
+      watch: {
+        item(newValue, oldValue) {
+          if(newValue !== oldValue){
+            this.startAnimation();
+          } 
+        }
+      },
+      
       methods: { 
+        async startAnimation(){
+          this.animate = true;
+          await new Promise(resolve => setTimeout(resolve, WAIT_SECONDS*1000)); 
+          this.resetAnimation();          
+        },
+        resetAnimation(){
+          this.animate = false;
+        },
         searchIcon(sportName){          
 
           var iconName = "";
@@ -102,7 +124,7 @@
           
           return iconName;
         }        
-      },
+      },      
       mounted() {
       }
     }
@@ -276,6 +298,16 @@
 
   .icon-trophy {
     background-position: 0px 0px;
+  }
+
+  .animation {    
+    animation: color-change 1s infinite;
+  }
+
+  @keyframes color-change {
+    0% { color: #17A2B8; font-size: 26px; }
+    50% { color: #20C997; font-size: 30px; }
+    100% { color: #17A2B8; font-size: 26px; }
   }
 
 </style>

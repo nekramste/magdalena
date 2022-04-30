@@ -62,7 +62,6 @@
 //                    this.loading = false;
                     console.log(response);
                   })
-                  .then(data => (this.postId = data.id));
           } catch (err) {
             this.loading = false;  
           }

@@ -26,7 +26,12 @@ const store = createStore({
         scores_all: [],
         scores_graded: [],
         id: '',
-        keep_checking: true
+        keep_checking: true,
+        
+        isNavOpen: false,
+        selectedOption: '',
+
+        user: 'guest'
       }
     },
     mutations: {
@@ -64,7 +69,16 @@ const store = createStore({
           notifyInit(state.id)
           console.log(state.id);
         }
-      }      
+      },
+      setIsNavOpen(state) {
+        state.isNavOpen = true;
+      },
+      toggleNav(state) {
+        state.isNavOpen = !state.isNavOpen;
+      },
+      setSelected(state,option) {
+        state.selectedOption = option;
+      },
     },
     actions: {
       setReceivedScore ({ commit }, obj) {
@@ -86,6 +100,9 @@ const store = createStore({
             index++;
           });          
         }
+      },
+      setSelected({ commit },option) { 
+        commit('setSelected',option);
       }
     }
 })

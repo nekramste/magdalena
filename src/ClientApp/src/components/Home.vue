@@ -1,14 +1,16 @@
 <template>
   <div class="home">
-    <div class="container-fluid">
-      <div class="row">
+    <div class="container-fluid" style="padding-left:0px;">      
+      <div class="row" style="height:60px;">
         <div class="col-12" style="text-align: left;">
-          <div class="options_bar" v-for="(item, index) in buttons" :index="index" :key="index">
-            <button class="option_button" v-bind:class="{'selected':selected === item}" @click="select_option(item)">{{item}}</button>
-          </div>
+          <Navigation :user="user" :selected="selected" :isOnMobile="isOnMobile">
+            <div v-bind:class="{'options_bar':!isOnMobile,'options_bar_mobile':isOnMobile}" v-for="(item, index) in buttons" :index="index" :key="index">
+              <button v-bind:class="{'option_button':!isOnMobile,'option_button_mobile':isOnMobile,'selected':selected === item}" @click="select_option(item)">{{item}}</button>
+            </div>
+          </Navigation>
         </div>
       </div>
-      <div class="row">
+      <div class="row" style="padding: 0px 20px 0px 20px;">
         <div class="col-xl-4 col-lg-6 col-md-6 col-12" v-for="(subitem, index_) in filteredScores" :index="index_" :key="index_">            
           <ScoreRow v-if="subitem" :item="subitem" :isOnMobile="isOnMobile_"/>
         </div>        
@@ -22,17 +24,16 @@
 import { mapActions, mapState } from 'vuex';
 import ScoreRow from './score-row';
 import config from '../common/config';
+import Navigation from './Menu/Navigation.vue';
 
-const constants = {MOBILE_SIZE:991.98, MOBILE_SIZE_XSM:415,MOBILE_SIZE_SM:505}
-const SIZE_LG = 992;
-const SIZE_XL = 1200;
+const constants = {MOBILE_SIZE:991.98, MOBILE_SIZE_XSM:415, MOBILE_SIZE_SM:505, SIZE_LG:992, SIZE_XL:1200 }
 
 export default {
   name: 'Home',
   props: {
-    msg: String
+    msg: String    
   },
-  components: {ScoreRow},
+  components: {ScoreRow,Navigation},
     data() {
       return {
         buttons: ['ALL','LIVE','UNMATCH','GRADED'],
@@ -40,14 +41,15 @@ export default {
         isOnMobile_: false,
         isOnMobileSM_: false,
         isOnMobileXSM_: false,
-        isOnXL_: false
+        isOnXL_: false,        
       }
     },
 
     computed: {
       ...mapState({
         currentScores: state => state.scores_all,
-        gradedScores: state => state.scores_graded
+        gradedScores: state => state.scores_graded,
+        user: state => state.user,
       }),
       filteredScores:function () {      
         return this.selected === 'LIVE'?
@@ -71,7 +73,7 @@ export default {
       onResize () { this.isOnMobile_ = (window.innerWidth <= constants.MOBILE_SIZE);
                     this.isOnMobileSM_ = (window.innerWidth <= constants.MOBILE_SIZE_SM);
                     this.isOnMobileXSM_ = (window.innerWidth <= constants.MOBILE_SIZE_XSM);
-                    this.isOnXL_ = ((SIZE_LG < window.innerWidth) & (window.innerWidth <= SIZE_XL))?true:false;
+                    this.isOnXL_ = ((constants.SIZE_LG < window.innerWidth) & (window.innerWidth <= constants.SIZE_XL))?true:false;
                   }    
     },
 
@@ -126,14 +128,35 @@ export default {
     display: inline-block;    
   }
 
+  .options_bar_mobile{
+    text-align: center;
+    padding-top: 20px;
+    padding-left: 10px;
+    display: inline-block;    
+  }  
+
   .option_button{
     border: none;
     border-radius: 10px;
     padding: 3px 8px 1px 8px;
-    font-weight: 500;
-  }
+    font-weight: 500;    
+  }  
 
   .option_button:hover{
+    background-color: #ff4a70;
+    color: white;
+  }
+
+  .option_button_mobile{
+    border: none;
+    border-radius: 10px;
+    padding: 3px 8px 1px 8px;
+    font-weight: 500;
+    width: 50%;
+    margin-left: -50px;
+  }
+
+  .option_button_mobile:hover{
     background-color: #ff4a70;
     color: white;
   }
