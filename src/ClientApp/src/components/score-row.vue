@@ -65,13 +65,8 @@
       watch: {
         item(newValue, oldValue) {
           if(newValue !== oldValue){            
-            
-            if(newValue.Detail === oldValue.Detail){
-              this.hide_detail = true;
-            }else{
-              this.hide_detail = false;              
-              this.setTimerToHide();
-            }
+                                    
+            this.setTimerToHide();            
 
             if(newValue.Header.EventNumber === oldValue.Header.EventNumber &&
               newValue.Header.ExternalGameNumber === oldValue.Header.ExternalGameNumber &&
@@ -97,6 +92,7 @@
           this.resetAnimation(type);          
         },
         async setTimerToHide(){
+          this.hide_detail = false;
           await new Promise(resolve => setTimeout(resolve, WAIT_SECONDS_TO_HIDE_DETAIL*1000)); 
           this.hide_detail = true;
         },
