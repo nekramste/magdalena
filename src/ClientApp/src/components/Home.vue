@@ -41,7 +41,7 @@ export default {
         isOnMobile_: false,
         isOnMobileSM_: false,
         isOnMobileXSM_: false,
-        isOnXL_: false,        
+        isOnXL_: false
       }
     },
 

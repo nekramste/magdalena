@@ -50,7 +50,7 @@
     import ScoreDetail from './score-detail';
 
     const WAIT_SECONDS_ANIMATION = 5;
-    const WAIT_SECONDS_TO_HIDE_DETAIL = 10;
+    const WAIT_SECONDS_TO_HIDE_DETAIL = 60;
 
     export default {
       components: {ScoreDetail},
@@ -64,9 +64,9 @@
       props:['item','isOnMobile'],
       watch: {
         item(newValue, oldValue) {
-          if(newValue !== oldValue){
+          if(newValue !== oldValue){            
             
-            if(newValue.CurrentScore.Detail === oldValue.CurrentScore.Detail){
+            if(newValue.Detail === oldValue.Detail){
               this.hide_detail = true;
             }else{
               this.hide_detail = false;              

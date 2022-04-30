@@ -27,6 +27,8 @@ const store = createStore({
         scores_graded: [],
         id: '',
         keep_checking: true,
+
+        sports: [],
         
         isNavOpen: false,
         selectedOption: '',
@@ -67,6 +69,13 @@ const store = createStore({
 
             state.scores_all.push(JSON.parse(JSON.stringify(score)))
           }
+
+          if(!(state.sports.findIndex(sport => score.Header.SportType === sport)>-1)){
+            if(score.Header.SportType){
+              state.sports.push(score.Header.SportType);
+            }
+          }        
+
         }else{ // FIRST CONNECTION - GET ID
           state.id = data.split(' ')[0];
           notifyInit(state.id)
