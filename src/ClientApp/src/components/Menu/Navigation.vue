@@ -63,7 +63,7 @@ export default {
 <style lang="scss" scoped>
 
   header {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #182f49;
     z-index: 99;
     width:100%;
     position: fixed;
@@ -194,7 +194,7 @@ export default {
 
   .icon-user{
     position: absolute;
-    font-size: 29px!important;
+    font-size: 20px!important;
     left: -20px;
   }
 
