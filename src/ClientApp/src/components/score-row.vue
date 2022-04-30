@@ -1,5 +1,5 @@
 <template>    
-    <div class="row card score-row">
+    <div class="row card score-row" v-bind:style="{'background-color':item.Header.EventNumber === 0?'#2f435b':'#182f49'}">
       <div class="col-12">
         <div class="row">
           <div class="col-6 text-left league">
@@ -12,32 +12,30 @@
               </div>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-6" style="min-height:40px;">
             <span v-bind:class="{'score-period': !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0),
                                  'score-final': (item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)}" class=" float-right">
-              {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{item.Detail}}</span>
+              {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{hide_detail?'':item.Detail}}</span>
           </div>
         </div>
-        <div class="row">
-            <div class="col-5 text-center score" v-bind:class="{'animation':animate}">
+        <div class="row" style="height:60px;">
+          <div class="col-6 text-center score" v-bind:class="{'animation':animate_score_a}">
               {{item.CurrentScore.Away.Score}}
             </div>
-            <div class="col-2 text-center score">
-              {{' - '}}
-            </div>
-            <div class="col-5 text-center score" v-bind:class="{'animation':animate}">
+            <div class="col-6 text-center score" v-bind:class="{'animation':animate_score_b}">
               {{item.CurrentScore.Home.Score}}
+            </div>
+            <div class="col-12 text-center score" style="margin-top:-60px;">
+              {{' - '}}
             </div>
           </div>
       </div>
       <div class="col-12">
           <div class="row">
-              <div class="col-5 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
+              <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
                   <span class="rotation">{{!isOnMobile?item.Participants.Away.Rotation:''}}</span>{{'  '}}<span>{{item.Participants.Away.Name }}</span>
               </div>
-              <div class="col-2 text-center score">
-              </div>
-              <div class="col-5 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
+              <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
                   <span class="rotation">{{!isOnMobile?item.Participants.Home.Rotation:''}}</span>{{'  '}}<span>{{item.Participants.Home.Name}}</span>
               </div>                
           </div>
@@ -51,32 +49,63 @@
 <script>
     import ScoreDetail from './score-detail';
 
-    const WAIT_SECONDS = 3;
+    const WAIT_SECONDS_ANIMATION = 5;
+    const WAIT_SECONDS_TO_HIDE_DETAIL = 10;
 
     export default {
       components: {ScoreDetail},
       data () {
         return {       
-          animate: false
+          animate_score_a: false,
+          animate_score_b: false,
+          hide_detail: false
         }
       },
       props:['item','isOnMobile'],
       watch: {
         item(newValue, oldValue) {
           if(newValue !== oldValue){
-            this.startAnimation();
+            
+            if(newValue.CurrentScore.Detail === oldValue.CurrentScore.Detail){
+              this.hide_detail = true;
+            }else{
+              this.hide_detail = false;              
+              this.setTimerToHide();
+            }
+
+            if(newValue.Header.EventNumber === oldValue.Header.EventNumber &&
+              newValue.Header.ExternalGameNumber === oldValue.Header.ExternalGameNumber &&
+              newValue.Header.Source === oldValue.Header.Source &&
+              newValue.Header.SportSubType === oldValue.Header.SportSubType &&
+              newValue.Header.SportType === oldValue.Header.SportType){
+              
+              if(newValue.CurrentScore.Away.Score !== oldValue.CurrentScore.Away.Score){                
+                this.startAnimation('AWAY');
+              }
+              if(newValue.CurrentScore.Home.Score !== oldValue.CurrentScore.Home.Score){                
+                this.startAnimation('HOME');
+              }
+            }
           } 
         }
       },
       
       methods: { 
-        async startAnimation(){
-          this.animate = true;
-          await new Promise(resolve => setTimeout(resolve, WAIT_SECONDS*1000)); 
-          this.resetAnimation();          
+        async startAnimation(type){          
+          this.evaluateAnimation(type,true);
+          await new Promise(resolve => setTimeout(resolve, WAIT_SECONDS_ANIMATION*1000)); 
+          this.resetAnimation(type);          
         },
-        resetAnimation(){
-          this.animate = false;
+        async setTimerToHide(){
+          await new Promise(resolve => setTimeout(resolve, WAIT_SECONDS_TO_HIDE_DETAIL*1000)); 
+          this.hide_detail = true;
+        },
+        resetAnimation(type){
+          this.evaluateAnimation(type,false);
+        },
+        evaluateAnimation(type,value){
+          if(type === 'AWAY'){ this.animate_score_a = value; }
+          if(type === 'HOME'){ this.animate_score_b = value; }
         },
         searchIcon(sportName){          
 
@@ -126,6 +155,7 @@
         }        
       },      
       mounted() {
+        this.setTimerToHide();
       }
     }
 </script>
@@ -135,12 +165,14 @@
     font-size: 26px;
     font-weight: bold;
     color: #17a2b8;
+    vertical-align: middle;    
+    line-height: 60px;
   }
   .score-row {
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    min-height: 200px;
+    min-height: 220px;
     margin-left: -5px;
     margin-right: -5px;
     background: #182f49;
@@ -306,7 +338,7 @@
 
   @keyframes color-change {
     0% { color: #17A2B8; font-size: 26px; }
-    50% { color: #20C997; font-size: 30px; }
+    50% { color: #E83E8C; font-size: 30px; }
     100% { color: #17A2B8; font-size: 26px; }
   }
 

@@ -18,7 +18,7 @@ async function notifyInit(id){
 
 const SCORES = 'SCORES'
 const CHECK_EVERY_MINUTES = 1;
-const MINUTES_TO_REMOVE = 10;
+const MINUTES_TO_REMOVE = 0.5;
 
 const store = createStore({
     state () {
@@ -56,6 +56,9 @@ const store = createStore({
               score['remainingTime'] = (score.CurrentScore.Status === 'Graded')?MINUTES_TO_REMOVE:0;
             }
 
+            /* console.log('update')
+            console.log(score) */
+
             state.scores_all.splice(index, 1, JSON.parse(JSON.stringify(score)))
           }else{
             
@@ -92,8 +95,8 @@ const store = createStore({
           state.scores_all.forEach(element => {
             if(element.toDelete){element.remainingTime--;}
             if(element.toDelete && element.remainingTime <= 0){
-              console.log('Moved')
-              console.log(element)
+              /* console.log('Moved')
+              console.log(element) */
               state.scores_graded.push(JSON.parse(JSON.stringify(element)));
               state.scores_all.splice(index,1); 
             }
