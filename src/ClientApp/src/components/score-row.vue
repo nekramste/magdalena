@@ -20,15 +20,15 @@
         </div>
         <div class="row" style="height:60px;">
           <div class="col-6 text-center score" v-bind:class="{'animation':animate_score_a}">
-              {{item.CurrentScore.Away.Score}}
-            </div>
-            <div class="col-6 text-center score" v-bind:class="{'animation':animate_score_b}">
-              {{item.CurrentScore.Home.Score}}
-            </div>
-            <div class="col-12 text-center score" style="margin-top:-60px;">
-              {{' - '}}
-            </div>
+            {{ item.Header.EventNumber !== 0?(item.Scores&&item.Scores.length>0)?item.Scores[0].Away.Score:'-': item.CurrentScore.Away.Score }}
           </div>
+          <div class="col-6 text-center score" v-bind:class="{'animation':animate_score_b}">
+            {{ item.Header.EventNumber !== 0?(item.Scores&&item.Scores.length>0)?item.Scores[0].Home.Score:'-': item.CurrentScore.Home.Score }}
+          </div>
+          <div class="col-12 text-center score" style="margin-top:-60px;">
+            {{' - '}}
+          </div>
+        </div>
       </div>
       <div class="col-12">
           <div class="row">
@@ -74,11 +74,24 @@
               newValue.Header.SportSubType === oldValue.Header.SportSubType &&
               newValue.Header.SportType === oldValue.Header.SportType){
               
-              if(newValue.CurrentScore.Away.Score !== oldValue.CurrentScore.Away.Score){                
-                this.startAnimation('AWAY');
-              }
-              if(newValue.CurrentScore.Home.Score !== oldValue.CurrentScore.Home.Score){                
-                this.startAnimation('HOME');
+              if(this.item.Header.EventNumber === 0){
+
+                if(newValue.CurrentScore.Away.Score !== oldValue.CurrentScore.Away.Score){                
+                  this.startAnimation('AWAY');
+                }
+                if(newValue.CurrentScore.Home.Score !== oldValue.CurrentScore.Home.Score){                
+                  this.startAnimation('HOME');
+                }
+
+              }else{
+
+                if(newValue.Scores[0].Away.Score !== oldValue.Scores[0].Away.Score){                
+                  this.startAnimation('AWAY');
+                }
+                if(newValue.Scores[0].Home.Score !== oldValue.Scores[0].Home.Score){                
+                  this.startAnimation('HOME');
+                }
+
               }
             }
           } 
