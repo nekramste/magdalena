@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "axios": "^0.20.0-0",
+    "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.5.3",
+    "click-outside-vue3": "^4.0.1",
     "core-js": "^3.7.0",
     "cross-spawn": "^6.0.5",
     "vue": "^3.0.2",

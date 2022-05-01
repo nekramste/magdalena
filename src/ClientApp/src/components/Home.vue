@@ -4,9 +4,16 @@
       <div class="row" style="height:60px;">
         <div class="col-12" style="text-align: left;">
           <Navigation :user="user" :selected="selected" :isOnMobile="isOnMobile">
-            <div v-bind:class="{'options_bar':!isOnMobile,'options_bar_mobile':isOnMobile}" v-for="(item, index) in buttons" :index="index" :key="index">
-              <button v-bind:class="{'option_button':!isOnMobile,'option_button_mobile':isOnMobile,'selected':selected === item}" @click="select_option(item)">{{item}}</button>
-            </div>
+            <template v-slot:sports>
+              <div v-bind:class="{'filters-section':!isOnMobile,'filter-section-mobile':isOnMobile}">
+                <FilterDropDown :filterName="'SPORT'" :isOnMobile="isOnMobile_" :dataFilter="sportsID_Filter"></FilterDropDown>
+              </div>
+            </template>
+            <template v-slot:filters>
+              <div v-bind:class="{'options_bar':!isOnMobile,'options_bar_mobile':isOnMobile}" v-for="(item, index) in buttons" :index="index" :key="index">
+                <button v-bind:class="{'option_button':!isOnMobile,'option_button_mobile':isOnMobile,'selected':selected === item}" @click="select_option(item)">{{item}}</button>
+              </div>
+            </template>         
           </Navigation>
         </div>
       </div>
@@ -25,6 +32,7 @@ import { mapActions, mapState } from 'vuex';
 import ScoreRow from './score-row';
 import config from '../common/config';
 import Navigation from './Menu/Navigation.vue';
+import FilterDropDown from './FilterDropDownInput/FilterComponent.vue';
 
 const constants = {MOBILE_SIZE:991.98, MOBILE_SIZE_XSM:415, MOBILE_SIZE_SM:505, SIZE_LG:992, SIZE_XL:1200 }
 
@@ -33,7 +41,7 @@ export default {
   props: {
     msg: String    
   },
-  components: {ScoreRow,Navigation},
+  components: {ScoreRow,Navigation,FilterDropDown},
     data() {
       return {
         buttons: ['ALL','LIVE','UNMATCH','GRADED'],
@@ -41,7 +49,10 @@ export default {
         isOnMobile_: false,
         isOnMobileSM_: false,
         isOnMobileXSM_: false,
-        isOnXL_: false
+        isOnXL_: false,
+
+        dataFilter: [{name:'ALL'}],
+        sportFilters: []
       }
     },
 
@@ -49,15 +60,20 @@ export default {
       ...mapState({
         currentScores: state => state.scores_all,
         gradedScores: state => state.scores_graded,
+        sports: state => state.sports,
+        selectedSports: state => state.selectedSports,
         user: state => state.user,
       }),
+      sportsID_Filter() {
+        return [{name: 'SPORT', list: this.getSports() }]
+      },      
       filteredScores:function () {      
         return this.selected === 'LIVE'?
-          this.currentScores.filter(item => item.Header.EventNumber != 0) :
+          this.currentScores.filter(item => item.Header.EventNumber != 0 && this.getSelectedSportsFilter(item)) :
           this.selected === 'UNMATCH'?
-            this.currentScores.filter(item => item.Header.EventNumber === 0) :
-            this.selected === 'GRADED'? this.gradedScores :
-              this.currentScores 
+            this.currentScores.filter(item => item.Header.EventNumber === 0 && this.getSelectedSportsFilter(item)) :
+            this.selected === 'GRADED'? this.gradedScores.filter(item => this.getSelectedSportsFilter(item)) :
+              this.currentScores.filter(item => this.getSelectedSportsFilter(item))
       },
       isOnMobile: function() {return this.isOnMobile_;},
       isOnMobileSM: function() {return this.isOnMobileSM_;},
@@ -67,6 +83,29 @@ export default {
 
     methods: {
       ...mapActions(['setReceivedScore','startCleaner']),
+      getSelectedSportsFilter(item){
+        if(this.selectedSports.length === 0){
+          return true;
+        }else{
+          return this.selectedSports.findIndex(sport => item.Header.SportType === sport.name)>-1;
+        }
+      },
+      getSports(){
+        if(this.sports){
+          var sports = this.sports.map( function(obj){
+            var rObj = {};
+            rObj['name'] = obj;
+            return rObj;
+          });
+          return sports;
+        }else{
+          return []
+        }
+      },
+      refreshFilters(values){
+        var valueTemp = JSON.parse(JSON.stringify(values));
+        this.sportFilters = valueTemp;            
+      },
       select_option(option){
         this.selected = option;
       },
@@ -164,6 +203,14 @@ export default {
   .selected{
     background-color: #ff4a70;
     color: white;
+  }
+
+  .filters-section{
+    padding-top: 18px;
+  }
+
+  .filters-section-mobile{
+    padding-top: 18px;
   }
 
 </style>
