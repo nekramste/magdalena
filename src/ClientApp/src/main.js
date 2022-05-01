@@ -29,6 +29,7 @@ const store = createStore({
         keep_checking: true,
 
         sports: [],
+        selectedSports: [],
         
         isNavOpen: false,
         selectedOption: '',
@@ -90,6 +91,9 @@ const store = createStore({
       },
       setSelected(state,option) {
         state.selectedOption = option;
+      },      
+      setSelectedSports(state,sports) {
+        state.selectedSports = sports;
       },
     },
     actions: {
@@ -115,12 +119,19 @@ const store = createStore({
       },
       setSelected({ commit },option) { 
         commit('setSelected',option);
+      },
+      setSelectedSports({ commit },sports) { 
+        commit('setSelectedSports',sports);
       }
     }
 })
 
-createApp({
+const app = createApp({
   extends: App,
   mixins: [globalMixin],
   components: {}
-}).use(router).use(store).mount('#app');
+}).use(router).use(store);
+
+//app.use(vClickOutside);
+
+app.mount('#app');

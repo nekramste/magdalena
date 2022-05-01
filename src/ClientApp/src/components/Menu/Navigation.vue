@@ -6,14 +6,16 @@
         <span v-bind:class="{'user-label':!isOnMobile, 'user-label-mobile':isOnMobile}">{{ user }}</span>
       </div>
       <ul v-show="!isOnMobile" class="navigation">
-        <slot></slot>        
+        <slot name="sports"></slot>
+        <slot name="filters"></slot>
       </ul>
       <div v-if="isOnMobile" class="icon">
+        <slot name="sports"></slot>
         <button class="option_button selected" @click="toggleMobileView">{{selected}}</button>
       </div>
       <transition name="mobile-nav" @click="toggleMobileView">
-        <ul v-show="isOnMobile && mobileNav" class="dropdown-nav" style="padding-top:260px;">
-          <slot></slot>
+        <ul v-show="isOnMobile && mobileNav" class="dropdown-nav" style="padding-top:260px;">          
+          <slot name="filters"></slot>
         </ul>
       </transition>
     </nav>
