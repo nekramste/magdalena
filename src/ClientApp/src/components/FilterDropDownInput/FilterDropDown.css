@@ -316,13 +316,13 @@
     font-weight: normal;
     line-height: normal;
   }
-  
-  .select .selectItem:hover,
-  .select .selectGroup:hover {
+
+.select .selectItem:hover,
+.select .selectGroup:hover {
     cursor: pointer;
     background-color: #182f49;
-    color: #28A745 !important;
-  }      
+    /*color: #28A745 !important;*/
+}      
   
   .select .selectFocus {
     cursor: pointer;

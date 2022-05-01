@@ -6,7 +6,7 @@
           <Navigation :user="user" :selected="selected" :isOnMobile="isOnMobile">
             <template v-slot:sports>
               <div v-bind:class="{'filters-section':!isOnMobile,'filter-section-mobile':isOnMobile}">
-                <FilterDropDown :filterName="'SPORT'" :isOnMobile="isOnMobile_" :dataFilter="sportsID_Filter"></FilterDropDown>
+                <FilterDropDown :filterName="'Sports'" :isOnMobile="isOnMobile_" :dataFilter="sportsID_Filter"></FilterDropDown>
               </div>
             </template>
             <template v-slot:filters>
@@ -65,7 +65,7 @@ export default {
         user: state => state.user,
       }),
       sportsID_Filter() {
-        return [{name: 'SPORT', list: this.getSports() }]
+        return [{name: 'Sport', list: this.getSports() }]
       },      
       filteredScores:function () {      
         return this.selected === 'LIVE'?
