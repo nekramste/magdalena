@@ -333,6 +333,8 @@ export default {
       this.$emit(this.eventName, this.valueSelected.slice(0));
       option.selectAll = !option.selectAll;
       this.filter();
+
+      this.setSelectedSports(JSON.parse(JSON.stringify(this.valueSelected)));
     },
     filter() {
       if(this.list){

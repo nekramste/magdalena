@@ -80,11 +80,11 @@ export default {
       isOnMobileXSM: function() {return this.isOnMobileXSM_;},
       isOnXL: function() {return this.isOnXL_;}
     },
-
+   
     methods: {
       ...mapActions(['setReceivedScore','startCleaner']),
       getSelectedSportsFilter(item){
-        if(this.selectedSports.length === 0){
+        if((this.selectedSports.length === 0) || (this.selectedSports.length === this.sports.length)){
           return true;
         }else{
           return this.selectedSports.findIndex(sport => item.Header.SportType === sport.name)>-1;

@@ -104,7 +104,7 @@ const store = createStore({
         while (state.keep_checking) {
           await new Promise(resolve => setTimeout(resolve, CHECK_EVERY_MINUTES*60*1000));     
           let index = 0;
-          console.log('CHECKING FOR OLD VALUES TO MOVE')
+          //console.log('CHECKING FOR OLD VALUES TO MOVE')
           state.scores_all.forEach(element => {
             if(element.toDelete){element.remainingTime--;}
             if(element.toDelete && element.remainingTime <= 0){

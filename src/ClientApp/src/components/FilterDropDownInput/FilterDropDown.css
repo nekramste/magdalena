@@ -161,7 +161,7 @@
   
   .select .historyButton {
     float: right;
-    display: inline;
+    display: none;
     text-align: center;
     cursor: pointer;
     border: 1px solid #ccc;
