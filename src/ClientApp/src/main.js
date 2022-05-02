@@ -6,11 +6,14 @@ import App from './App.vue'
 import router from './router'
 import config from './common/config'
 import globalMixin from './globalMixin'
-
+import moment from 'moment';
+import "moment-timezone";
 
 const SCORES = 'SCORES'
 const CHECK_EVERY_MINUTES = 1;
-const MINUTES_TO_REMOVE = 10;
+const MINUTES_TO_MOVE = 10;
+const HOURS_TO_DELETE = 6;
+const MINUTES_TO_DELETE = HOURS_TO_DELETE*60;
 
 const store = createStore({
     state () {
@@ -41,21 +44,43 @@ const store = createStore({
                                                           item.Header.ExternalGameNumber === score.Header.ExternalGameNumber &&
                                                           item.Header.Source === score.Header.Source
                                                 ))
-          if(index>-1){
+        
+          if(index>=0){
 
-            if(!('toDelete' in state.scores_all[index])){
-              score['toDelete'] = (score.CurrentScore.Status === 'Graded');
-              score['remainingTime'] = (score.CurrentScore.Status === 'Graded')?MINUTES_TO_REMOVE:0;
+            if(!('toRemove' in state.scores_all[index])){
+              score['toRemove'] = (score.CurrentScore.Status === 'Graded');
+              score['remainingTime'] = (score.CurrentScore.Status === 'Graded')?MINUTES_TO_MOVE:0;
             }
 
+            if(score.Header.EventNumber > 0){  
+              if(!('toDelete' in state.scores_all[index])){
+                score['toDelete'] = (score.Scores &&  score.Scores[0].IsFinal);
+                score['remainingTimeToDelete'] = (score.Scores && score.Scores[0].IsFinal)?MINUTES_TO_DELETE:0;
+              }
+            }else{
+              if(!('toDeleteWithDate' in state.scores_all[index])){
+                score['toDeleteWithDate'] = true;
+                score['dateToDelete'] = moment(score.RequestDate).add(MINUTES_TO_DELETE, 'minutes');
+              }
+            }            
+
             state.scores_all.splice(index, 1, JSON.parse(JSON.stringify(score)))
+
           }else{
             
-            score['toDelete'] = (score.CurrentScore.Status === 'Graded');
-            score['remainingTime'] = (score.CurrentScore.Status === 'Graded')?MINUTES_TO_REMOVE:0;            
+            score['toRemove'] = (score.CurrentScore.Status === 'Graded');
+            score['remainingTime'] = (score.CurrentScore.Status === 'Graded')?MINUTES_TO_MOVE:0;   
+            
+            if(score.Header.EventNumber > 0){
+              score['toDelete'] = (score.Scores && score.Scores.length>0 && score.Scores[0].IsFinal);
+              score['remainingTimeToDelete'] = (score.Scores &&  score.Scores[0].IsFinal)?MINUTES_TO_DELETE:0;
+            }else{
+              score['toDeleteWithDate'] = true
+              score['dateToDelete'] = moment(score.RequestDate).add(MINUTES_TO_DELETE, 'minutes');
+            }
 
             state.scores_all.push(JSON.parse(JSON.stringify(score)))
-          }
+          }        
 
           if(!(state.sports.findIndex(sport => score.Header.SportType === sport)>-1)){
             if(score.Header.SportType){
@@ -72,7 +97,6 @@ const store = createStore({
             await fetch(uri)
             .then(response=>response.json())
             .then(data=>{
-              console.log(data.context.user);
               state.user = data.context.user;
             })
           } catch (err) {
@@ -102,13 +126,37 @@ const store = createStore({
           await new Promise(resolve => setTimeout(resolve, CHECK_EVERY_MINUTES*60*1000));     
           let index = 0;
           state.scores_all.forEach(element => {
-            if(element.toDelete){element.remainingTime--;}
-            if(element.toDelete && element.remainingTime <= 0){              
+
+            if(element.toRemove){element.remainingTime--;}
+            if(element.toDelete){element.remainingTimeToDelete--;}
+
+            if(element.toRemove && element.remainingTime <= 0){              
               state.scores_graded.push(JSON.parse(JSON.stringify(element)));
               state.scores_all.splice(index,1); 
             }
+
+            if(element.toDelete && element.remainingTimeToDelete <= 0){
+              state.scores_all.splice(index,1);
+            }
+            
+            if(element.toDeleteWithDate && moment(element.dateToDelete).isAfter(moment())){
+              state.scores_all.splice(index,1);
+            }
+
             index++;
-          });          
+          });
+
+          index = 0;
+
+          state.scores_graded.forEach(element => {
+            
+            if(element.toDelete){element.remainingTimeToDelete--;}
+            if(element.toDelete && element.remainingTimeToDelete <= 0){
+              state.scores_graded.splice(index,1);
+            }
+
+            index++;
+          }); 
         }
       },
       setSelected({ commit },option) { 
