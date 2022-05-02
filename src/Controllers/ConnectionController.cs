@@ -60,7 +60,8 @@ namespace FF.Magdalena.Controllers
                         return new ReadyResult()
                         {
                             Success = true,
-                            Message = "Queued"
+                            Message = "Queued",
+                            Context = this.CreateContext()
                         };
                     }
                     catch
@@ -91,7 +92,7 @@ namespace FF.Magdalena.Controllers
         {
             try
             {
-                return new Context(this.GetUserName());
+                return CreateContext();
             }
             catch (Exception exc)
             {
@@ -100,10 +101,20 @@ namespace FF.Magdalena.Controllers
             }
         }
 
-        public class ReadyResult 
+        #region Private Methods
+        private Context CreateContext()
+        {
+            return new Context(this.GetUserName());
+        }
+        #endregion
+
+        #region Result
+        public class ReadyResult
         {
             public bool Success { get; set; }
             public string Message { get; set; }
-        }
+            public Context Context { get; set; }
+        } 
+        #endregion
     }
 }
