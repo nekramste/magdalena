@@ -9,8 +9,11 @@ namespace FF.Magdalena.Controllers
         {
             if (controller.User.IsNotNull())
             {
-                string[] nameParts = controller.User.Identity.Name.Split('\\');
-                return (nameParts.Length > 1) ? nameParts[1] : nameParts[0];
+                if (controller.User.Identity.Name.IsNotNullOrEmpty())
+                {
+                    string[] nameParts = controller.User.Identity.Name.Split('\\');
+                    return (nameParts.Length > 1) ? nameParts[1] : nameParts[0];
+                }
             }
             return "Guest";
         }

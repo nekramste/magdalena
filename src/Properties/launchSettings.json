@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "VueJSDotnet51": {
+    "API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
