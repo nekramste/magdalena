@@ -7,14 +7,6 @@ import router from './router'
 import config from './common/config'
 import globalMixin from './globalMixin'
 
-async function notifyInit(id){
-    try {
-        var uri = `${config.API_URL}/connection/ready/${id}`
-        fetch(uri).then(response => response.json())
-    } catch (err) {
-        console.log(err)
-    }
-}
 
 const SCORES = 'SCORES'
 const CHECK_EVERY_MINUTES = 1;
@@ -34,18 +26,15 @@ const store = createStore({
         isNavOpen: false,
         selectedOption: '',
 
-        user: 'guest'
+        user: '-----'
       }
     },
     mutations: {
-      [SCORES](state, obj) {
+      async [SCORES](state, obj) {
 
-        let data = obj.score.includes('{')?(JSON.parse(obj.score)):obj.score
-        let score = obj.score.includes('{')?(JSON.parse(obj.score)):null
-
-        //console.log(score)
-    
-        // ALL
+        let data = obj.score.includes('{')?(JSON.parse(obj.score)):obj.score;
+        let score = obj.score.includes('{')?(JSON.parse(obj.score)):null;
+            
         if (score) {
 
           let index = state.scores_all.findIndex(item => (item.Header.EventNumber === score.Header.EventNumber &&
@@ -58,9 +47,6 @@ const store = createStore({
               score['toDelete'] = (score.CurrentScore.Status === 'Graded');
               score['remainingTime'] = (score.CurrentScore.Status === 'Graded')?MINUTES_TO_REMOVE:0;
             }
-
-            /* console.log('update')
-            console.log(score) */
 
             state.scores_all.splice(index, 1, JSON.parse(JSON.stringify(score)))
           }else{
@@ -77,10 +63,21 @@ const store = createStore({
             }
           }        
 
-        }else{ // FIRST CONNECTION - GET ID
+        }else{ 
+          // FIRST CONNECTION
+          // GET ID
           state.id = data.split(' ')[0];
-          notifyInit(state.id)
-          console.log(state.id);
+          try {
+            var uri = `${config.API_URL}/connection/ready/${state.id}`
+            await fetch(uri)
+            .then(response=>response.json())
+            .then(data=>{
+              console.log(data.context.user);
+              state.user = data.context.user;
+            })
+          } catch (err) {
+              console.log(err)
+          }
         }
       },
       setIsNavOpen(state) {
@@ -104,12 +101,9 @@ const store = createStore({
         while (state.keep_checking) {
           await new Promise(resolve => setTimeout(resolve, CHECK_EVERY_MINUTES*60*1000));     
           let index = 0;
-          //console.log('CHECKING FOR OLD VALUES TO MOVE')
           state.scores_all.forEach(element => {
             if(element.toDelete){element.remainingTime--;}
-            if(element.toDelete && element.remainingTime <= 0){
-              /* console.log('Moved')
-              console.log(element) */
+            if(element.toDelete && element.remainingTime <= 0){              
               state.scores_graded.push(JSON.parse(JSON.stringify(element)));
               state.scores_all.splice(index,1); 
             }
@@ -131,7 +125,5 @@ const app = createApp({
   mixins: [globalMixin],
   components: {}
 }).use(router).use(store);
-
-//app.use(vClickOutside);
 
 app.mount('#app');
