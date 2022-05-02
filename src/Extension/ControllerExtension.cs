@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using FF.Macau;
 
 namespace FF.Magdalena.Controllers
 {
@@ -6,7 +7,12 @@ namespace FF.Magdalena.Controllers
     {
         public static string GetUserName(this Controller controller)
         {
-            return controller.User.Identity.Name.Split('\\')[1] ?? "unknownUser";
+            if (controller.User.IsNotNull())
+            {
+                string[] nameParts = controller.User.Identity.Name.Split('\\');
+                return (nameParts.Length > 1) ? nameParts[1] : nameParts[0];
+            }
+            return "Guest";
         }
     }
 }
