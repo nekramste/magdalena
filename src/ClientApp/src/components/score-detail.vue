@@ -20,7 +20,7 @@
           <div v-if="item" class="col-7 col-md-7 text-right">
             <div style="display: inline-block">
               <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
-                <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && score.Status === 'Graded')}"> {{score.Away.Score}} </div>
+                <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && (score.Status === 'Graded' || score.Status.toLowerCase() === 'noline'))}"> {{score.Away.Score}} </div>
               </div>
             </div>
           </div>
@@ -31,7 +31,7 @@
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
             <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
-              <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && score.Status === 'Graded')}"> {{score.Home.Score}} </div>
+              <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && (score.Status === 'Graded' || score.Status.toLowerCase() === 'noline'))}"> {{score.Home.Score}} </div>
             </div>
           </div>
         </div>
