@@ -35,7 +35,7 @@ namespace FF.Magdalena.Agents
 
                 using (var client = this.httpClientFactory.Create(uri))
                 {
-                    await client.PostAsync(VERIFY_GRADE, gameScore).ConfigureAwait(false);
+                    await client.PostAsync(VERIFY_GRADE, gameScore);
                 }
 
             }
