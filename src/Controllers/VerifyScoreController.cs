@@ -77,8 +77,10 @@ namespace FF.Magdalena.Controllers
             if (scoreToGrade.IsNotNull())
             {
                 scoreToGrade.Status = ScoreGradeStatusDTO.WasSendToGrade;
+                score.CurrentScore = scoreToGrade;
             }
             score.Scores = newScores;
+            verifiedGameScore.GameScore = score;
         }
         #endregion
     }
