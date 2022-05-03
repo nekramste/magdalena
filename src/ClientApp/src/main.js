@@ -45,6 +45,15 @@ const store = createStore({
                                                           item.Header.ExternalGameNumber === score.Header.ExternalGameNumber &&
                                                           item.Header.Source === score.Header.Source
                                                 ))
+          
+          /* if(score.CurrentScore.Status === 'Graded'){
+            console.log('A********received*************A');
+            console.log(score)
+            console.log('B********received*************B');
+          }else{          
+            console.log('OMITIR');
+            console.log(score)
+          } */
         
           if(index>=0){
             //Move to grade queue
@@ -132,17 +141,15 @@ const store = createStore({
             if(element.toDelete){element.remainingTimeToDelete--;}            
 
             if(element.toDelete && element.remainingTimeToDelete <= 0){
-              console.log('se borra por status')
-              console.log(element)
+              /* console.log('se borra por status')
+              console.log(element) */
               state.scores_all.splice(index,1);
             }
-
-
             
             if(element.toDeleteWithDate && moment(moment().format()).isAfter(moment(element.dateToDelete).format())){
-              console.log('se borra por fecha')
+              /* console.log('se borra por fecha')
               console.log(element)
-              console.log(moment(element.dateToDelete).isAfter(moment().format()))
+              console.log(moment(element.dateToDelete).isAfter(moment().format())) */
               state.scores_all.splice(index,1);
             }
 
