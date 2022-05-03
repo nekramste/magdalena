@@ -11,12 +11,13 @@ import "moment-timezone";
 
 const SCORES = 'SCORES'
 const CHECK_EVERY_MINUTES = 1;
-//const HOURS_TO_DELETE = 6;
-const MINUTES_TO_DELETE = 1;
+const HOURS_TO_DELETE = 6;
+const MINUTES_TO_DELETE = HOURS_TO_DELETE*60;
 
 const store = createStore({
     state () {
       return {
+
         scores_all: [],
         scores_graded: [],
         id: '',
@@ -29,6 +30,7 @@ const store = createStore({
         selectedOption: '',
 
         user: '-----'
+
       }
     },
     mutations: {
@@ -58,7 +60,7 @@ const store = createStore({
                 score['remainingTimeToDelete'] = (score['remainingTimeToDelete'] && score['remainingTimeToDelete']>=0)? score['remainingTimeToDelete']:MINUTES_TO_DELETE;
               }else{
                 score['toDeleteWithDate'] = true;
-                score['dateToDelete'] = state.scores_all[index].toDeleteWithDate;
+                score['dateToDelete'] = state.scores_all[index].dateToDelete;
               }
               state.scores_all.splice(index, 1, JSON.parse(JSON.stringify(score)))
             }
