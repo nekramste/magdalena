@@ -9,6 +9,6 @@ namespace FF.Magdalena.Agents
         Task VerifyGrade(VerifiedGameScoreDTO gameScore);
 
         Task<IEnumerable<GameScoreDTO>> GetRecentScores();
-        Task<GameScoreDTO> GetScores(int gameNumber);
+        Task<GameScoreDTO> GetScores(long gameNumber);
     }
 }

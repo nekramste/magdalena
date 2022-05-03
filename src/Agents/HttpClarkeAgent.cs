@@ -61,7 +61,7 @@ namespace FF.Magdalena.Agents
             }
         }
 
-        public async Task<GameScoreDTO> GetScores(int gameNumber)
+        public async Task<GameScoreDTO> GetScores(long gameNumber)
         {
             try
             {
