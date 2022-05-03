@@ -14,7 +14,7 @@
           </div>
           <div class="col-6" style="min-height:40px;">
             <span v-bind:class="{'score-period': !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0),
-                                 'score-final': (item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)}" class=" float-right">
+                                 'score-final': (item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)}" class="float-right">
               {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{hide_detail?'':item.Detail}}</span>
           </div>
         </div>
@@ -165,6 +165,7 @@
       },      
       mounted() {
         this.setTimerToHide();
+        //console.log(this.item)
       }
     }
 </script>

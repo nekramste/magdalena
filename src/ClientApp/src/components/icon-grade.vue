@@ -59,10 +59,10 @@
               };
               fetch(`${url}/api/grade`, requestOptions)
                   .then(response => {
-//                    this.loading = false;
                     console.log(response);
                   })
           } catch (err) {
+            console.log(err);
             this.loading = false;  
           }
         }
