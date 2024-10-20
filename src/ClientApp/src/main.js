@@ -57,7 +57,7 @@ const store = createStore({
         
           if(index>=0){
             //Move to grade queue
-            if(score.CurrentScore.Status === 'Graded'){                        
+            if(score.CurrentScore.Status === 'Graded' && score.CurrentScore.Period.Number === 0){                        
               score['toDelete'] = true;
               score['remainingTimeToDelete'] = MINUTES_TO_DELETE;
               state.scores_graded.push(JSON.parse(JSON.stringify(score)));
@@ -76,7 +76,7 @@ const store = createStore({
 
           }else{
             //Insert into grade queue
-            if(score.CurrentScore.Status === 'Graded'){                            
+            if(score.CurrentScore.Status === 'Graded' && score.CurrentScore.Period.Number === 0){                            
               score['toDelete'] = true;
               score['remainingTimeToDelete'] = MINUTES_TO_DELETE;
               state.scores_graded.push(JSON.parse(JSON.stringify(score)));

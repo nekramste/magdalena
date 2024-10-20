@@ -50,7 +50,7 @@
     import ScoreDetail from './score-detail';
 
     const WAIT_SECONDS_ANIMATION = 5;
-    const WAIT_SECONDS_TO_HIDE_DETAIL = 60;
+    const WAIT_SECONDS_TO_HIDE_DETAIL = 90;
 
     export default {
       components: {ScoreDetail},
