@@ -8,6 +8,8 @@ using FF.Magdalena.WebSockets;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 
 namespace FF.Magdalena.Controllers
@@ -93,6 +95,20 @@ namespace FF.Magdalena.Controllers
             try
             {
                 return CreateContext();
+            }
+            catch (Exception exc)
+            {
+                this.logger.Error($"An error occurred while get the GetContext.", exc);
+                throw;
+            }
+        }
+
+        [HttpGet("all")]
+        public ConcurrentDictionary<string, WebSocket> GetAll()
+        {
+            try
+            {
+                return connectionManager.GetAll();
             }
             catch (Exception exc)
             {

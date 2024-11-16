@@ -20,20 +20,22 @@ namespace FF.Magdalena.Consumers
         public GameScoreConsumer(ScoreMessageHandler scoreMessageHandler)
         {
             this.scoreMessageHandler = scoreMessageHandler;
-        } 
+        }
         #endregion
 
+        #region Methods
         public async Task Consume(ConsumeContext<EventRaisedMessage<GameScoreDTO>> context)
         {
             try
             {
                 await this.scoreMessageHandler.SendMessageToAllAsync(JsonConvert.SerializeObject(context.Message.Message));
- 
+
             }
             catch (Exception exc)
             {
                 throw;
             }
-        }
+        } 
+        #endregion
     }
 }

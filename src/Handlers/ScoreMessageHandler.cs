@@ -1,10 +1,9 @@
+#region Libraries
 using FF.Magdalena.WebSockets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
+#endregion
 
 namespace FF.Magdalena.Handlers
 {
