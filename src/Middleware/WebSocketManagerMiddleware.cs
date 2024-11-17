@@ -1,14 +1,14 @@
+#region Libraries
 using FF.Macau;
 using FF.Magdalena.WebSockets;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
+#endregion
 
 namespace FF.Magdalena.Middleware
 {
@@ -21,17 +21,18 @@ namespace FF.Magdalena.Middleware
         #endregion
 
         #region Constants
-        private const int BUFFER_SIZE = 4 * 1024;
+        private const int BUFFER_SIZE = 8 * 1024;
         #endregion
 
-
-
+        #region Constructor
         public WebSocketManagerMiddleware(RequestDelegate next, WebSocketHandler webSocketHandler)
         {
             this.next = next;
             this.webSocketHandler = webSocketHandler;
         }
+        #endregion
 
+        #region Methods
         public async Task Invoke(HttpContext context)
         {
             if (context.WebSockets.IsWebSocketRequest)
@@ -41,7 +42,6 @@ namespace FF.Magdalena.Middleware
                     await webSocketHandler.OnConnected(webSocket);
 
                     await HandleWebSocketConnectionAsync(webSocket);
-
                 }
             }
             else
@@ -49,7 +49,9 @@ namespace FF.Magdalena.Middleware
                 await next(context);
             }
         }
+        #endregion
 
+        #region Private Methods
         private async Task HandleWebSocketConnectionAsync(WebSocket webSocket)
         {
             var buffer = new byte[BUFFER_SIZE];
@@ -76,22 +78,9 @@ namespace FF.Magdalena.Middleware
             }
         }
 
-        private async Task Receive(WebSocket socket, Action<WebSocketReceiveResult, byte[]> handleMessage)
-        {
-            var buffer = new byte[BUFFER_SIZE];
-
-            while (socket.State == WebSocketState.Open)
-            {
-                var result = await socket.ReceiveAsync(buffer: new ArraySegment<byte>(buffer),
-                                                        cancellationToken: CancellationToken.None);
-
-                handleMessage(result, buffer);
-            }
-        }
-
         private async Task SendAliveMessagesAsync(WebSocket webSocket)
         {
-            var pingInterval = TimeSpan.FromSeconds(30);
+            var pingInterval = TimeSpan.FromSeconds(10);
             while (webSocket.State == WebSocketState.Open)
             {
                 await Task.Delay(pingInterval);
@@ -114,6 +103,7 @@ namespace FF.Magdalena.Middleware
                 message = "Alive",
                 time = SystemTime.Now()
             };
-        }
+        } 
+        #endregion
     }
 }

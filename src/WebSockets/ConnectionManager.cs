@@ -1,10 +1,11 @@
+#region Libraries
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
+#endregion
 
 namespace FF.Magdalena.WebSockets
 {
@@ -44,12 +45,12 @@ namespace FF.Magdalena.WebSockets
             await socket.CloseAsync(closeStatus: WebSocketCloseStatus.NormalClosure,
                                     statusDescription: "Closed by the ConnectionManager",
                                     cancellationToken: CancellationToken.None);
-        } 
-        #endregion
+        }
 
         private string CreateConnectionId()
         {
             return Guid.NewGuid().ToString();
         }
+        #endregion
     }
 }

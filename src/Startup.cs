@@ -5,7 +5,6 @@ using FF.Magdalena.Mappings;
 using FF.Magdalena.Registration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,9 +12,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using VueCliMiddleware;
 
 namespace FF.Magdalena
@@ -108,7 +104,6 @@ namespace FF.Magdalena
                 {
                     spa.UseVueCli(npmScript: "serve");
                 }
-
             });
         }
     }
