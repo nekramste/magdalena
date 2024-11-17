@@ -80,7 +80,11 @@ namespace FF.Magdalena
 
             app.UseCustomMiddleWares();
             app.UseMassTransit();
-            app.UseWebSockets();
+            app.UseWebSockets(new WebSocketOptions
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(30),
+            });
+
             app.MapWebSocketManager("/scores", serviceProvider.GetService<ScoreMessageHandler>());
             app.UseStaticFiles();
             app.UseRouting();

@@ -50,8 +50,12 @@ namespace FF.Magdalena.WebSockets
             foreach (var pair in WebSocketConnectionManager.GetAll())
             {
                 if (pair.Value.State == WebSocketState.Open)
+                {
                     await SendMessageAsync(pair.Value, message);
+                }
             }
+
+            await Task.CompletedTask;
         }
 
         public abstract Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer);
