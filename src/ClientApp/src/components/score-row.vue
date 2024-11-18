@@ -206,7 +206,7 @@
     animation: underline 2s infinite;
   }
   .rotation {
-    color: #BDBDBD;
+    color: #909090;
     font-size: 13px;
   }
 

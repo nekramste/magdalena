@@ -34,6 +34,7 @@
           <div v-if="item" class="col-7 col-md-7 text-right">
             <div style="display: inline-block; line-height: 20px;">
               <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
+                <!-- {{`${score.Status}`}} -->
                 <div 
                   style="min-width: 30px; height: 15px; line-height: 10px; vertical-align: middle;"
                   data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
@@ -112,7 +113,7 @@
       line-height: 13px;
   }
   .detail-header {
-    color: #6c757d;
+    color: #9ca5ad;
     font-size: 12px;
   }
 
