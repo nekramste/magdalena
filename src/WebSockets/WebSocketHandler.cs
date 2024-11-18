@@ -1,11 +1,10 @@
-using FF.Magdalena.Agents;
+#region Libraries
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
+#endregion
 
 namespace FF.Magdalena.WebSockets
 {
@@ -51,8 +50,12 @@ namespace FF.Magdalena.WebSockets
             foreach (var pair in WebSocketConnectionManager.GetAll())
             {
                 if (pair.Value.State == WebSocketState.Open)
+                {
                     await SendMessageAsync(pair.Value, message);
+                }
             }
+
+            await Task.CompletedTask;
         }
 
         public abstract Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer);

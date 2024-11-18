@@ -1,17 +1,18 @@
-using FF.Magdalena.Consumers;
-using Microsoft.Extensions.DependencyInjection;
+#region Libraries
+using FF.Macau;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MassTransit;
-using FF.Magdalena.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using FF.Magdalena.Consumers;
+using FF.Magdalena.Configuration;
 using FF.Magdalena.MassTransit;
-using MassTransit.RabbitMqTransport;
 using FF.Magdalena.WebSockets;
 using System.Reflection;
+#endregion
 
 namespace FF.Magdalena
 {
@@ -37,28 +38,25 @@ namespace FF.Magdalena
             return services;
         }
 
-        private static IBusControl CreateBus(this IServiceCollection services,  IServiceProvider provider) =>
+        private static IBusControl CreateBus(this IServiceCollection services, IServiceProvider provider) =>
               Bus.Factory.CreateUsingRabbitMq(configurator =>
               {
                   var settings = provider.GetRequiredService<IOptions<RabbitMqConfiguration>>().Value;
-
-                  var host = configurator.CreateHost(settings);
                   var consumerTypes = services.GetConsumerTypes();
-                  if (consumerTypes.Any())
-                  {
-                      configurator.ConfigureConsumers(host, settings.Queue, provider, consumerTypes);
-                  }
+
+                  configurator.ConfigureHost(settings);
+                  configurator.ConfigureConsumers(provider, settings.Queue, consumerTypes);
                   configurator.Durable = true;
               });
 
-        public static IRabbitMqHost CreateHost(this IRabbitMqBusFactoryConfigurator configurator, RabbitMqConfiguration settings)
+        public static void ConfigureHost(this IRabbitMqBusFactoryConfigurator configurator, RabbitMqConfiguration settings)
         {
-            return configurator.Host(settings.Host, hostConfigurator =>
+            configurator.Host(settings.Host, hostConfigurator =>
             {
                 hostConfigurator.SetHostCredentials(settings);
-               
+
                 hostConfigurator.UseCluster(c => c.ConfigureCluster(settings.Nodes));
-               
+
             });
         }
 
@@ -77,11 +75,19 @@ namespace FF.Magdalena
             return services;
         }
 
+        private static void ConfigureConsumers(this IRabbitMqBusFactoryConfigurator configurator, IServiceProvider provider, string inputQueue, IEnumerable<Type> consumerTypes)
+        {
+            configurator.ReceiveEndpoint(inputQueue, receiveEndpointConfigurator =>
+            {
+                receiveEndpointConfigurator.RegisterConsumersIntoTheBus(provider, consumerTypes);
+            });
+        }
 
         private static IRabbitMqHostConfigurator SetHostCredentials(this IRabbitMqHostConfigurator configurator, RabbitMqConfiguration settings)
         {
             configurator.Username(settings.UserName);
             configurator.Password(settings.Password);
+            configurator.RequestedConnectionTimeout(TimeSpan.FromSeconds(30));
             return configurator;
         }
 
@@ -91,10 +97,7 @@ namespace FF.Magdalena
                  .ToList();
         private static bool IsConsumer(this ServiceDescriptor descriptor) => typeof(IConsumer).IsAssignableFrom(descriptor.ImplementationType);
 
-        private static void ConfigureConsumers(this IRabbitMqBusFactoryConfigurator configurator, IRabbitMqHost host, string inputQueue, IServiceProvider provider, IList<Type> consumerTypes) =>
-         configurator.ReceiveEndpoint(host, inputQueue, c => c.RegisterConsumersIntoTheBus(provider, consumerTypes));
-
-        private static void RegisterConsumersIntoTheBus(this IRabbitMqReceiveEndpointConfigurator configurator, IServiceProvider provider, IList<Type> consumerTypes)
+        private static void RegisterConsumersIntoTheBus(this IRabbitMqReceiveEndpointConfigurator configurator, IServiceProvider provider, IEnumerable<Type> consumerTypes)
         {
             foreach (var c in consumerTypes)
             {
@@ -105,7 +108,7 @@ namespace FF.Magdalena
         {
             if (!string.IsNullOrEmpty(nodeNames))
             {
-                foreach(var node in nodeNames.Split(";"))
+                foreach (var node in nodeNames.Split(";"))
                 {
                     configurator.Node(node);
                 }
