@@ -16,10 +16,10 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-5 col-md-5 text-left detail-header">
+          <div class="col-5 col-md-5 text-left detail-header" style="vertical-align: middle; line-height: 25px;">
             {{'Team'}}
           </div>
-          <div v-if="item" class="col-7 col-md-7 text-right detail-header">            
+          <div v-if="item" class="col-7 col-md-7 text-right detail-header" style="vertical-align: middle; line-height: 25px;">
             <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index" style="padding-left: 5px;">
               {{score.Period.Abbr}}
             </div>
@@ -32,12 +32,12 @@
             {{item?item.Participants.Away.Name:''}}
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
-            <div style="display: inline-block;">
+            <div style="display: inline-block; line-height: 20px;">
               <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
                 <div 
-                  style="min-width: 30px;"
+                  style="min-width: 30px; height: 15px; line-height: 10px; vertical-align: middle;"
                   data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
-                  v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'16px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
+                  v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'15px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
                   v-bind:class="{'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
                                   'graded': (score.IsFinal && score.Status === 'Graded'),
                                   'noline': (score.Status.toLowerCase() === 'noline'),
@@ -56,9 +56,9 @@
           <div v-if="item" class="col-7 col-md-7 text-right">
             <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">              
               <div 
-                style="min-width: 30px;"
+                style="min-width: 30px; height: 15px; line-height: 10px; vertical-align: middle;"
                 data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
-                v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'16px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
+                v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'15px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
                 v-bind:class="{'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
                                'graded': (score.IsFinal &&score.Status === 'Graded'),
                                'noline': (score.Status.toLowerCase() === 'noline'),
