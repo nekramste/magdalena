@@ -49,7 +49,7 @@
 <script>
     import ScoreDetail from './score-detail';
 
-    const WAIT_SECONDS_ANIMATION = 5;
+    const WAIT_SECONDS_ANIMATION = 15;
     const WAIT_SECONDS_TO_HIDE_DETAIL = 90;
 
     export default {
@@ -121,38 +121,40 @@
           var iconName = "";
 
           if(sportName){
+
+            let sportName_ = sportName.toLowerCase();
             
-            if(sportName.toLowerCase().indexOf("soccer")>-1){
+            if(sportName_.indexOf("soccer")>-1){
               iconName = "sport icon-soccer";
-            }else if(sportName.toLowerCase().indexOf("hockey")>-1){
+            }else if(sportName_.indexOf("hockey")>-1){
               iconName = "sport icon-hockey";
-            }else if(sportName.toLowerCase().indexOf("football")>-1){
+            }else if(sportName_.indexOf("football")>-1){
               iconName = "sport icon-football";
-            }else if(sportName.toLowerCase().indexOf("boxing")>-1){
+            }else if(sportName_.indexOf("boxing")>-1){
               iconName = "sport icon-boxing";
-            }else if(sportName.toLowerCase().indexOf("basketball")>-1){
+            }else if(sportName_.indexOf("basketball")>-1){
               iconName = "sport icon-basketball";
-            }else if(sportName.toLowerCase().indexOf("golf")>-1){
+            }else if(sportName_.indexOf("golf")>-1){
               iconName = "sport icon-golf";
-            }else if(sportName.toLowerCase().indexOf("baseball")>-1){
+            }else if(sportName_.indexOf("baseball")>-1){
               iconName = "sport icon-baseball";
-            }else if(sportName.toLowerCase().indexOf("motor")>-1){
+            }else if(sportName_.indexOf("motor")>-1){
               iconName = "sport icon-motor";
-            }else if(sportName.toLowerCase().indexOf("esports")>-1){
+            }else if(sportName_.indexOf("esports")>-1){
               iconName = "sport icon-esport";    
-            }else if(sportName.toLowerCase().indexOf("rugby")>-1){
+            }else if(sportName_.indexOf("rugby")>-1){
               iconName = "sport icon-rugby";
-            }else if(sportName.toLowerCase().indexOf("horse")>-1){
+            }else if(sportName_.indexOf("horse")>-1){
               iconName = "sport icon-horse";
-            }else if(sportName.toLowerCase().indexOf("table tennis")>-1){
+            }else if(sportName_.indexOf("table tennis")>-1){
               iconName = "sport icon-tabletennis";  
-            }else if(sportName.toLowerCase().indexOf("tennis")>-1){
+            }else if(sportName_.indexOf("tennis")>-1){
               iconName = "sport icon-tennis";
-            }else if(sportName.toLowerCase().indexOf("mma")>-1){
+            }else if(sportName_.indexOf("mma")>-1){
               iconName = "sport icon-mma"; 
-            }else if(sportName.toLowerCase().indexOf("trophy")>-1){
+            }else if(sportName_.indexOf("trophy")>-1){
               iconName = "sport icon-trophy"; 
-            }else if(sportName.toLowerCase().indexOf("simulation")>-1){
+            }else if(sportName_.indexOf("simulation")>-1){
               iconName = "sport icon-simulation";
             }else{
               iconName = "fa-folder";

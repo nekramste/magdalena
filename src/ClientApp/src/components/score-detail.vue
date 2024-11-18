@@ -1,12 +1,26 @@
 <template>    
     <div class="row scores-detail" v-if="item.Scores.length">
       <div class="col-12">
+        <div class="row" style="min-height: 30px;">
+          <div class="col-5 col-md-5  text-left detail">
+          </div>
+          <div class="col-7 col-md-7 text-right">
+            <div class="period-cell text-center" v-for="(score, index) in item.Scores" :index="index" :key="index" data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.status,score.IsFinal)">
+              <template v-if="item && (score.IsFinal && (score.Status === 'Pending'))">
+                <IconGrade :item="item" :score="score"/>
+              </template>
+              <template v-if="score.Status === 'MismatchFound'">
+                <IconExclamation/>
+              </template>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-5 col-md-5 text-left detail-header">
             {{'Team'}}
           </div>
-          <div v-if="item" class="col-7 col-md-7 text-right detail-header">
-            <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
+          <div v-if="item" class="col-7 col-md-7 text-right detail-header">            
+            <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index" style="padding-left: 5px;">
               {{score.Period.Abbr}}
             </div>
           </div>
@@ -18,9 +32,19 @@
             {{item?item.Participants.Away.Name:''}}
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
-            <div style="display: inline-block">
+            <div style="display: inline-block;">
               <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
-                <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && score.Status === 'Graded'),'noline': (score.IsFinal && score.Status.toLowerCase() === 'noline')}"> {{score.Away.Score}} </div>
+                <div 
+                  style="min-width: 30px;"
+                  data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
+                  v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'16px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
+                  v-bind:class="{'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
+                                  'graded': (score.IsFinal && score.Status === 'Graded'),
+                                  'noline': (score.Status.toLowerCase() === 'noline'),
+                                  'missmatch': (score.IsFinal && score.Status === 'MismatchFound'),
+                                  }">
+                   {{score.Away.Score}} 
+                  </div>
               </div>
             </div>
           </div>
@@ -30,17 +54,18 @@
               {{item?item.Participants.Home.Name:''}}
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
-            <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
-              <div v-bind:class="{'blink_me':(score.IsFinal && score.Status === 'WasSendToGrade'),'graded':(score.IsFinal && score.Status === 'Graded'),'noline': (score.IsFinal && score.Status.toLowerCase() === 'noline')}"> {{score.Home.Score}} </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-5 col-md-5  text-left detail">
-          </div>
-          <div v-if="item" class="col-7 col-md-7 text-right">
-            <div class="period-cell text-center" v-for="(score, index) in item.Scores" :index="index" :key="index">       
-              <IconGrade :item="item" :score="score"/>
+            <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">              
+              <div 
+                style="min-width: 30px;"
+                data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
+                v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'16px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
+                v-bind:class="{'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
+                               'graded': (score.IsFinal &&score.Status === 'Graded'),
+                               'noline': (score.Status.toLowerCase() === 'noline'),
+                               'missmatch': (score.IsFinal && score.Status === 'MismatchFound'),
+                              }">
+                  {{score.Home.Score}} 
+                </div>
             </div>
           </div>
         </div>
@@ -50,17 +75,32 @@
 
 <script>
     
-    import IconGrade from './icon-grade.vue';    
+    import IconGrade from './icon-grade.vue';
+    import IconExclamation from './icon-exclamation.vue';
 
     export default {
-      components: {IconGrade},
+      components: {IconGrade,IconExclamation},
       data () {
         return {
           loading: false
         }
-      },
+      },      
       props:['item'],
-      methods: { }       
+      methods: {
+        getTooltipContent(status,isFinal) {
+          if(isFinal && (status === 'Graded')){
+            return 'Graded'
+          }else if(isFinal && (status === 'Pending')){
+            return 'Pending to Grade'
+          }else if(isFinal && (status === 'WasSentToGrade')){
+            return 'Being Graded'
+          }else if(isFinal && (status === 'MismatchFound')){
+            return 'Mismatch Found'
+          }else{
+            return '';
+          }
+        }       
+      }
     }
 </script>
 
@@ -129,6 +169,10 @@
 
   .noline{
     color: #6c767d;
+  }
+
+  .missmatch{
+    color: red !important;
   }
 
 </style>

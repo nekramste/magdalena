@@ -3,7 +3,10 @@
     <div class="container-fluid" style="padding-left:0px;">      
       <div class="row" style="height:60px;">
         <div class="col-12" style="text-align: left;">
-          <Navigation :user="user" :selected="selected" :isOnMobile="isOnMobile">
+          <Navigation :user="user" :selected="selected" :isOnMobile="isOnMobile" :alive="alive">
+            <template v-slot:connected>
+              <ConnectedSection :alive="alive" :isOnMobile="isOnMobile"/>
+            </template>
             <template v-slot:sports>
               <div v-bind:class="{'filters-section':!isOnMobile,'filter-section-mobile':isOnMobile}">
                 <FilterDropDown :filterName="'Sports'" :isOnMobile="isOnMobile_" :dataFilter="sportsID_Filter"></FilterDropDown>
@@ -32,6 +35,7 @@ import { mapActions, mapState } from 'vuex';
 import ScoreRow from './score-row';
 import config from '../common/config';
 import Navigation from './Menu/Navigation.vue';
+import ConnectedSection from './connected-section';
 import FilterDropDown from './FilterDropDownInput/FilterComponent.vue';
 
 const constants = {MOBILE_SIZE:991.98, MOBILE_SIZE_XSM:415, MOBILE_SIZE_SM:505, SIZE_LG:992, SIZE_XL:1200 }
@@ -41,7 +45,7 @@ export default {
   props: {
     msg: String    
   },
-  components: {ScoreRow,Navigation,FilterDropDown},
+  components: {ScoreRow,Navigation,ConnectedSection,FilterDropDown},
     data() {
       return {
         buttons: ['ALL','LIVE','UNMATCH','GRADED'],
@@ -63,6 +67,7 @@ export default {
         sports: state => state.sports,
         selectedSports: state => state.selectedSports,
         user: state => state.user,
+        alive: state => state.alive
       }),
       sportsID_Filter() {
         return [{name: 'Sport', list: this.getSports() }]
@@ -82,7 +87,7 @@ export default {
     },
    
     methods: {
-      ...mapActions(['setReceivedScore','startCleaner']),
+      ...mapActions(['setReceivedScore','startCleaner','keepAlive']),
       getSelectedSportsFilter(item){
         if((this.selectedSports.length === 0) || (this.selectedSports.length === this.sports.length)){
           return true;
@@ -129,6 +134,7 @@ export default {
       const v = this;
 
       this.startCleaner();
+      this.keepAlive();
       
       socket.onmessage = function (event) {        
         var incomingScore = event.data;
