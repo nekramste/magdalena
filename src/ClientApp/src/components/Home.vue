@@ -55,14 +55,15 @@ export default {
   components: {ScoreRow,Navigation,ConnectedSection,FilterDropDown,ViewModeButton},
     data() {
       return {
-        buttons: ['ALL','LIVE','UNMATCH','GRADED'],
-        selected: 'ALL',
+        /* buttons: ['ALL','LIVE','UNMATCH','GRADED'], */
+        buttons: ['LIVE','UNMATCH','GRADED'],
+        selected: 'LIVE',
         isOnMobile_: false,
         isOnMobileSM_: false,
         isOnMobileXSM_: false,
         isOnXL_: false,
 
-        dataFilter: [{name:'ALL'}],
+        dataFilter: [{name:'LIVE'}],
         sportFilters: []
       }
     },

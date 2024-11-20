@@ -32,7 +32,7 @@ const store = createStore({
         selectedOption: '',
 
         user: '-----',
-        viewModeFull: true,
+        viewModeFull: false,
 
         alive: true,
         dateTimeToDisconect: null
