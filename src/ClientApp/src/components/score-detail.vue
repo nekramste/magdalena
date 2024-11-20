@@ -1,8 +1,8 @@
 <template>    
     <div class="row scores-detail" v-if="item.Scores.length">
       <div class="col-12">
-        <div class="row" style="min-height: 30px;">
-          <div class="col-5 col-md-5  text-left detail">
+        <div class="row" v-bind:style="{minHeight: viewModeFull?'30px':'0px'}">
+          <div class="col-5 col-md-5  text-left detail pr-0">
           </div>
           <div class="col-7 col-md-7 text-right">
             <div class="period-cell text-center" v-for="(score, index) in item.Scores" :index="index" :key="index" data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.status,score.IsFinal)">
@@ -28,18 +28,19 @@
       </div>     
       <div class="col-12">
         <div class="row">
-          <div class="col-5 col-md-5 text-left detail">
+          <div class="col-5 col-md-5 text-left detail pr-0" style="display: inline-block; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" v-bind:class="{'bold':isAwayGreater}">
             {{item?item.Participants.Away.Name:''}}
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
             <div style="display: inline-block; line-height: 20px;">
               <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
-                <!-- {{`${score.Status}`}} -->
+                <!-- {{`${score.IsFinal} ${score.Status} ${isAwayGreater}`}} -->
                 <div 
                   style="min-width: 30px; height: 15px; line-height: 10px; vertical-align: middle;"
                   data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
                   v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'15px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
-                  v-bind:class="{'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
+                  v-bind:class="{ 'animation': ((!viewModeFull) && (score.Period.Abbr === 'FG') && animate_score_a),
+                                  'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
                                   'graded': (score.IsFinal && score.Status === 'Graded'),
                                   'noline': (score.Status.toLowerCase() === 'noline'),
                                   'missmatch': (score.IsFinal && score.Status === 'MismatchFound'),
@@ -51,7 +52,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-5 col-md-5 text-left detail">
+          <div class="col-5 col-md-5 text-left detail pr-0" style="display: inline-block; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" v-bind:class="{'bold':isHomeGreater}">
               {{item?item.Participants.Home.Name:''}}
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
@@ -60,7 +61,8 @@
                 style="min-width: 30px; height: 15px; line-height: 10px; vertical-align: middle;"
                 data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
                 v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'15px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
-                v-bind:class="{'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
+                v-bind:class="{'animation': ((!viewModeFull) && (score.Period.Abbr === 'FG') && animate_score_b),
+                               'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
                                'graded': (score.IsFinal &&score.Status === 'Graded'),
                                'noline': (score.Status.toLowerCase() === 'noline'),
                                'missmatch': (score.IsFinal && score.Status === 'MismatchFound'),
@@ -86,8 +88,20 @@
           loading: false
         }
       },      
-      props:['item'],
-      methods: {
+      props:['item','viewModeFull','animate_score_a','animate_score_b'],
+      computed:{
+        isAwayGreater(){
+           let awayScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Away.Score:0: this.item.CurrentScore.Away.Score;
+           let homeScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Home.Score:0: this.item.CurrentScore.Home.Score;
+           return (awayScore>homeScore);
+        },
+        isHomeGreater(){
+           let awayScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Away.Score:0: this.item.CurrentScore.Away.Score;
+           let homeScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Home.Score:0: this.item.CurrentScore.Home.Score;
+           return (homeScore>awayScore);
+        }
+      },
+      methods: {        
         getTooltipContent(status,isFinal) {
           if(isFinal && (status === 'Graded')){
             return 'Graded'
@@ -100,7 +114,7 @@
           }else{
             return '';
           }
-        }       
+        }
       }
     }
 </script>
@@ -174,6 +188,21 @@
 
   .missmatch{
     color: red !important;
+  }
+
+  .bold{
+    font-weight: bold;
+  }
+
+  .animation {
+    font-size: 15px !important;
+    animation: color-change 1s infinite;
+  }
+
+  @keyframes color-change {
+    0% { color: #17A2B8; font-size: 26px; }
+    50% { color: #E83E8C; font-size: 30px; }
+    100% { color: #17A2B8; font-size: 26px; }
   }
 
 </style>

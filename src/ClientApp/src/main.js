@@ -32,6 +32,7 @@ const store = createStore({
         selectedOption: '',
 
         user: '-----',
+        viewModeFull: true,
 
         alive: true,
         dateTimeToDisconect: null
@@ -68,9 +69,17 @@ const store = createStore({
             if(index>=0){
               //Move to grade queue
               if(score.CurrentScore.Status === 'Graded' && score.CurrentScore.Period.Number === 0){                        
-                score['toDelete'] = true;
-                score['remainingTimeToDelete'] = MINUTES_TO_DELETE;
-                state.scores_graded.push(JSON.parse(JSON.stringify(score)));
+                
+                let index_graded = state.scores_graded.findIndex(item => (item.Header.EventNumber === score.Header.EventNumber &&
+                            item.Header.ExternalGameNumber === score.Header.ExternalGameNumber &&
+                            item.Header.Source === score.Header.Source));
+
+                if(!(index_graded>=0)){
+                  score['toDelete'] = true;
+                  score['remainingTimeToDelete'] = MINUTES_TO_DELETE;
+                  state.scores_graded.push(JSON.parse(JSON.stringify(score)));
+                }
+                
                 state.scores_all.splice(index,1);
               }else{
                 if(score.Header.EventNumber > 0){
@@ -190,6 +199,9 @@ const store = createStore({
       },
       setSelectedSports({ commit },sports) { 
         commit('setSelectedSports',sports);
+      },
+      setViewModeFull({ state },mode){
+        state.viewModeFull =  mode;
       }
     }
 })

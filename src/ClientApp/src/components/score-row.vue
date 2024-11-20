@@ -1,5 +1,5 @@
 <template>    
-    <div class="row card score-row" v-bind:style="{'background-color':item.Header.EventNumber === 0?'#2f435b':'#182f49'}">
+    <div class="row card score-row" v-bind:style="{'min-height': viewModeFull? '220px':'0px','background-color':item.Header.EventNumber === 0?'#2f435b':'#182f49'}">
       <div class="col-12">
         <div class="row">
           <div class="col-6 text-left league">
@@ -12,13 +12,13 @@
               </div>
             </div>
           </div>
-          <div class="col-6" style="min-height:40px;">
+          <div class="col-6" v-bind:style="{minHeight: viewModeFull?'40px':'0px'}">
             <span v-bind:class="{'score-period': !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0),
                                  'score-final': (item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)}" class="float-right">
               {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{hide_detail?'':item.Detail}}</span>
           </div>
         </div>
-        <div class="row" style="height:60px;">
+        <div v-if="viewModeFull" class="row" style="height:60px;">
           <div class="col-6 text-center score" v-bind:class="{'animation':animate_score_a}">
             {{ item.Header.EventNumber !== 0?(item.Scores&&item.Scores.length>0)?item.Scores[0].Away.Score:'-': item.CurrentScore.Away.Score }}
           </div>
@@ -30,7 +30,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12">
+      <div v-if="viewModeFull" class="col-12">
           <div class="row">
               <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
                   <span class="rotation">{{!isOnMobile?item.Participants.Away.Rotation:''}}</span>{{'  '}}<span>{{item.Participants.Away.Name }}</span>
@@ -41,7 +41,7 @@
           </div>
       </div>
       <div class="col-12">
-        <ScoreDetail :item="item" />
+        <ScoreDetail :item="item" :viewModeFull="viewModeFull" :animate_score_a="animate_score_a" :animate_score_b="animate_score_b"/>
       </div>
     </div>
 </template>
@@ -61,7 +61,7 @@
           hide_detail: false
         }
       },
-      props:['item','isOnMobile'],
+      props:['item','isOnMobile','viewModeFull'],
       watch: {
         item(newValue, oldValue) {
           if(newValue !== oldValue){            
@@ -184,7 +184,6 @@
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    min-height: 220px;
     margin-left: -5px;
     margin-right: -5px;
     background: #182f49;

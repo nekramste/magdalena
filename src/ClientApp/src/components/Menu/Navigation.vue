@@ -9,11 +9,13 @@
         <slot name="connected"></slot>
         <slot name="sports"></slot>
         <slot name="filters"></slot>
+        <slot name="viewmode"></slot>
       </ul>
       <div v-if="isOnMobile" class="icon">
         <slot name="connected"></slot>
         <slot name="sports"></slot>
         <button class="option_button selected" @click="toggleMobileView">{{selected}}</button>
+        <!-- <slot name="viewmode"></slot> -->
       </div>
       <transition name="mobile-nav" @click="toggleMobileView">        
         <ul v-show="isOnMobile && mobileNav" class="dropdown-nav" style="padding-top:260px;">          

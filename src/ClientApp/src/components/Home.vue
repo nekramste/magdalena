@@ -16,13 +16,19 @@
               <div v-bind:class="{'options_bar':!isOnMobile,'options_bar_mobile':isOnMobile}" v-for="(item, index) in buttons" :index="index" :key="index">
                 <button v-bind:class="{'option_button':!isOnMobile,'option_button_mobile':isOnMobile,'selected':selected === item}" @click="select_option(item)">{{item}}</button>
               </div>
-            </template>         
+            </template>
+            <template v-slot:viewmode>
+              <ViewModeButton :isOnMobile="isOnMobile"/>
+            </template>
           </Navigation>
         </div>
       </div>
       <div class="row" style="padding: 0px 20px 0px 20px;">
-        <div class="col-xl-4 col-lg-6 col-md-6 col-12" v-for="(subitem, index_) in filteredScores" :index="index_" :key="index_">            
-          <ScoreRow v-if="subitem" :item="subitem" :isOnMobile="isOnMobile_"/>
+        <div v-bind:class="{
+                            'col-xl-4 col-lg-6 col-md-6':viewModeFull,
+                            'col-xl-3 col-lg-4 col-md-6':!viewModeFull,
+                            }" class="col-12" v-for="(subitem, index_) in filteredScores" :index="index_" :key="index_">
+          <ScoreRow v-if="subitem" :item="subitem" :isOnMobile="isOnMobile_" :viewModeFull="viewModeFull"/>
         </div>        
       </div>
     </div>
@@ -36,6 +42,7 @@ import ScoreRow from './score-row';
 import config from '../common/config';
 import Navigation from './Menu/Navigation.vue';
 import ConnectedSection from './connected-section';
+import ViewModeButton from './view-mode-button';
 import FilterDropDown from './FilterDropDownInput/FilterComponent.vue';
 
 const constants = {MOBILE_SIZE:991.98, MOBILE_SIZE_XSM:415, MOBILE_SIZE_SM:505, SIZE_LG:992, SIZE_XL:1200 }
@@ -45,7 +52,7 @@ export default {
   props: {
     msg: String    
   },
-  components: {ScoreRow,Navigation,ConnectedSection,FilterDropDown},
+  components: {ScoreRow,Navigation,ConnectedSection,FilterDropDown,ViewModeButton},
     data() {
       return {
         buttons: ['ALL','LIVE','UNMATCH','GRADED'],
@@ -67,7 +74,8 @@ export default {
         sports: state => state.sports,
         selectedSports: state => state.selectedSports,
         user: state => state.user,
-        alive: state => state.alive
+        alive: state => state.alive,
+        viewModeFull: state => state.viewModeFull
       }),
       sportsID_Filter() {
         return [{name: 'Sport', list: this.getSports() }]
