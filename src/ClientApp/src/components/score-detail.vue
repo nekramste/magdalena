@@ -17,7 +17,7 @@
         </div>
         <div class="row">
           <div class="col-5 col-md-5 text-left detail-header" style="vertical-align: middle; line-height: 25px; color:#cccecf;">
-            <!-- {{`${(this.item.Header.GameDateTime.split('T')[0])}`}} -->
+            <!-- {{`${(JSON.stringify(this.item.Header))}`}} -->
             {{`${getDateTimeFormattedWithTodayHandling(this.item.Header.GameDateTime)}`}}
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right detail-header" style="vertical-align: middle; line-height: 25px;">

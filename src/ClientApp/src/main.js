@@ -82,13 +82,20 @@ const store = createStore({
                 
                 state.scores_all.splice(index,1);
               }else{
-                if(score.Header.EventNumber > 0){
-                  let condition = (score.Scores && score.Scores[0].IsFinal)                
-                  score['toDelete'] = condition;
-                  score['remainingTimeToDelete'] = (score['remainingTimeToDelete'] && score['remainingTimeToDelete']>=0)? score['remainingTimeToDelete']:MINUTES_TO_DELETE;
-                }else{
-                  score['toDeleteWithDate'] = true;
-                  score['dateToDelete'] = state.scores_all[index].dateToDelete;
+
+                let index_graded = state.scores_graded.findIndex(item => (item.Header.EventNumber === score.Header.EventNumber &&
+                  item.Header.ExternalGameNumber === score.Header.ExternalGameNumber &&
+                  item.Header.Source === score.Header.Source));
+
+                if(!(index_graded>=0)){  
+                  if(score.Header.EventNumber > 0){                  
+                    let condition = (score.Scores && score.Scores[0].IsFinal)                
+                    score['toDelete'] = condition;
+                    score['remainingTimeToDelete'] = (score['remainingTimeToDelete'] && score['remainingTimeToDelete']>=0)? score['remainingTimeToDelete']:MINUTES_TO_DELETE;
+                  }else{
+                    score['toDeleteWithDate'] = true;
+                    score['dateToDelete'] = state.scores_all[index].dateToDelete;
+                  }
                 }
                 state.scores_all.splice(index, 1, JSON.parse(JSON.stringify(score)))
               }
