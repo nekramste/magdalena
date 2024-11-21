@@ -16,8 +16,9 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-5 col-md-5 text-left detail-header" style="vertical-align: middle; line-height: 25px;">
-            {{'Team'}}
+          <div class="col-5 col-md-5 text-left detail-header" style="vertical-align: middle; line-height: 25px; color:#cccecf;">
+            <!-- {{`${(this.item.Header.GameDateTime.split('T')[0])}`}} -->
+            {{`${getDateTimeFormattedWithTodayHandling(this.item.Header.GameDateTime)}`}}
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right detail-header" style="vertical-align: middle; line-height: 25px;">
             <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index" style="padding-left: 5px;">
@@ -80,6 +81,8 @@
     
     import IconGrade from './icon-grade.vue';
     import IconExclamation from './icon-exclamation.vue';
+    import moment from 'moment';
+    import "moment-timezone";
 
     export default {
       components: {IconGrade,IconExclamation},
@@ -101,7 +104,18 @@
            return (homeScore>awayScore);
         }
       },
-      methods: {        
+      methods: {
+        getDateTimeFormattedWithTodayHandling(date){
+          const format = 'ddd, MMM DD. hh:mm A';
+          const separator = '.'
+          let newDate = moment(date).format(format).toString().split(separator);
+          let todayDate = moment(new Date()).tz("America/New_York").format(format).toString().split(separator);
+          if(newDate[0] === todayDate[0]){
+            return newDate[1];
+          }else{
+            return `${newDate[0]} ${newDate[1]}`
+          }
+        },        
         getTooltipContent(status,isFinal) {
           if(isFinal && (status === 'Graded')){
             return 'Graded'
