@@ -30,7 +30,8 @@
       <div class="col-12">
         <div class="row">
           <div class="col-5 col-md-5 text-left detail pr-0" style="display: inline-block; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" v-bind:class="{'bold':isAwayGreater}">
-            {{item?item.Participants.Away.Name:''}}
+            <svg v-if="isAwayGreater" style="transform: rotate(180deg); margin-bottom: 3px; margin-left: -6px;" class="" aria-label="Winner" height="8" role="img" width="6"><polygon fill="#FFF" points="6,0 6,8 0,4"></polygon></svg>              
+            <span style="padding: 2px; line-height: 22px;">{{item?item.Participants.Away.Name:''}}</span>
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
             <div style="display: inline-block; line-height: 20px;">
@@ -54,7 +55,8 @@
         </div>
         <div class="row">
           <div class="col-5 col-md-5 text-left detail pr-0" style="display: inline-block; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" v-bind:class="{'bold':isHomeGreater}">
-              {{item?item.Participants.Home.Name:''}}
+              <svg v-if="isHomeGreater" style="transform: rotate(180deg); margin-bottom: 3px; margin-left: -6px;" class="" aria-label="Winner" height="8" role="img" width="6"><polygon fill="#FFF" points="6,0 6,8 0,4"></polygon></svg>              
+              <span style="padding: 2px; line-height: 22px;">{{item?item.Participants.Home.Name:''}}</span>
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
             <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">              
