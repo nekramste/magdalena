@@ -8,7 +8,7 @@
 
 <script>
 
-    import config from '../common/config';
+    import config from '../../../common/config';
 
     export default {
       data () {
@@ -58,9 +58,9 @@
                 body: JSON.stringify(this.getBody(score))
               };
               fetch(`${url}/api/grade`, requestOptions)
-                  .then(response => {
-                    console.log(response);
-                  })
+                .then(response => {
+                  console.log(response);
+                })
           } catch (err) {
             console.log(err);
             this.loading = false;  

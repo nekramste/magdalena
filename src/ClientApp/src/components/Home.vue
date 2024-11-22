@@ -28,7 +28,7 @@
                             'col-xl-4 col-lg-6 col-md-6':viewModeFull,
                             'col-xl-3 col-lg-4 col-md-6':!viewModeFull,
                             }" class="col-12" v-for="(subitem, index_) in filteredScores" :index="index_" :key="index_">
-          <ScoreRow v-if="subitem" :item="subitem" :isOnMobile="isOnMobile_" :viewModeFull="viewModeFull"/>
+          <Score v-if="subitem" :item="subitem" :isOnMobile="isOnMobile_" :viewModeFull="viewModeFull"/>
         </div>        
       </div>
     </div>
@@ -38,7 +38,7 @@
 <script>
 
 import { mapActions, mapState } from 'vuex';
-import ScoreRow from './score-row';
+import Score from './Scores/score';
 import config from '../common/config';
 import Navigation from './Menu/Navigation.vue';
 import ConnectedSection from './connected-section';
@@ -52,7 +52,7 @@ export default {
   props: {
     msg: String    
   },
-  components: {ScoreRow,Navigation,ConnectedSection,FilterDropDown,ViewModeButton},
+  components: {Score,Navigation,ConnectedSection,FilterDropDown,ViewModeButton},
     data() {
       return {
         /* buttons: ['ALL','LIVE','UNMATCH','GRADED'], */

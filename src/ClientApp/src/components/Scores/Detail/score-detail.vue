@@ -5,7 +5,7 @@
           <div class="col-5 col-md-5  text-left detail pr-0">
           </div>
           <div class="col-7 col-md-7 text-right">
-            <div class="period-cell text-center" v-for="(score, index) in item.Scores" :index="index" :key="index" data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.status,score.IsFinal)">
+            <div class="period-cell text-center" v-for="(score, index) in sortedScores" :index="index" :key="index" data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.status,score.IsFinal)">
               <template v-if="item && (score.IsFinal && (score.Status === 'Pending'))">
                 <IconGrade :item="item" :score="score"/>
               </template>
@@ -16,63 +16,66 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-5 col-md-5 text-left detail-header" style="vertical-align: middle; line-height: 25px; color:#cccecf;">
+          <div class="col-5 col-md-5 text-left detail-header" style="vertical-align: middle; line-height: 25px; color:#cccecf; vertical-align: middle;">
             <!-- {{`${(JSON.stringify(this.item.Header))}`}} -->
-            {{`${getDateTimeFormattedWithTodayHandling(this.item.Header.GameDateTime)}`}}
+            <div style="padding-top: 4px;">
+              <span>{{`${getDateTimeFormattedWithTodayHandling(this.item.Header.GameDateTime)}`}}</span>
+            </div>
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right detail-header" style="vertical-align: middle; line-height: 25px;">
-            <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index" style="padding-left: 5px;">
-              {{score.Period.Abbr}}
+            <div class="period-cell" v-for="(score, index) in sortedScores" :index="index" :key="index" style="padding-left: 5px;">
+              <span v-if="score">
+                {{score.Period.Abbr}}
+              </span>
             </div>
           </div>
         </div>
-      </div>     
+      </div>
       <div class="col-12">
         <div class="row">
           <div class="col-5 col-md-5 text-left detail pr-0" style="display: inline-block; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" v-bind:class="{'bold':isAwayGreater}">
             <svg v-if="isAwayGreater" style="transform: rotate(180deg); margin-bottom: 3px; margin-left: -6px;" class="" aria-label="Winner" height="8" role="img" width="6"><polygon fill="#FFF" points="6,0 6,8 0,4"></polygon></svg>              
-            <span style="padding: 2px; line-height: 22px;">{{item?item.Participants.Away.Name:''}}</span>
+            <span v-if="(!viewModeFull)" style="padding: 2px; line-height: 22px; color:#909090;">
+              {{item?`${item.Participants.Away.Rotation}`:''}}
+            </span>
+            <span style="padding: 2px; line-height: 22px;">
+              {{item?`${viewModeFull?'':' '}${item.Participants.Away.Name}`:''}}
+            </span>
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
             <div style="display: inline-block; line-height: 20px;">
-              <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">
-                <!-- {{`${score.IsFinal} ${score.Status} ${isAwayGreater}`}} -->
-                <div 
-                  style="min-width: 30px; height: 15px; line-height: 10px; vertical-align: middle;"
-                  data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
-                  v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'15px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
-                  v-bind:class="{ 'animation': ((!viewModeFull) && (score.Period.Abbr === 'FG') && animate_score_a),
-                                  'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
-                                  'graded': (score.IsFinal && score.Status === 'Graded'),
-                                  'noline': (score.Status.toLowerCase() === 'noline'),
-                                  'missmatch': (score.IsFinal && score.Status === 'MismatchFound'),
-                                  }">
-                   {{score.Away.Score}} 
-                  </div>
-              </div>
+              <template v-for="(score, index) in sortedScores" :index="index" :key="index">
+                <SubRowScore 
+                  :score="score"
+                  :viewModeFull="viewModeFull"
+                  :animate_score="animate_score_a"
+                  :getTooltipContent="getTooltipContent"
+                  type="Away"
+                />
+              </template>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-5 col-md-5 text-left detail pr-0" style="display: inline-block; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" v-bind:class="{'bold':isHomeGreater}">
-              <svg v-if="isHomeGreater" style="transform: rotate(180deg); margin-bottom: 3px; margin-left: -6px;" class="" aria-label="Winner" height="8" role="img" width="6"><polygon fill="#FFF" points="6,0 6,8 0,4"></polygon></svg>              
-              <span style="padding: 2px; line-height: 22px;">{{item?item.Participants.Home.Name:''}}</span>
+            <svg v-if="isHomeGreater" style="transform: rotate(180deg); margin-bottom: 3px; margin-left: -6px;" class="" aria-label="Winner" height="8" role="img" width="6"><polygon fill="#FFF" points="6,0 6,8 0,4"></polygon></svg>                            
+            <span v-if="(!viewModeFull)" style="padding: 2px; line-height: 22px; color:#909090;">
+              {{item?`${item.Participants.Home.Rotation}`:''}}
+            </span>
+            <span style="padding: 2px; line-height: 22px;">
+              {{item?`${viewModeFull?'':' '}${item.Participants.Home.Name}`:''}}
+            </span>
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
-            <div class="period-cell" v-for="(score, index) in item.Scores" :index="index" :key="index">              
-              <div 
-                style="min-width: 30px; height: 15px; line-height: 10px; vertical-align: middle;"
-                data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
-                v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'15px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
-                v-bind:class="{'animation': ((!viewModeFull) && (score.Period.Abbr === 'FG') && animate_score_b),
-                               'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
-                               'graded': (score.IsFinal &&score.Status === 'Graded'),
-                               'noline': (score.Status.toLowerCase() === 'noline'),
-                               'missmatch': (score.IsFinal && score.Status === 'MismatchFound'),
-                              }">
-                  {{score.Home.Score}} 
-                </div>
-            </div>
+            <template v-for="(score, index) in sortedScores" :index="index" :key="index">
+              <SubRowScore 
+                :score="score"
+                :viewModeFull="viewModeFull"
+                :animate_score="animate_score_b"
+                :getTooltipContent="getTooltipContent"
+                type="Home"
+              />
+            </template>
           </div>
         </div>
       </div>
@@ -81,13 +84,17 @@
 
 <script>
     
+    import { toRaw } from "vue";
+
     import IconGrade from './icon-grade.vue';
     import IconExclamation from './icon-exclamation.vue';
+    import SubRowScore from './score-sub-detail-row.vue';
     import moment from 'moment';
     import "moment-timezone";
+    import helpers from '../../../common/helpers.js'
 
     export default {
-      components: {IconGrade,IconExclamation},
+      components: {SubRowScore,IconGrade,IconExclamation},
       data () {
         return {
           loading: false
@@ -95,6 +102,23 @@
       },      
       props:['item','viewModeFull','animate_score_a','animate_score_b'],
       computed:{
+        sortedScores(){
+          const item = toRaw(this.item);
+          const clone = { ...item }
+          console.log(clone.Scores)
+          if(helpers.propertyExists(clone,'Scores')){
+            let scores = [];
+            if(clone.Scores.length>1){
+              for(let i = 1; i<(clone.Scores.length); i++){ scores.push(clone.Scores[i]) }
+              scores.push(clone.Scores[0]);
+            }else{
+              return clone.Scores;
+            }
+            return scores;
+          }else{
+            return [];
+          }
+        },
         isAwayGreater(){
            let awayScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Away.Score:0: this.item.CurrentScore.Away.Score;
            let homeScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Home.Score:0: this.item.CurrentScore.Home.Score;

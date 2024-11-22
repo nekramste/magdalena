@@ -31,14 +31,14 @@
         </div>
       </div>
       <div v-if="viewModeFull" class="col-12">
-          <div class="row">
-              <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
-                  <span class="rotation">{{!isOnMobile?item.Participants.Away.Rotation:''}}</span>{{'  '}}<span>{{item.Participants.Away.Name }}</span>
-              </div>
-              <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
-                  <span class="rotation">{{!isOnMobile?item.Participants.Home.Rotation:''}}</span>{{'  '}}<span>{{item.Participants.Home.Name}}</span>
-              </div>                
+        <div class="row">
+          <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
+              <span class="rotation">{{!isOnMobile?item.Participants.Away.Rotation:''}}</span>{{'  '}}<span>{{item.Participants.Away.Name }}</span>
           </div>
+          <div class="col-6 text-center" v-bind:class="{'team':!isOnMobile,'team-mobile':isOnMobile }">
+              <span class="rotation">{{!isOnMobile?item.Participants.Home.Rotation:''}}</span>{{'  '}}<span>{{item.Participants.Home.Name}}</span>
+          </div>
+        </div>
       </div>
       <div class="col-12">
         <ScoreDetail :item="item" :viewModeFull="viewModeFull" :animate_score_a="animate_score_a" :animate_score_b="animate_score_b"/>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-    import ScoreDetail from './score-detail';
+    import ScoreDetail from './Detail/score-detail';
 
     const WAIT_SECONDS_ANIMATION = 15;
     const WAIT_SECONDS_TO_HIDE_DETAIL = 90;
@@ -269,7 +269,7 @@
   .sport{  
     width: 50px;
     height: 50px;     
-    background: url('../assets/sports-sprite.png'); 
+    background: url('../../assets/sports-sprite.png'); 
     background-color:transparent;
     background-repeat:no-repeat;
     display:block;

@@ -7,6 +7,9 @@ export default {
         }
       }
       return true;
-    }    
+    },
+    propertyExists(myobject,prop){
+      return Object.prototype.hasOwnProperty.call(myobject,prop);
+    }
 };
 
