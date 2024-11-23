@@ -201,6 +201,7 @@
   }
   .period-cell-header {
     color: #CCC;
+    text-align: right;
   }
 
   .click{
