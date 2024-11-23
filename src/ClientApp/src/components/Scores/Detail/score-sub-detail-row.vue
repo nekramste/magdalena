@@ -5,10 +5,9 @@
        <div v-if="score"
             style="min-width: 30px; height: 15px; line-height: 10px; vertical-align: middle;"
             data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
-            v-bind:style="{fontSize:(score.Period.Abbr === 'FG' && score.IsFinal)?
-                            '15px':'',
-                           color: (score.Period.Abbr === 'FG' && score.IsFinal)?
-                                  '#ffc107': score.Period.Abbr === 'FG'?'#17a2b8':''}"
+            v-bind:style="{fontSize:((score.Period.Abbr === 'FG' && score.IsFinal) || (score.Period.Abbr === 'FG'))? '15px':'',
+                           fontWeight: ((score.Period.Abbr === 'FG' && score.IsFinal) || (score.Period.Abbr === 'FG'))? 'bold':'', 
+                           color: (score.Period.Abbr === 'FG' && score.IsFinal)? '#ffc107': score.Period.Abbr === 'FG'?'#17a2b8':''}"
             v-bind:class="{ 'animation': ((!viewModeFull) && (score.Period.Abbr === 'FG') && animate_score),
                             'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
                             'graded': (score.IsFinal && score.Status === 'Graded'),
@@ -37,10 +36,10 @@
 <style scoped>
 
   .period-cell{
-      text-align: center;
-      display: inline-block;
-      padding-top: 5px;
-      width:25px;
+    text-align: center;
+    display: inline-block;
+    padding-top: 5px;
+    width:25px;
   }
   .period-cell-header {
     color: #CCC;
@@ -74,14 +73,15 @@
   }
 
   .animation {
+    font-weight: bold;
     font-size: 15px !important;
     animation: color-change 1s infinite;
   }
 
   @keyframes color-change {
-    0% { color: #17A2B8; font-size: 26px; }
-    50% { color: #E83E8C; font-size: 30px; }
-    100% { color: #17A2B8; font-size: 26px; }
+    0% { color: #17A2B8; font-size: 26px; font-weight: bold; }
+    50% { color: #E83E8C; font-size: 30px; font-weight: bold; }
+    100% { color: #17A2B8; font-size: 26px; font-weight: bold; }
   }
 
 </style>
