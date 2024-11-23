@@ -6,13 +6,14 @@
           v-bind:style="{marginTop:isOnMobile?'-5px':'22px',marginRight: isOnMobile?'0px':'10px'}">
           <i class="fa fa-circle blink" aria-hidden="true"></i>{{!isOnMobile?'CONNECTED':''}}
         </span>
-        <span v-else 
-          style="cursor:pointer;"
+        <div v-else 
+          style="cursor:pointer; color: #152a41; font-size: 12px;"
           @click="startConnection()"
           v-bind:class="{'live-indicator-delayed':!isOnMobile,'live-indicator-delayed-mobile':isOnMobile}" 
           v-bind:style="{marginTop:isOnMobile?'-5px':'22px',marginRight: isOnMobile?'0px':'10px'}">
-          <i class="fa fa-circle" aria-hidden="true" ></i>{{!isOnMobile?'TRY RECCONECT':''}}
-        </span>
+          <div class="spinner-border spinner-border-sm" style="width: 0.7rem !important; height: 0.7rem !important;" role="status" aria-hidden="true"></div>
+          {{!isOnMobile?'RECONNECTING':''}}
+      </div>
     </div>
 </template>
 
@@ -61,7 +62,7 @@
     }
     .live-indicator-delayed {
         font-family: 'Roboto', sans-serif;
-        background: red;
+        background: #FFD43B;
         color: $white;
         padding: 6px 7px;
         line-height: 1;
@@ -94,7 +95,8 @@
     }
     .live-indicator-delayed-mobile {
         font-family: 'Roboto', sans-serif;
-        color: red;
+        background-color: #FFD43B;
+        color: #FFD43B;
         padding: 6px 7px;
         line-height: 1;
         border-radius: 6px;

@@ -208,8 +208,7 @@ export default createStore({
           await new Promise(resolve => setTimeout(resolve, CHECK_ALIVE_EVERY_SECONDS*1000));
           if(moment(moment().format()).isAfter(moment(state.dateTimeToDisconect).format())){
             state.alive = false;  
-            console.log('delayd response detected...')
-            //state.user = await tryReady(state.id);
+            console.log('delayd response detected...');
             dispatch('tryRestartConnection',0);
           }
         }
@@ -247,8 +246,8 @@ export default createStore({
             state.alive = true;            
             var incomingScore = event.data;
             state.dateTimeToDisconect = moment(moment(new Date())).add(TIME_TO_WAIT_FOR_ACTIVE, 'seconds').format();
-            console.log('incomming message/score');
-            console.log(incomingScore);
+            //console.log('incomming message/score');
+            //console.log(incomingScore);
             dispatch('setReceivedScore',{score: incomingScore});
           };
 
