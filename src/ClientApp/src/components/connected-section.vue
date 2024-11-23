@@ -1,28 +1,34 @@
 <template>    
     <div class="live-indicator-block">
         <span v-if="alive" 
+          @click="startConnection()"
           v-bind:class="{'live-indicator':!isOnMobile,'live-indicator-mobile':isOnMobile}"
           v-bind:style="{marginTop:isOnMobile?'-5px':'22px',marginRight: isOnMobile?'0px':'10px'}">
           <i class="fa fa-circle blink" aria-hidden="true"></i>{{!isOnMobile?'CONNECTED':''}}
         </span>
         <span v-else 
+          style="cursor:pointer;"
+          @click="startConnection()"
           v-bind:class="{'live-indicator-delayed':!isOnMobile,'live-indicator-delayed-mobile':isOnMobile}" 
           v-bind:style="{marginTop:isOnMobile?'-5px':'22px',marginRight: isOnMobile?'0px':'10px'}">
-          <i class="fa fa-circle" aria-hidden="true" ></i>{{!isOnMobile?'DELAYED':''}}
+          <i class="fa fa-circle" aria-hidden="true" ></i>{{!isOnMobile?'TRY RECCONECT':''}}
         </span>
     </div>
 </template>
 
 <script>   
-    export default {
-      data () {
-        return {
-        }
-      },
-      props:['alive','isOnMobile'],
-      methods: {
+  import { mapActions } from 'vuex';
+
+  export default {
+    data () {
+      return {
       }
+    },      
+    props:['alive','isOnMobile'],
+    methods: {
+      ...mapActions(['startConnection']),
     }
+  }
 </script>
 
 <style lang="scss" scoped>
