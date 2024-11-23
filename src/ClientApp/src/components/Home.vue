@@ -39,7 +39,6 @@
 
 import { mapActions, mapState } from 'vuex';
 import Score from './Scores/score';
-import config from '../common/config';
 import Navigation from './Menu/Navigation.vue';
 import ConnectedSection from './connected-section';
 import ViewModeButton from './view-mode-button';
@@ -96,7 +95,7 @@ export default {
     },
    
     methods: {
-      ...mapActions(['setReceivedScore','startCleaner','keepAlive']),
+      ...mapActions(['startConnection','startCleaner','keepAlive']),
       getSelectedSportsFilter(item){
         if((this.selectedSports.length === 0) || (this.selectedSports.length === this.sports.length)){
           return true;
@@ -133,22 +132,10 @@ export default {
     created() {window.addEventListener('resize', this.onResize);},
 
     mounted: function(){
-
       this.onResize();
-
-      var protocol = location.protocol === "https:" ? "wss:" : "ws:";
-      var wsUri = config.IS_PRODUCTION?`${config.WS_URL}/scores` : protocol + "//" + window.location.host + '/scores';
-
-      var socket = new WebSocket(wsUri);
-      const v = this;
-
       this.startCleaner();
       this.keepAlive();
-      
-      socket.onmessage = function (event) {        
-        var incomingScore = event.data;
-        v.setReceivedScore({score: incomingScore});
-      };
+      this.startConnection();      
     },
 
     unmounted() {window.removeEventListener('resize', this.onResize );},
