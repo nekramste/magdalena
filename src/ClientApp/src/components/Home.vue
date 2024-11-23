@@ -85,8 +85,8 @@ export default {
           this.currentScores.filter(item => item.Header.EventNumber != 0 && this.getSelectedSportsFilter(item)) :
           this.selected === 'UNMATCH'?
             this.currentScores.filter(item => item.Header.EventNumber === 0 && this.getSelectedSportsFilter(item)) :
-            this.selected === 'GRADED'? this.gradedScores.filter(item => this.getSelectedSportsFilter(item)) :
-              this.currentScores.filter(item => this.getSelectedSportsFilter(item))
+            this.selected === 'GRADED'? this.reverseArr(this.gradedScores.filter(item => this.getSelectedSportsFilter(item))) :
+              this.reverseArr(this.currentScores.filter(item => this.getSelectedSportsFilter(item)))
       },
       isOnMobile: function() {return this.isOnMobile_;},
       isOnMobileSM: function() {return this.isOnMobileSM_;},
@@ -121,6 +121,13 @@ export default {
       },
       select_option(option){
         this.selected = option;
+      },
+      reverseArr(input) {
+          var ret = new Array;
+          for(var i = input.length-1; i >= 0; i--) {
+              ret.push(input[i]);
+          }
+          return ret;
       },
       onResize () { this.isOnMobile_ = (window.innerWidth <= constants.MOBILE_SIZE);
                     this.isOnMobileSM_ = (window.innerWidth <= constants.MOBILE_SIZE_SM);
