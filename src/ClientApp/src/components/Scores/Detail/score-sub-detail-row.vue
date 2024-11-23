@@ -1,11 +1,14 @@
 <template>
     <div class="period-cell">
         <!-- {{`${JSON.stringify(score)}`}} -->
-        <!-- {{`${score.IsFinal} ${score.Status} ${isAwayGreater}`}} -->
+        <!-- {{`${score.IsFinal?'Fin':'No'}-${score.Status[0]+score.Status[1]+score.Status[2]}`}} -->
        <div v-if="score"
             style="min-width: 30px; height: 15px; line-height: 10px; vertical-align: middle;"
             data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.Status,score.IsFinal)"
-            v-bind:style="{fontSize:score.Period.Abbr === 'FG'?'15px':'',color: score.Period.Abbr === 'FG'?'#ffc107':''}"
+            v-bind:style="{fontSize:(score.Period.Abbr === 'FG' && score.IsFinal)?
+                            '15px':'',
+                           color: (score.Period.Abbr === 'FG' && score.IsFinal)?
+                                  '#ffc107': score.Period.Abbr === 'FG'?'#17a2b8':''}"
             v-bind:class="{ 'animation': ((!viewModeFull) && (score.Period.Abbr === 'FG') && animate_score),
                             'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
                             'graded': (score.IsFinal && score.Status === 'Graded'),

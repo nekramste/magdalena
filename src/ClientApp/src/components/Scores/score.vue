@@ -19,13 +19,13 @@
           </div>
         </div>
         <div v-if="viewModeFull" class="row" style="height:60px;">
-          <div class="col-6 text-center score" v-bind:class="{'animation':animate_score_a}">
+          <div class="col-6 text-center" v-bind:class="{'score':!isFinal(item),'score-final-current':isFinal(item),'animation':animate_score_a}">
             {{ item.Header.EventNumber !== 0?(item.Scores&&item.Scores.length>0)?item.Scores[0].Away.Score:'-': item.CurrentScore.Away.Score }}
           </div>
-          <div class="col-6 text-center score" v-bind:class="{'animation':animate_score_b}">
+          <div class="col-6 text-center" v-bind:class="{'score':!isFinal(item),'score-final-current':isFinal(item),'animation':animate_score_b}">
             {{ item.Header.EventNumber !== 0?(item.Scores&&item.Scores.length>0)?item.Scores[0].Home.Score:'-': item.CurrentScore.Home.Score }}
           </div>
-          <div class="col-12 text-center score" style="margin-top:-60px;">
+          <div class="col-12 text-center" v-bind:class="{'score':!isFinal(item),'score-final-current':isFinal(item)}" style="margin-top:-60px;">
             {{' - '}}
           </div>
         </div>
@@ -99,6 +99,9 @@
       },
       
       methods: { 
+        isFinal(item){
+          return ((item.Scores && item.Scores.length>0 && item.Scores[0].IsFinal));
+        },
         async startAnimation(type){          
           this.evaluateAnimation(type,true);
           await new Promise(resolve => setTimeout(resolve, WAIT_SECONDS_ANIMATION*1000)); 
@@ -177,6 +180,13 @@
     font-size: 26px;
     font-weight: bold;
     color: #17a2b8;
+    vertical-align: middle;    
+    line-height: 60px;
+  }
+  .score-final-current{
+    font-size: 26px;
+    font-weight: bold;
+    color: #ffc107;
     vertical-align: middle;    
     line-height: 60px;
   }

@@ -15,16 +15,19 @@
             </div>
           </div>
         </div>
-        <div class="row" v-bind:style="{minHeight: viewModeFull?'10px':'0px'}">
+        <div class="row" style="margin-bottom: -5px; text-align: center; justify-content: center;" v-bind:style="{minHeight: viewModeFull?'10px':'0px'}">
           <div class="col-5 col-md-5  text-left detail pr-0">
           </div>
-          <div class="col-7 col-md-7 text-right">
-            <div class="period-cell text-center" v-for="(score, index) in sortedScores" :index="index" :key="index" data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.status,score.IsFinal)">
+          <div class="col-7 col-md-7 text-right justify-content-center">
+            <div class="period-cell text-center justify-content-center" v-for="(score, index) in sortedScores" :index="index" :key="index" data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.status,score.IsFinal)">
               <template v-if="item.CurrentScore.Period.Number === score.Period.Number">
-                <div style="margin-left: 4px; margin-bottom:-10px;">
+                <div style="margin-bottom:-10px;">
                   <svg style="transform: rotate(270deg); margin-bottom: 3px;" class="" aria-label="Winner" height="8" role="img" width="6"><polygon fill="#FFF" points="6,0 6,8 0,4"></polygon></svg>
                 </div>
               </template>
+              <!-- <template v-if="item.CurrentScore.Period.Number === 0 && score.IsFinal">
+                <span>Final</span>
+              </template> -->
             </div>
           </div>
         </div>
@@ -36,7 +39,7 @@
             </div>
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right detail-header" style="vertical-align: middle; line-height: 25px;">
-            <div class="period-cell" v-for="(score, index) in sortedScores" :index="index" :key="index" style="padding-left: 5px;">
+            <div class="period-cell" v-for="(score, index) in sortedScores" :index="index" :key="index" style="padding-left: 0px;">
               <span v-if="score">
                 {{score.Period.Abbr}}
               </span>
