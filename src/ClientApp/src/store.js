@@ -9,6 +9,7 @@ const HOURS_TO_DELETE = 0.5;
 const MINUTES_TO_DELETE = HOURS_TO_DELETE*60;
 const CHECK_ALIVE_EVERY_SECONDS = 5;
 const TIME_TO_WAIT_FOR_ACTIVE = 40;
+const TIME_TO_WAIT_FOR_RECONNECTION = 10;
 
 const protocol = location.protocol === "https:" ? "wss:" : "ws:";
 const wsUri = config.IS_PRODUCTION?`${config.WS_URL}/scores` : protocol + "//" + window.location.host + '/scores';
@@ -166,6 +167,7 @@ export default createStore({
         state.selectedSports = sports;
       },
     },
+
     actions: {
       setReceivedScore ({ commit }, obj) {
         commit(SCORES, obj)
@@ -237,7 +239,6 @@ export default createStore({
         }            
       },
       async startConnection({state,dispatch}){
-
         try{
 
           dispatch('openSocket');
@@ -256,13 +257,19 @@ export default createStore({
             console.log('connection fail detected!!!')
             if(!state.started){
               dispatch('closeSocket')
-              dispatch('tryRestartConnection',10000);
+              dispatch('tryRestartConnection',TIME_TO_WAIT_FOR_RECONNECTION*1000);
             }
           };
 
         }catch(error){
           console.log(error);
         }
+      },
+
+      initScoresQueue({dispatch}){
+        dispatch('startCleaner');
+        dispatch('keepAlive');
+        dispatch('startConnection');      
       }
     }
 })

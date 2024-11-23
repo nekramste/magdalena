@@ -95,7 +95,7 @@ export default {
     },
    
     methods: {
-      ...mapActions(['startConnection','startCleaner','keepAlive']),
+      ...mapActions(['initScoresQueue']),
       getSelectedSportsFilter(item){
         if((this.selectedSports.length === 0) || (this.selectedSports.length === this.sports.length)){
           return true;
@@ -133,20 +133,17 @@ export default {
                     this.isOnMobileSM_ = (window.innerWidth <= constants.MOBILE_SIZE_SM);
                     this.isOnMobileXSM_ = (window.innerWidth <= constants.MOBILE_SIZE_XSM);
                     this.isOnXL_ = ((constants.SIZE_LG < window.innerWidth) & (window.innerWidth <= constants.SIZE_XL))?true:false;
-                  }    
+                  },      
     },
 
     created() {window.addEventListener('resize', this.onResize);},
 
     mounted: function(){
       this.onResize();
-      this.startCleaner();
-      this.keepAlive();
-      this.startConnection();      
+      this.initScoresQueue();
     },
 
     unmounted() {window.removeEventListener('resize', this.onResize );},
-
 }
 
 </script>
