@@ -119,10 +119,17 @@ export default createStore({
 
             }else{
               //Insert into grade queue
-              if(score.CurrentScore.Status === 'Graded' && score.CurrentScore.Period.Number === 0){                            
+              if(score.CurrentScore.Status === 'Graded' && score.CurrentScore.Period.Number === 0){     
+                
+                let index_graded = state.scores_graded.findIndex(item => (item.Header.EventNumber === score.Header.EventNumber &&
+                                    item.Header.ExternalGameNumber === score.Header.ExternalGameNumber &&
+                                    item.Header.Source === score.Header.Source));
+
                 score['toDelete'] = true;
                 score['remainingTimeToDelete'] = MINUTES_TO_DELETE;
-                state.scores_graded.push(JSON.parse(JSON.stringify(score)));
+                if(!(index_graded>=0)){  
+                  state.scores_graded.push(JSON.parse(JSON.stringify(score)));
+                }
               }else{            
                 if(score.Header.EventNumber > 0){
                   let condition = (score.Scores && score.Scores.length>0 && score.Scores[0].IsFinal);

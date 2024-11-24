@@ -3,6 +3,7 @@
       <div class="col-12">
         <div class="row" v-bind:style="{minHeight: viewModeFull?'30px':'0px'}">
           <div class="col-5 col-md-5  text-left detail pr-0">
+            <!-- {{`${JSON.stringify(item.Header)}`}} -->
           </div>
           <div class="col-7 col-md-7 text-right">
             <div class="period-cell text-center" v-for="(score, index) in sortedScores" :index="index" :key="index" data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.status,score.IsFinal)">
@@ -60,7 +61,7 @@
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
             <div style="display: inline-block; line-height: 20px;">
-              <template v-for="(score, index) in sortedScores" :index="index" :key="index">
+              <template v-for="(score, index) in sortedScores" :index="index" :key="index">                
                 <SubRowScore 
                   :score="score"
                   :viewModeFull="viewModeFull"
@@ -84,7 +85,7 @@
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right">
             <div style="display: inline-block; line-height: 20px;">
-              <template v-for="(score, index) in sortedScores" :index="index" :key="index">
+              <template v-for="(score, index) in sortedScores" :index="index" :key="index">                
                 <SubRowScore 
                   :score="score"
                   :viewModeFull="viewModeFull"
