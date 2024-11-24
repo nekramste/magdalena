@@ -3,15 +3,20 @@
       <div class="col-12">
         <div class="row" v-bind:style="{minHeight: viewModeFull?'30px':'0px'}">
           <div class="col-5 col-md-5  text-left detail pr-0">
+            <!-- {{`${JSON.stringify(item)}`}} -->
             <!-- {{`${JSON.stringify(item.Header)}`}} -->
           </div>
           <div class="col-7 col-md-7 text-right">
             <div class="period-cell text-center" v-for="(score, index) in sortedScores" :index="index" :key="index" data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.status,score.IsFinal)">
               <template v-if="item && (score.IsFinal && (score.Status === 'Pending'))">
-                <IconGrade :item="item" :score="score"/>
+                <div style="margin-right: -7px;">
+                  <IconGrade :item="item" :score="score"/>
+                </div>
               </template>
               <template v-if="score.Status === 'MismatchFound'">
-                <IconExclamation/>
+                <div style="margin-right: -7px;">
+                  <IconExclamation/>
+                </div>
               </template>
             </div>
           </div>
@@ -22,7 +27,7 @@
           <div class="col-7 col-md-7 text-right justify-content-center">
             <div class="period-cell text-center justify-content-center" v-for="(score, index) in sortedScores" :index="index" :key="index" data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.status,score.IsFinal)">
               <template v-if="item.CurrentScore.Period.Number === score.Period.Number">
-                <div style="margin-bottom:-10px;">
+                <div style="margin-bottom:-10px; margin-right: -7px;">
                   <svg style="transform: rotate(270deg); margin-bottom: 3px;" class="" aria-label="Winner" height="8" role="img" width="6"><polygon fill="#FFF" points="6,0 6,8 0,4"></polygon></svg>
                 </div>
               </template>
@@ -36,12 +41,12 @@
           <div class="col-5 col-md-5 text-left detail-header" style="vertical-align: middle; line-height: 25px; color:#cccecf; vertical-align: middle;">
             <!-- {{`${(JSON.stringify(this.item.Header))}`}} -->
             <div style="padding-top: 4px;">
-              <span>{{`${getDateTimeFormattedWithTodayHandling(this.item.Header.GameDateTime)}`}}</span>
+              <span style="margin-left: 2px;">{{`${getDateTimeFormattedWithTodayHandling(this.item.Header.GameDateTime)}`}}</span>
             </div>
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right detail-header" style="vertical-align: middle; line-height: 25px;">
             <div class="period-cell" v-for="(score, index) in sortedScores" :index="index" :key="index" style="padding-left: 0px;">
-              <span v-if="score">
+              <span style="margin-right: -5px;" v-if="score">
                 {{score.Period.Abbr}}
               </span>
             </div>
