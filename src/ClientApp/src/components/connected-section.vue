@@ -1,14 +1,14 @@
 <template>    
     <div class="live-indicator-block">
         <span v-if="alive" 
-          @click="startConnection()"
+          @click="startConnectionInmmediately()"
           v-bind:class="{'live-indicator':!isOnMobile,'live-indicator-mobile':isOnMobile}"
           v-bind:style="{marginTop:isOnMobile?'-5px':'22px',marginRight: isOnMobile?'0px':'10px'}">
           <i class="fa fa-circle blink" aria-hidden="true"></i>{{!isOnMobile?'CONNECTED':''}}
         </span>
         <div v-else 
           style="cursor:pointer; color: #152a41; font-size: 12px;"
-          @click="startConnection()"
+          @click="startConnectionInmmediately()"
           v-bind:class="{'live-indicator-delayed':!isOnMobile,'live-indicator-delayed-mobile':isOnMobile}" 
           v-bind:style="{marginTop:isOnMobile?'-5px':'22px',marginRight: isOnMobile?'0px':'10px'}">
           <div class="spinner-border spinner-border-sm" style="width: 0.7rem !important; height: 0.7rem !important;" role="status" aria-hidden="true"></div>
@@ -27,7 +27,7 @@
     },      
     props:['alive','isOnMobile'],
     methods: {
-      ...mapActions(['startConnection']),
+      ...mapActions(['startConnectionInmmediately']),
     }
   }
 </script>

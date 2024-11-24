@@ -29,6 +29,10 @@ async function tryReady(id) {
   return null;
 }
 
+function backoffDelay(retryAttempts,initialDelay){
+  return Math.pow(2, retryAttempts - 1) * initialDelay;
+}
+
 export default createStore({
     state: {
 
@@ -51,7 +55,9 @@ export default createStore({
         alive: true,
         dateTimeToDisconect: null,
 
-        started: false
+        started: false,
+
+        retryAttempts: 0
 
     },
     mutations: {
@@ -218,7 +224,7 @@ export default createStore({
           if(moment(moment().format()).isAfter(moment(state.dateTimeToDisconect).format())){
             state.alive = false;  
             console.log('delayd response detected...');
-            dispatch('tryRestartConnection',0);
+            dispatch('tryRestartConnection',backoffDelay(state.retryAttempts,1000));
           }
         }
       },
@@ -231,8 +237,12 @@ export default createStore({
       setViewModeFull({ state },mode){
         state.viewModeFull =  mode;
       },
-      tryRestartConnection({dispatch},waitTime){
-        console.log('try connecting...')
+      startConnectionInmmediately({state,dispatch}){
+        state.retryAttempts = 0;
+        dispatch('startConnection');
+      },
+      tryRestartConnection({state,dispatch},waitTime){
+        console.log(`try connecting... (attempt:${state.retryAttempts})`)
         setTimeout(() => {dispatch('startConnection')},waitTime);
       },
       openSocket({state}){
@@ -251,7 +261,8 @@ export default createStore({
           dispatch('openSocket');
           
           state.socket.onmessage = function (event) {
-            state.alive = true;            
+            state.alive = true;
+            state.retryAttempts = 0;
             var incomingScore = event.data;
             state.dateTimeToDisconect = moment(moment(new Date())).add(TIME_TO_WAIT_FOR_ACTIVE, 'seconds').format();
             //console.log('incomming message/score');
@@ -264,7 +275,8 @@ export default createStore({
             console.log('connection fail detected!!!')
             if(!state.started){
               dispatch('closeSocket')
-              dispatch('tryRestartConnection',TIME_TO_WAIT_FOR_RECONNECTION*1000);
+              state.retryAttempts++;
+              dispatch('tryRestartConnection', backoffDelay(state.retryAttempts,TIME_TO_WAIT_FOR_RECONNECTION*1000));
             }
           };
 
