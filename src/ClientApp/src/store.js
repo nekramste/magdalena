@@ -275,7 +275,7 @@ export default createStore({
             console.log('connection fail detected!!!')
             if(!state.started){
               dispatch('closeSocket')
-              state.retryAttempts++;
+              state.retryAttempts=state.retryAttempts+1;
               dispatch('tryRestartConnection', backoffDelay(state.retryAttempts,TIME_TO_WAIT_FOR_RECONNECTION*1000));
             }
           };
