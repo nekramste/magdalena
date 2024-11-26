@@ -38,10 +38,10 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-5 col-md-5 text-left detail-header" style="vertical-align: middle; line-height: 25px; color:#cccecf; vertical-align: middle;">
+          <div class="col-5 col-md-5 text-left detail-header pr-0" style="vertical-align: middle; line-height: 25px; color:#cccecf; vertical-align: middle;">
             <!-- {{`${(JSON.stringify(this.item.Header))}`}} -->
             <div style="padding-top: 4px;">
-              <span style="margin-left: 2px;">{{`${getDateTimeFormattedWithTodayHandling(this.item.Header.GameDateTime)}`}}</span>
+              <span style="margin-left: 2px;">{{`${getDateTimeFormattedWithTodayHandling(this.item.Header.GameDateTime)} ET`}}</span>
             </div>
           </div>
           <div v-if="item" class="col-7 col-md-7 text-right detail-header" style="vertical-align: middle; line-height: 25px;">
