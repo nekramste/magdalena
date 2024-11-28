@@ -14,7 +14,7 @@
       </div>
     </button>
     <div v-if="isOnMobile || showAsModal" style="display: contents;">
-      <popup-modal style="width=200px;" class="overlay-tooltip" ref="popup">        
+      <popup-modal style="width:200px;" class="overlay-tooltip" ref="popup">
         <div
           class="checkboxLayerMobile p-2"
           :class="`${isOpen ? 'show' : ''} ${popoverClass}`"

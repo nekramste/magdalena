@@ -13,9 +13,12 @@
             </div>
           </div>
           <div class="col-6" v-bind:style="{minHeight: viewModeFull?'40px':'0px'}">
-            <span v-bind:class="{'score-period': !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0),
-                                 'score-final': (item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)}" class="float-right">
-              {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{hide_detail?'':item.Detail}}</span>
+            <span v-if="!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-period float-right">
+              {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{hide_detail?'':item.Detail}}
+            </span>
+            <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final float-right">
+              <span>{{ 'Final' }}</span>
+            </span>
           </div>
         </div>
         <div v-if="viewModeFull" class="row" style="height:60px;">
