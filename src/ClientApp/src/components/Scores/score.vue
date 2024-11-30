@@ -20,7 +20,7 @@
               <span v-if="(!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)) &&
                            !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isSoccer())"
                     class="score-period">
-                {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{`${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay:''}`}}
+                {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{ showDetail? (item.Detail + ' - '):'' }} {{`${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay: showIfNotTime(item.Detail)}`}}
               </span>              
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final">
                 <span>{{ 'Final' }}</span>
@@ -81,7 +81,8 @@
           displaySeconds: null,
           initialTime: null,
           dateTimeToDisplay: null,
-          useDifferentWaitingTimeForSoccer: config.USE_DIFFERENT_WAITING_TIME_SOCCER         
+          useDifferentWaitingTimeForSoccer: config.USE_DIFFERENT_WAITING_TIME_SOCCER,
+          showDetail: config.SHOW_DETAIL_DEBUG
         }
       },
       props:['item','isOnMobile','viewModeFull','debug'],
@@ -96,9 +97,9 @@
               newValue.Header.SportSubType === oldValue.Header.SportSubType &&
               newValue.Header.SportType === oldValue.Header.SportType){
 
-              if(newValue.Detail !== oldValue.Detail){
+              //if(newValue.Detail !== oldValue.Detail){
                 this.restartCountDown(this.item);
-              }
+              //}
               
               if(this.item.Header.EventNumber === 0){
                 if(newValue.CurrentScore.Away.Score !== oldValue.CurrentScore.Away.Score){                
@@ -122,6 +123,17 @@
       },
       
       methods: {
+        showIfNotTime(data){
+          if(data){
+            let detailParts = data.split(':');
+            if(detailParts.length === 2){
+              return ''
+            }else{
+              return data;
+            }
+          }
+          return '';
+        },
         refreshTimeToDisplay(dateTime){
           this.dateTimeToDisplay = dateTime;
         },

@@ -2,6 +2,7 @@ const isProduction = 1;
 const debugMode = 0;
 const showTimer = 1;
 const useDifferentWaitingTimeForSoccer = 1;
+const showDetailDebug = 0;
 
 const API_ROUTE_DEVELOPMENT ='http://localhost:5000';
 const API_ROUTE_PRODUCTION = 'https://agadmin.sport.local';
@@ -15,5 +16,6 @@ export default {
     IS_PRODUCTION: isProduction,
     IS_DEBUG_MODE: debugMode,
     SHOW_TIMER: showTimer,
-    USE_DIFFERENT_WAITING_TIME_SOCCER: useDifferentWaitingTimeForSoccer
+    USE_DIFFERENT_WAITING_TIME_SOCCER: useDifferentWaitingTimeForSoccer,
+    SHOW_DETAIL_DEBUG: showDetailDebug
 }
