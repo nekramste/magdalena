@@ -8,7 +8,7 @@
             v-bind:style="{fontSize:((score.Period.Abbr === 'FG' && score.IsFinal))? '15px':'',
                            fontWeight: ((score.Period.Abbr === 'FG' && score.IsFinal) || (score.Period.Abbr === 'FG'))? 'bold':'', 
                            color: (score.Period.Abbr === 'FG' && score.IsFinal)? '#ffc107': score.Period.Abbr === 'FG'?'#17a2b8':''}"
-            v-bind:class="{ 'animation': ((!viewModeFull) && (score.Period.Abbr === 'FG') && animate_score),
+            v-bind:class="{ 'animation': ((!viewModeFull) && (score.Period.Abbr === 'FG') && (score.Status !== 'WasSendToGrade') && animate_score),
                             'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
                             'graded': (score.IsFinal && score.Status === 'Graded'),
                             'noline': (score.Status.toLowerCase() === 'noline'),
