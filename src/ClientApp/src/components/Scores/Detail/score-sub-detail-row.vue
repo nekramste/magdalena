@@ -1,6 +1,6 @@
 <template>
     <div class="period-cell">
-        <!-- {{`${JSON.stringify(score)}`}} -->
+        <!-- {{`${JSON.stringify(item)}`}} -->
         <!-- {{`${score.IsFinal?'Fin':'No'}-${score.Status[0]+score.Status[1]+score.Status[2]}`}} -->
        <div v-if="score"
             style="min-width: 30px; height: 15px; line-height: 10px; vertical-align: middle;"
@@ -27,7 +27,7 @@
         return {
         }
       },      
-      props:['score','viewModeFull','animate_score','getTooltipContent','type'],
+      props:['score','viewModeFull','animate_score','getTooltipContent','type','item'],
       methods: {
       }
     }

@@ -57,6 +57,8 @@ export default createStore({
 
         started: false,
 
+        debugFilters: {EventNumber: 0, ExternalGameNumber: 0, Source: '', TeamAway: '', TeamHome: ''},
+
         retryAttempts: 0
 
     },
@@ -74,6 +76,25 @@ export default createStore({
         }else{
                     
           if (score) {
+
+            //Filter
+
+            if(config.IS_DEBUG_MODE){
+
+              let show = 
+                ((((!state.debugFilters.EventNumber) || (state.debugFilters.EventNumber === 0)) || (score.Header.EventNumber == state.debugFilters.EventNumber)) &&
+                (((!state.debugFilters.ExternalGameNumber) || (state.debugFilters.ExternalGameNumber === 0)) || (score.Header.ExternalGameNumber === state.debugFilters.ExternalGameNumber)) &&
+                (((!state.debugFilters.Source) || (state.debugFilters.Source.trim() === '')) || (score.Header.Source.toLowerCase() === state.debugFilters.Source.toLowerCase()))
+                //(((!state.debugFilters.TeamAway) || (state.debugFilters.TeamAway.trim() === '')) || (this.compareLike(item.Participants.Away.Name, state.debugFilters.TeamAway.trim()))) && 
+                //(((!state.debugFilters.TeamHome) || (state.debugFilters.TeamHome.trim() === '')) || (this.compareLike(item.Participants.Home.Name, state.debugFilters.TeamHome.trim())))
+                );
+
+              if(show){
+                  console.log(`FilteredScore for: ${score.Header.EventNumber}`);
+                  console.log(`Description: ${score.CurrentScore.Period.Description}`);                
+                  console.log(`Detail     : ${score.Detail}`);                  
+              }
+            }
 
             let index = state.scores_all.findIndex(item => (item.Header.EventNumber === score.Header.EventNumber &&
                                                             item.Header.ExternalGameNumber === score.Header.ExternalGameNumber &&
@@ -175,9 +196,12 @@ export default createStore({
       },
       setSelected(state,option) {
         state.selectedOption = option;
-      },      
+      },
       setSelectedSports(state,sports) {
         state.selectedSports = sports;
+      },
+      setDebugFilters(state,filters) {
+        state.debugFilters = filters;
       },
     },
 
@@ -233,6 +257,10 @@ export default createStore({
       },
       setSelectedSports({ commit },sports) { 
         commit('setSelectedSports',sports);
+      },
+      setDebugFilters({commit},filters){
+        console.log(filters)
+        commit('setDebugFilters',filters);
       },
       setViewModeFull({ state },mode){
         state.viewModeFull =  mode;

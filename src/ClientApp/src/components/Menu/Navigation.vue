@@ -1,5 +1,45 @@
 <template>
   <header :class="{'scrolled-nav': scrolledNav }">
+    <div v-if="debug" class="container">
+      <div class="row" style="height:70px; padding: 10px;">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-2" style="text-align: left;">
+              <span style="color:white;">Event Number</span>
+            </div>
+            <div class="col-2" style="text-align: left;">
+              <span style="color:white;">ExternalGameNumber</span>              
+            </div>
+            <div class="col-2" style="text-align: left;">
+              <span style="color:white;">Source</span>              
+            </div>
+            <div class="col-2" style="text-align: left;">
+              <span style="color:white;">Team Away</span>              
+            </div>
+            <div class="col-2" style="text-align: left;">
+              <span style="color:white;">Team Home</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2" style="text-align: left;">              
+              <input type="number" v-model="filters.EventNumber">
+            </div>
+            <div class="col-2" style="text-align: left;">              
+              <input type="number" v-model="filters.ExternalGameNumber">
+            </div>
+            <div class="col-2" style="text-align: left;">
+              <input type="text" v-model="filters.Source">
+            </div>
+            <div class="col-2" style="text-align: left;">
+              <input type="text" v-model="filters.TeamAway">
+            </div>
+            <div class="col-2" style="text-align: left;">
+              <input type="text" v-model="filters.TeamHome">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <nav style="height: 60px;">
       <div class="branding">
         <i class="far fa-user icon-user" v-bind:class="{'icon-user':!isOnMobile, 'icon-user-mobile':isOnMobile}"></i>
@@ -28,6 +68,9 @@
 
 <script>
 
+import config from '../../common/config';
+import { mapActions } from 'vuex';
+
 export default {
   name: "navigation",
   components: {},  
@@ -36,17 +79,41 @@ export default {
       scrolledNav: null,
       scrollPosition: null,      
       mobileNav: false,
-      windowWidth: null,      
+      windowWidth: null,
+      debug: config.IS_DEBUG_MODE,
+      filters: {EventNumber: 0, ExternalGameNumber: 0, Source: '', TeamAway: '', TeamHome: ''},
     }
   },
-  props: ['user','selected','isOnMobile','alive'],
-  created() {
-    this.checkScreen();
-  },
-  mounted(){    
-  },
+  props: ['user','selected','isOnMobile','alive'],  
+  watch: {
+    'filters.EventNumber'(newValue, oldValue) {      
+      if(newValue !== oldValue){                            
+        this.setDebugFilters(this.filters);
+      }        
+    },
+    'filters.ExternalGameNumber'(newValue, oldValue) {      
+      if(newValue !== oldValue){                            
+        this.setDebugFilters(this.filters);
+      }        
+    },
+    'filters.Source'(newValue, oldValue) {      
+      if(newValue !== oldValue){                            
+        this.setDebugFilters(this.filters);
+      }        
+    },
+    'filters.TeamAway'(newValue, oldValue) {      
+      if(newValue !== oldValue){                            
+        this.setDebugFilters(this.filters);
+      }        
+    },
+    'filters.TeamHome'(newValue, oldValue) {      
+      if(newValue !== oldValue){                            
+        this.setDebugFilters(this.filters);
+      }        
+    },
+  },  
   methods:{
-
+    ...mapActions(['setDebugFilters']),
     toggleMobileView() {
       this.mobileNav = !this.mobileNav;
     },
@@ -64,7 +131,12 @@ export default {
       this.mobileNav = false;
       return;
     }
-  }
+  },
+  created() {
+    this.checkScreen();
+  },
+  mounted(){    
+  },
 };
 </script>
 

@@ -2,8 +2,10 @@
     <div class="row scores-detail" v-if="item.Scores.length">
       <div class="col-12">
         <div class="row" v-bind:style="{minHeight: viewModeFull?'30px':'0px'}">
+          <div v-if="debug" class="col-12 detail pr-0 text-left">
+            {{`${JSON.stringify(item)}`}}
+          </div>
           <div class="col-5 col-md-5  text-left detail pr-0">
-            <!-- {{`${JSON.stringify(item)}`}} -->
             <!-- {{`${JSON.stringify(item.Header)}`}} -->
           </div>
           <div class="col-7 col-md-7 text-right">
@@ -73,6 +75,7 @@
                   :animate_score="animate_score_a"
                   :getTooltipContent="getTooltipContent"
                   type="Away"
+                  :item="item"
                 />
               </template>
             </div>
@@ -97,6 +100,7 @@
                   :animate_score="animate_score_b"
                   :getTooltipContent="getTooltipContent"
                   type="Home"
+                  :item="item"
                 />
               </template>
             </div>
@@ -121,10 +125,10 @@
       components: {SubRowScore,IconGrade,IconExclamation},
       data () {
         return {
-          loading: false
+          loading: false,
         }
       },      
-      props:['item','viewModeFull','animate_score_a','animate_score_b'],
+      props:['item','viewModeFull','animate_score_a','animate_score_b','debug'],
       computed:{
         sortedScores(){
           const item = toRaw(this.item);

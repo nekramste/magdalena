@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="col-12">
-        <ScoreDetail :item="item" :viewModeFull="viewModeFull" :animate_score_a="animate_score_a" :animate_score_b="animate_score_b"/>
+        <ScoreDetail :item="item" :viewModeFull="viewModeFull" :animate_score_a="animate_score_a" :animate_score_b="animate_score_b" :debug="debug"/>
       </div>
     </div>
 </template>
@@ -61,10 +61,10 @@
         return {       
           animate_score_a: false,
           animate_score_b: false,
-          hide_detail: false
+          hide_detail: false,          
         }
       },
-      props:['item','isOnMobile','viewModeFull'],
+      props:['item','isOnMobile','viewModeFull','debug'],
       watch: {
         item(newValue, oldValue) {
           if(newValue !== oldValue){            

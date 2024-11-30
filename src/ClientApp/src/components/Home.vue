@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <div class="container-fluid" style="padding-left:0px;">      
-      <div class="row" style="height:60px;">
+    <div class="container-fluid" style="padding-left:0px;">
+      <div class="row" v-bind:style="{height: debug?'140px':'60px'}">
         <div class="col-12" style="text-align: left;">
           <Navigation :user="user" :selected="selected" :isOnMobile="isOnMobile" :alive="alive">
             <template v-slot:connected>
@@ -24,14 +24,14 @@
         </div>
       </div>
       <div class="row" style="padding: 0px 20px 0px 20px;">
-        <div v-bind:class="{
-                            'col-xl-4 col-lg-6 col-md-6':viewModeFull,
-                            'col-xl-3 col-lg-4 col-md-6':!viewModeFull,
+        <div v-bind:class="{'col-12': debug,
+                            'col-xl-4 col-lg-6 col-md-6': !debug && viewModeFull,
+                            'col-xl-3 col-lg-4 col-md-6': !debug && !viewModeFull,
                             }" class="col-12" v-for="(subitem, index_) in filteredScores" :index="index_" :key="index_">
-          <Score v-if="subitem" :item="subitem" :isOnMobile="isOnMobile_" :viewModeFull="viewModeFull"/>
+          <Score v-if="subitem && debugFilter(subitem.Header,subitem)" :item="subitem" :isOnMobile="isOnMobile_" :viewModeFull="viewModeFull" :debug="debug"/>
         </div>        
       </div>
-    </div>
+    </div>    
   </div>
 </template>
 
@@ -43,6 +43,7 @@ import Navigation from './Menu/Navigation.vue';
 import ConnectedSection from './connected-section';
 import ViewModeButton from './view-mode-button';
 import FilterDropDown from './FilterDropDownInput/FilterComponent.vue';
+import config from '../common/config'
 
 const constants = {MOBILE_SIZE:991.98, MOBILE_SIZE_XSM:415, MOBILE_SIZE_SM:505, SIZE_LG:992, SIZE_XL:1200 }
 
@@ -63,7 +64,10 @@ export default {
         isOnXL_: false,
 
         dataFilter: [{name:'LIVE'}],
-        sportFilters: []
+        sportFilters: [],
+
+        debug: config.IS_DEBUG_MODE,
+        messages: '',
       }
     },
 
@@ -75,7 +79,8 @@ export default {
         selectedSports: state => state.selectedSports,
         user: state => state.user,
         alive: state => state.alive,
-        viewModeFull: state => state.viewModeFull
+        viewModeFull: state => state.viewModeFull,
+        debugFilters: state => state.debugFilters
       }),
       sportsID_Filter() {
         return [{name: 'Sport', list: this.getSports() }]
@@ -95,7 +100,25 @@ export default {
     },
    
     methods: {
-      ...mapActions(['initScoresQueue']),
+      ...mapActions(['initScoresQueue','debugFilters']),
+      compareLike(content,toSearh){
+        return (content.toLowerCase().indexOf(toSearh.toLowerCase()) > -1);
+      },
+      debugFilter(header,item){
+        let show = this.debug?
+            ((((!this.debugFilters.EventNumber) || (this.debugFilters.EventNumber === 0)) || (header.EventNumber == this.debugFilters.EventNumber)) &&
+             (((!this.debugFilters.ExternalGameNumber) || (this.debugFilters.ExternalGameNumber === 0)) || (header.ExternalGameNumber === this.debugFilters.ExternalGameNumber)) &&
+             (((!this.debugFilters.Source) || (this.debugFilters.Source.trim() === '')) || (header.Source.toLowerCase() === this.debugFilters.Source.toLowerCase())) &&
+             (((!this.debugFilters.TeamAway) || (this.debugFilters.TeamAway.trim() === '')) || (this.compareLike(item.Participants.Away.Name, this.debugFilters.TeamAway.trim()))) && 
+             (((!this.debugFilters.TeamHome) || (this.debugFilters.TeamHome.trim() === '')) || (this.compareLike(item.Participants.Home.Name, this.debugFilters.TeamHome.trim())))
+            ) : true;
+        if(show && this.debug){
+          this.messages = JSON.stringify(item);
+        }else{
+          this.messages = "";
+        }
+        return show;
+      },      
       getSelectedSportsFilter(item){
         if((this.selectedSports.length === 0) || (this.selectedSports.length === this.sports.length)){
           return true;
