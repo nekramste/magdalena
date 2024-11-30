@@ -15,10 +15,12 @@
           <div class="col-6" v-bind:style="{minHeight: viewModeFull?'40px':'0px'}">
             <div class="float-right" style="display: inline-flex;">
               <span style="font-size: 12px; min-height: 0px;" v-if="!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)">
-                <Timer v-if="end" :intervalTime="countDownTime" :displayMinutes="displayMinutes" :displaySeconds="displaySeconds" :date="end" @onFinish="hideDetail"/>
+                <Timer v-if="finalDateTime" :initialTime="initialTime" :intervalTime="countDownTime" :increase="isSoccer()" :date="finalDateTime" @onFinish="hideDetail" @onUpdateTimerDisplay="refreshTimeToDisplay"/>
               </span>
-              <span v-if="!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-period">
-                {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{hide_detail?'':item.Detail}}
+              <span v-if="(!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)) &&
+                           !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isSoccer())"
+                    class="score-period">
+                {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{`${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay:''}`}}
               </span>              
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final">
                 <span>{{ 'Final' }}</span>
@@ -74,9 +76,11 @@
           animate_score_b: false,
           hide_detail: false,
           countDownTime: WAIT_SECONDS_TO_HIDE_DETAIL,
-          end: null,
+          finalDateTime: null,
           displayMinutes: null,
-          displaySeconds: null, 
+          displaySeconds: null,
+          initialTime: null,
+          dateTimeToDisplay: null,
           useDifferentWaitingTimeForSoccer: config.USE_DIFFERENT_WAITING_TIME_SOCCER         
         }
       },
@@ -98,17 +102,18 @@
               
               if(this.item.Header.EventNumber === 0){
                 if(newValue.CurrentScore.Away.Score !== oldValue.CurrentScore.Away.Score){                
-                  this.startAnimation('AWAY');
+                  this.startAnimationA('AWAY');
                 }
                 if(newValue.CurrentScore.Home.Score !== oldValue.CurrentScore.Home.Score){                
-                  this.startAnimation('HOME');
+                  this.startAnimationB('HOME');
                 }
               }else{
-                if(newValue.Scores[0].Away.Score !== oldValue.Scores[0].Away.Score){                
-                  this.startAnimation('AWAY');
+                let periodNumber = 0;
+                if(newValue.Scores[periodNumber].Away.Score !== oldValue.Scores[periodNumber].Away.Score){                
+                  this.startAnimationA('AWAY');
                 }
-                if(newValue.Scores[0].Home.Score !== oldValue.Scores[0].Home.Score){                
-                  this.startAnimation('HOME');
+                if(newValue.Scores[periodNumber].Home.Score !== oldValue.Scores[periodNumber].Home.Score){                
+                  this.startAnimationB('HOME');
                 }
               }
             }
@@ -117,6 +122,9 @@
       },
       
       methods: {
+        refreshTimeToDisplay(dateTime){
+          this.dateTimeToDisplay = dateTime;
+        },
         isSoccer(){
           return (this.item.Header.SportType.toLowerCase().indexOf("soccer")>-1);
         },
@@ -129,16 +137,17 @@
         },
         async restartCountDown(item){
           this.setCountDownTime();
-          this.end=null;
+          this.finalDateTime=null;
           await new Promise(resolve => setTimeout(resolve, 100));
           var newDate = new Date();
           if(item.Detail){
             let detailParts = item.Detail.split(':');
             if(detailParts.length === 2){
               newDate.setSeconds(newDate.getSeconds() + this.countDownTime);
+              this.initialTime = { minutes: detailParts[0], seconds: detailParts[1] };
             }
           }
-          this.end=newDate;
+          this.finalDateTime=newDate;
         },
         hideDetail(){
           this.hide_detail = true;          
@@ -146,7 +155,12 @@
         isFinal(item){
           return ((item.Scores && (item.Scores.length>0) && item.Scores[0].IsFinal));
         },
-        async startAnimation(type){          
+        async startAnimationA(type){
+          this.evaluateAnimation(type,true);
+          await new Promise(resolve => setTimeout(resolve, WAIT_SECONDS_ANIMATION*1000)); 
+          this.resetAnimation(type);          
+        },
+        async startAnimationB(type){
           this.evaluateAnimation(type,true);
           await new Promise(resolve => setTimeout(resolve, WAIT_SECONDS_ANIMATION*1000)); 
           this.resetAnimation(type);          
