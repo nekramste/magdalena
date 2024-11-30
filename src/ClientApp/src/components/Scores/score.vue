@@ -13,12 +13,20 @@
             </div>
           </div>
           <div class="col-6" v-bind:style="{minHeight: viewModeFull?'40px':'0px'}">
-            <span v-if="!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-period float-right">
-              {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{hide_detail?'':item.Detail}}
-            </span>
-            <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final float-right">
-              <span>{{ 'Final' }}</span>
-            </span>
+            <div class="float-right" style="display: inline-flex;">
+              <span style="font-size: 12px; min-height: 0px;" v-if="!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)">
+                <Timer v-if="end" :intervalTime="countDownTime" :displayMinutes="displayMinutes" :displaySeconds="displaySeconds" :date="end" @onFinish="hideDetail"/>
+              </span>
+              <span v-if="!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-period">
+                {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{hide_detail?'':item.Detail}}
+              </span>              
+              <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final">
+                <span>{{ 'Final' }}</span>
+              </span>
+              <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isSoccer())" class="score-final">
+                <span>{{ 'HALFTIME' }}</span>
+              </span>
+            </div>
           </div>
         </div>
         <div v-if="viewModeFull" class="row" style="height:60px;">
@@ -51,69 +59,98 @@
 
 <script>
     import ScoreDetail from './Detail/score-detail';
+    import Timer from './Timer.vue';
+    import config from '../../common/config';
 
     const WAIT_SECONDS_ANIMATION = 15;
-    const WAIT_SECONDS_TO_HIDE_DETAIL = 90;
+    const WAIT_SECONDS_TO_HIDE_DETAIL = 30;
+    const WAIT_SECONDS_TO_HIDE_DETAIL_SOCCER = 45;
 
     export default {
-      components: {ScoreDetail},
+      components: {ScoreDetail,Timer},
       data () {
-        return {       
+        return {
           animate_score_a: false,
           animate_score_b: false,
-          hide_detail: false,          
+          hide_detail: false,
+          countDownTime: WAIT_SECONDS_TO_HIDE_DETAIL,
+          end: null,
+          displayMinutes: null,
+          displaySeconds: null, 
+          useDifferentWaitingTimeForSoccer: config.USE_DIFFERENT_WAITING_TIME_SOCCER         
         }
       },
       props:['item','isOnMobile','viewModeFull','debug'],
       watch: {
+
         item(newValue, oldValue) {
-          if(newValue !== oldValue){            
-                                    
-            this.setTimerToHide();            
+          if(newValue !== oldValue){                                                          
 
             if(newValue.Header.EventNumber === oldValue.Header.EventNumber &&
               newValue.Header.ExternalGameNumber === oldValue.Header.ExternalGameNumber &&
               newValue.Header.Source === oldValue.Header.Source &&
               newValue.Header.SportSubType === oldValue.Header.SportSubType &&
               newValue.Header.SportType === oldValue.Header.SportType){
+
+              if(newValue.Detail !== oldValue.Detail){
+                this.restartCountDown(this.item);
+              }
               
               if(this.item.Header.EventNumber === 0){
-
                 if(newValue.CurrentScore.Away.Score !== oldValue.CurrentScore.Away.Score){                
                   this.startAnimation('AWAY');
                 }
                 if(newValue.CurrentScore.Home.Score !== oldValue.CurrentScore.Home.Score){                
                   this.startAnimation('HOME');
                 }
-
               }else{
-
                 if(newValue.Scores[0].Away.Score !== oldValue.Scores[0].Away.Score){                
                   this.startAnimation('AWAY');
                 }
                 if(newValue.Scores[0].Home.Score !== oldValue.Scores[0].Home.Score){                
                   this.startAnimation('HOME');
                 }
-
               }
             }
           } 
         }
       },
       
-      methods: { 
+      methods: {
+        isSoccer(){
+          return (this.item.Header.SportType.toLowerCase().indexOf("soccer")>-1);
+        },
+        setCountDownTime(){
+          if(this.isSoccer() && this.useDifferentWaitingTimeForSoccer){
+            this.countDownTime = WAIT_SECONDS_TO_HIDE_DETAIL_SOCCER;
+          }else{
+            this.countDownTime = WAIT_SECONDS_TO_HIDE_DETAIL;
+          }
+        },
+        async restartCountDown(item){
+          this.setCountDownTime();
+          this.end=null;
+          await new Promise(resolve => setTimeout(resolve, 100));
+          var newDate = new Date();
+          if(item.Detail){
+            console.log(item.Detail);
+            let detailParts = item.Detail.split(':');
+            if(detailParts.length === 2){
+              newDate.setSeconds(newDate.getSeconds() + this.countDownTime);
+            }
+          }
+          this.end=newDate;
+        },
+        hideDetail(){
+          this.hide_detail = true;          
+        },
         isFinal(item){
-          return ((item.Scores && item.Scores.length>0 && item.Scores[0].IsFinal));
+          return ((item.Scores && (item.Scores.length>0) && item.Scores[0].IsFinal));
         },
         async startAnimation(type){          
           this.evaluateAnimation(type,true);
           await new Promise(resolve => setTimeout(resolve, WAIT_SECONDS_ANIMATION*1000)); 
           this.resetAnimation(type);          
-        },
-        async setTimerToHide(){
-          this.hide_detail = false;
-          await new Promise(resolve => setTimeout(resolve, WAIT_SECONDS_TO_HIDE_DETAIL*1000)); 
-          this.hide_detail = true;
         },
         resetAnimation(type){
           this.evaluateAnimation(type,false);
@@ -164,16 +201,15 @@
               iconName = "sport icon-simulation";
             }else{
               iconName = "fa-folder";
-            }  
-
+            }
           }
-          
           return iconName;
         }        
-      },      
+      },
+      created () {
+      },
       mounted() {
-        this.setTimerToHide();
-        //console.log(this.item)
+        this.setCountDownTime();
       }
     }
 </script>
