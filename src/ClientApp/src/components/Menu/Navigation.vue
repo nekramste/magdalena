@@ -1,43 +1,79 @@
 <template>
   <header :class="{'scrolled-nav': scrolledNav }">
     <div v-if="debug" class="container">
-      <div class="row" style="height:70px; padding: 10px;">
-        <div class="col-12">
-          <div class="row">
-            <div class="col-2" style="text-align: left;">
-              <span style="color:white;">Event Number</span>
+      <div class="row" style="height:auto; padding: 10px;">
+        
+            <div class="col-6 col-md-6 col-lg-2" style="text-align: left;">
+              <div class="row">
+                <div class="col-12">
+                  <span style="color:white;">Event Number</span>
+                </div>
+                <div class="col-12" style="text-align: left;">
+                  <input style="width: 100%;" type="number" v-model="filters.EventNumber">
+                </div>
+              </div>
             </div>
-            <div class="col-2" style="text-align: left;">
-              <span style="color:white;">ExternalGameNumber</span>              
+            <div class="col-6 col-md-6 col-lg-2" style="text-align: left;">              
+              <div class="row">
+                <div class="col-12">
+                  <span style="color:white;">Ext.Game# </span>
+                </div>
+                <div class="col-12" style="text-align: left;">
+                  <input style="width: 100%;" type="number" v-model="filters.ExternalGameNumber">
+                </div>
+              </div>
             </div>
-            <div class="col-2" style="text-align: left;">
-              <span style="color:white;">Source</span>              
+            <div class="col-12 col-md-12 col-lg-2" style="text-align: left;">
+              <div class="row">
+                <div class="col-12">
+                  <span style="color:white;">Source</span>
+                </div>
+                <div class="col-12" style="text-align: left;">
+                  <input style="width: 100%;" type="text" v-model="filters.Source">
+                </div>
+              </div>
             </div>
-            <div class="col-2" style="text-align: left;">
-              <span style="color:white;">Team Away</span>              
+            <div class="col-6 col-md-6 col-lg-1" style="text-align: left;">
+              <div class="row">
+                <div class="col-12">
+                  <span style="color:white;">Rot.A</span>
+                </div>
+                <div class="col-12" style="text-align: left;">
+                  <input style="width: 100%;" type="number" v-model="filters.RotationAway">
+                </div>
+              </div>
             </div>
-            <div class="col-2" style="text-align: left;">
-              <span style="color:white;">Team Home</span>
+            <div class="col-6 col-md-6 col-lg-2" style="text-align: left;">
+              <div class="row">
+                <div class="col-12">
+                  <span style="color:white;">Team Away</span>
+                </div>
+                <div class="col-12" style="text-align: left;">
+                  <input style="width: 100%;" type="text" v-model="filters.TeamAway">
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-2" style="text-align: left;">              
-              <input type="number" v-model="filters.EventNumber">
+            <div class="col-6 col-md-6 col-lg-1" style="text-align: left;">
+              <div class="row">
+                <div class="col-12">
+                  <span style="color:white;">Rot.H</span>
+                </div>
+                <div class="col-12" style="text-align: left;">
+                  <input style="width: 100%;" type="number" v-model="filters.RotationHome">
+                </div>
+              </div>
             </div>
-            <div class="col-2" style="text-align: left;">              
-              <input type="number" v-model="filters.ExternalGameNumber">
+            <div class="col-6 col-md-6 col-lg-2" style="text-align: left;">
+              <div class="row">
+                <div class="col-12">
+                  <span style="color:white;">Team Home</span>
+                </div>
+                <div class="col-12" style="text-align: left;">
+                  <input style="width: 100%;" type="text" v-model="filters.TeamHome">
+                </div>
+              </div>
             </div>
-            <div class="col-2" style="text-align: left;">
-              <input type="text" v-model="filters.Source">
-            </div>
-            <div class="col-2" style="text-align: left;">
-              <input type="text" v-model="filters.TeamAway">
-            </div>
-            <div class="col-2" style="text-align: left;">
-              <input type="text" v-model="filters.TeamHome">
-            </div>
-          </div>
-        </div>
+          
       </div>
     </div>
     <nav style="height: 60px;">
@@ -81,7 +117,7 @@ export default {
       mobileNav: false,
       windowWidth: null,
       debug: config.IS_DEBUG_MODE,
-      filters: {EventNumber: 0, ExternalGameNumber: 0, Source: '', TeamAway: '', TeamHome: ''},
+      filters: {EventNumber: 0, ExternalGameNumber: 0, Source: '', TeamAway: '', TeamHome: '', RotationAway: 0, RotationHome: 0},
     }
   },
   props: ['user','selected','isOnMobile','alive'],  
@@ -107,6 +143,16 @@ export default {
       }        
     },
     'filters.TeamHome'(newValue, oldValue) {      
+      if(newValue !== oldValue){                            
+        this.setDebugFilters(this.filters);
+      }        
+    },
+    'filters.RotationAway'(newValue, oldValue) {      
+      if(newValue !== oldValue){                            
+        this.setDebugFilters(this.filters);
+      }        
+    },
+    'filters.RotationHome'(newValue, oldValue) {      
       if(newValue !== oldValue){                            
         this.setDebugFilters(this.filters);
       }        

@@ -57,7 +57,7 @@ export default createStore({
 
         started: false,
 
-        debugFilters: {EventNumber: 0, ExternalGameNumber: 0, Source: '', TeamAway: '', TeamHome: ''},
+        debugFilters: {EventNumber: 0, ExternalGameNumber: 0, Source: '', TeamAway: '', TeamHome: '', RotationAway: 0, RotationHome: 0},
 
         retryAttempts: 0
 
@@ -81,9 +81,14 @@ export default createStore({
 
             if(config.IS_DEBUG_MODE){
 
+              //console.log(state.debugFilters)
+              //console.log(score.Participants.Away.Rotation)
+
               let show = 
                 ((((!state.debugFilters.EventNumber) || (state.debugFilters.EventNumber === 0)) || (score.Header.EventNumber == state.debugFilters.EventNumber)) &&
                 (((!state.debugFilters.ExternalGameNumber) || (state.debugFilters.ExternalGameNumber === 0)) || (score.Header.ExternalGameNumber === state.debugFilters.ExternalGameNumber)) &&
+                (((!state.debugFilters.RotationAway) || (state.debugFilters.RotationAway === 0)) || (score.Participants.Away.Rotation === state.debugFilters.RotationAway)) &&
+                (((!state.debugFilters.RotationHome) || (state.debugFilters.RotationHome === 0)) || (score.Participants.Home.Rotation === state.debugFilters.RotationHome)) &&
                 (((!state.debugFilters.Source) || (state.debugFilters.Source.trim() === '')) || (score.Header.Source.toLowerCase() === state.debugFilters.Source.toLowerCase()))
                 //(((!state.debugFilters.TeamAway) || (state.debugFilters.TeamAway.trim() === '')) || (this.compareLike(item.Participants.Away.Name, state.debugFilters.TeamAway.trim()))) && 
                 //(((!state.debugFilters.TeamHome) || (state.debugFilters.TeamHome.trim() === '')) || (this.compareLike(item.Participants.Home.Name, state.debugFilters.TeamHome.trim())))
@@ -92,7 +97,8 @@ export default createStore({
               if(show){
                   console.log(`FilteredScore for: ${score.Header.EventNumber}`);
                   console.log(`Description: ${score.CurrentScore.Period.Description}`);                
-                  console.log(`Detail     : ${score.Detail}`);                  
+                  console.log(`Detail     : ${score.Detail}`);
+                  console.log(JSON.stringify(score));
               }
             }
 
@@ -133,7 +139,7 @@ export default createStore({
 
                 if(!(index_graded>=0)){  
                   if(score.Header.EventNumber > 0){                  
-                    let condition = (score.Scores && score.Scores[0].IsFinal)                
+                    let condition = (score.Scores && (score.Scores.length>0) && score.Scores[0].IsFinal)                
                     score['toDelete'] = condition;
                     score['remainingTimeToDelete'] = (score['remainingTimeToDelete'] && score['remainingTimeToDelete']>=0)? score['remainingTimeToDelete']:MINUTES_TO_DELETE;
                   }else{
@@ -159,7 +165,7 @@ export default createStore({
                 }
               }else{            
                 if(score.Header.EventNumber > 0){
-                  let condition = (score.Scores && score.Scores.length>0 && score.Scores[0].IsFinal);
+                  let condition = (score.Scores && (score.Scores.length>0) && score.Scores[0].IsFinal);
                   score['toDelete'] = condition;
                   score['remainingTimeToDelete'] = condition?MINUTES_TO_DELETE:0;
                 }else{

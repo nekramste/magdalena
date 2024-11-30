@@ -3,7 +3,10 @@
       <div class="col-12">
         <div class="row" v-bind:style="{minHeight: viewModeFull?'30px':'0px'}">
           <div v-if="debug" class="col-12 detail pr-0 text-left">
-            {{`${JSON.stringify(item)}`}}
+            <span ref="msg"> {{`${JSON.stringify(item)}`}} </span>
+            <button style="margin-left: 10px; padding: 10px; border-radius: 15px; font-weight: bold;" @click="copy(`${JSON.stringify(item)}`)">
+              Copy Message
+            </button>
           </div>
           <div class="col-5 col-md-5  text-left detail pr-0">
             <!-- {{`${JSON.stringify(item.Header)}`}} -->
@@ -112,7 +115,8 @@
 
 <script>
     
-    import { toRaw } from "vue";
+    import { ref, toRaw } from "vue";
+    import { useClipboard } from '@vueuse/core';
 
     import IconGrade from './icon-grade.vue';
     import IconExclamation from './icon-exclamation.vue';
@@ -120,6 +124,9 @@
     import moment from 'moment';
     import "moment-timezone";
     import helpers from '../../../common/helpers.js'
+
+    const source = ref('msg')
+    const { copy } = useClipboard({ source });
 
     export default {
       components: {SubRowScore,IconGrade,IconExclamation},
@@ -158,6 +165,9 @@
         }
       },
       methods: {
+        copy(data){
+          copy(data);
+        },
         getDateTimeFormattedWithTodayHandling(date){
           const format = 'ddd, MMM DD. hh:mm A';
           const separator = '.'

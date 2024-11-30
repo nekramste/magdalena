@@ -108,6 +108,8 @@ export default {
         let show = this.debug?
             ((((!this.debugFilters.EventNumber) || (this.debugFilters.EventNumber === 0)) || (header.EventNumber == this.debugFilters.EventNumber)) &&
              (((!this.debugFilters.ExternalGameNumber) || (this.debugFilters.ExternalGameNumber === 0)) || (header.ExternalGameNumber === this.debugFilters.ExternalGameNumber)) &&
+             (((!this.debugFilters.RotationAway) || (this.debugFilters.RotationAway === 0)) || (item.Participants.Away.Rotation === this.debugFilters.RotationAway)) &&
+             (((!this.debugFilters.RotationHome) || (this.debugFilters.RotationHome === 0)) || (item.Participants.Home.Rotation === this.debugFilters.RotationHome)) &&
              (((!this.debugFilters.Source) || (this.debugFilters.Source.trim() === '')) || (header.Source.toLowerCase() === this.debugFilters.Source.toLowerCase())) &&
              (((!this.debugFilters.TeamAway) || (this.debugFilters.TeamAway.trim() === '')) || (this.compareLike(item.Participants.Away.Name, this.debugFilters.TeamAway.trim()))) && 
              (((!this.debugFilters.TeamHome) || (this.debugFilters.TeamHome.trim() === '')) || (this.compareLike(item.Participants.Home.Name, this.debugFilters.TeamHome.trim())))
