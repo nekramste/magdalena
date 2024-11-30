@@ -133,7 +133,6 @@
           await new Promise(resolve => setTimeout(resolve, 100));
           var newDate = new Date();
           if(item.Detail){
-            console.log(item.Detail);
             let detailParts = item.Detail.split(':');
             if(detailParts.length === 2){
               newDate.setSeconds(newDate.getSeconds() + this.countDownTime);
