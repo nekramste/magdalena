@@ -18,14 +18,14 @@
                 <Timer v-if="finalDateTime" :initialTime="initialTime" :intervalTime="countDownTime" :increase="isSoccer()" :date="finalDateTime" @onFinish="hideDetail" @onUpdateTimerDisplay="refreshTimeToDisplay"/>
               </span>
               <span v-if="(!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)) &&
-                           !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isSoccer())"
+                           !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())"
                     class="score-period">
                 {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{ showDetail? (item.Detail + ' - '):'' }} {{`${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay: showIfNotTime(item.Detail)}`}}
               </span>              
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final">
                 <span>{{ 'Final' }}</span>
               </span>
-              <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isSoccer())" class="score-final">
+              <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())" class="score-final">
                 <span>{{ 'HALFTIME' }}</span>
               </span>
             </div>
@@ -96,10 +96,8 @@
               newValue.Header.Source === oldValue.Header.Source &&
               newValue.Header.SportSubType === oldValue.Header.SportSubType &&
               newValue.Header.SportType === oldValue.Header.SportType){
-
-              //if(newValue.Detail !== oldValue.Detail){
-                this.restartCountDown(this.item);
-              //}
+              
+              this.restartCountDown(this.item);
               
               if(this.item.Header.EventNumber === 0){
                 if(newValue.CurrentScore.Away.Score !== oldValue.CurrentScore.Away.Score){                
@@ -135,10 +133,17 @@
           return '';
         },
         refreshTimeToDisplay(dateTime){
-          this.dateTimeToDisplay = dateTime;
+          if(this.isSoccer()){
+            this.dateTimeToDisplay = dateTime;
+          }else{
+            this.dateTimeToDisplay = this.item.Detail?this.item.Detail:'';
+          }
         },
         isSoccer(){
           return (this.item.Header.SportType.toLowerCase().indexOf("soccer")>-1);
+        },
+        isNotBaseballHockey(){
+          return !((this.item.Header.SportType.toLowerCase().indexOf("baseballl")>-1) || (this.item.Header.SportType.toLowerCase().indexOf("hockey")>-1));
         },
         setCountDownTime(){
           if(this.isSoccer() && this.useDifferentWaitingTimeForSoccer){
@@ -149,17 +154,18 @@
         },
         async restartCountDown(item){
           this.hide_detail = false;
+          this.finalDateTime = null;          
+          this.initialTime = { minutes: 0, seconds: 0 };
+          this.setCountDownTime();
+          await new Promise(resolve => setTimeout(resolve, 500));
           if(item.Detail){
             let detailParts = item.Detail.split(':');
             if(detailParts.length === 2){
-              await new Promise(resolve => setTimeout(resolve, 100));
               var newDate = new Date();
-              this.setCountDownTime();
-              this.finalDateTime=null;
               newDate.setSeconds(newDate.getSeconds() + this.countDownTime);
               this.initialTime = { minutes: detailParts[0], seconds: detailParts[1] };
               this.finalDateTime=newDate;
-            }            
+            }
           }
         },
         hideDetail(){
@@ -237,6 +243,7 @@
       },
       mounted() {
         this.setCountDownTime();
+        this.restartCountDown(this.item);
       }
     }
 </script>
