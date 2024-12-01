@@ -148,20 +148,22 @@
           }
         },
         async restartCountDown(item){
-          this.setCountDownTime();
-          this.finalDateTime=null;
-          await new Promise(resolve => setTimeout(resolve, 100));
-          var newDate = new Date();
+          this.hide_detail = false;
           if(item.Detail){
             let detailParts = item.Detail.split(':');
             if(detailParts.length === 2){
+              await new Promise(resolve => setTimeout(resolve, 100));
+              var newDate = new Date();
+              this.setCountDownTime();
+              this.finalDateTime=null;
               newDate.setSeconds(newDate.getSeconds() + this.countDownTime);
               this.initialTime = { minutes: detailParts[0], seconds: detailParts[1] };
-            }
+              this.finalDateTime=newDate;
+            }            
           }
-          this.finalDateTime=newDate;
         },
         hideDetail(){
+          this.finalDateTime = null;
           this.hide_detail = true;          
         },
         isFinal(item){

@@ -1,6 +1,6 @@
 const isProduction = 1;
 const debugMode = 0;
-const showTimer = 1;
+const showTimer = 0;
 const useDifferentWaitingTimeForSoccer = 1;
 const showDetailDebug = 0;
 

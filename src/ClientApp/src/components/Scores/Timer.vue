@@ -1,6 +1,6 @@
 <template>
     <span style="color:white !important; padding-right: 5px; min-height: 0px;">      
-      <!-- <template v-if="displayTime">{{`${secondCount>0?secondCount:0}`}}</template> -->
+      <template v-if="displayTime">{{`${secondCount>0?secondCount:0}`}}</template>
       <!-- <template v-if="initialTime && !finish">{{`${timeToDisplay}`}}</template> -->
     </span>
   </template>
