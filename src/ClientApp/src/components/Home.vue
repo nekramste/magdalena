@@ -56,7 +56,7 @@ export default {
     data() {
       return {
         /* buttons: ['ALL','LIVE','UNMATCH','GRADED'], */
-        buttons: ['LIVE','UNMATCH','GRADED'],
+        buttons: ['LIVE','GRADED'],
         selected: 'LIVE',
         isOnMobile_: false,
         isOnMobileSM_: false,

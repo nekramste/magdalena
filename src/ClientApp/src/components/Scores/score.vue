@@ -140,7 +140,11 @@
           }
         },
         isSoccer(){
-          return (this.item.Header.SportType.toLowerCase().indexOf("soccer")>-1);
+          if(this.item && !Object.hasOwn(this.item, 'Header') && !Object.hasOwn(this.item, 'SportType')){
+            return (this.item.Header.SportType.toLowerCase().indexOf("soccer")>-1);
+          }else{
+            return false;
+          }
         },
         isNotBaseballHockey(){
           return !((this.item.Header.SportType.toLowerCase().indexOf("baseballl")>-1) || (this.item.Header.SportType.toLowerCase().indexOf("hockey")>-1));

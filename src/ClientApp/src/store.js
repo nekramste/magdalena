@@ -179,8 +179,9 @@ export default createStore({
             if(!(state.sports.findIndex(sport => score.Header.SportType === sport)>-1)){
               if(score.Header.SportType){
                 state.sports.push(score.Header.SportType);
+                state.sports.sort();
               }
-            }        
+            }
 
           }else{ 
             // FIRST CONNECTION
@@ -224,6 +225,7 @@ export default createStore({
             }
           }
         })
+        state.sports.sort();
       },
       async startCleaner({dispatch,state}) {        
         while (state.keep_checking) {
