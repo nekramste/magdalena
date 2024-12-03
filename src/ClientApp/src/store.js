@@ -215,7 +215,17 @@ export default createStore({
       setReceivedScore ({ commit }, obj) {
         commit(SCORES, obj)
       },
-      async startCleaner({ state }) {        
+      refreshSports({ state }){
+        state.scores_all.forEach(score => {
+          state.sports = [];
+          if(!(state.sports.findIndex(sport => score.Header.SportType === sport)>-1)){
+            if(score.Header.SportType){
+              state.sports.push(score.Header.SportType);
+            }
+          }
+        })
+      },
+      async startCleaner({dispatch,state}) {        
         while (state.keep_checking) {
           await new Promise(resolve => setTimeout(resolve, CHECK_EVERY_MINUTES*60*1000));     
           let index = 0;
@@ -227,6 +237,7 @@ export default createStore({
               /* console.log('se borra por status')
               console.log(element) */
               state.scores_all.splice(index,1);
+              dispatch('refreshSports');
             }
             
             if(element.toDeleteWithDate && moment(moment().format()).isAfter(moment(element.dateToDelete).format())){
@@ -234,6 +245,7 @@ export default createStore({
               console.log(element)
               console.log(moment(element.dateToDelete).isAfter(moment().format())) */
               state.scores_all.splice(index,1);
+              dispatch('refreshSports');
             }
 
             index++;
