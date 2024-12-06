@@ -3,6 +3,7 @@ const debugMode = 0;
 const showTimer = 0;
 const useDifferentWaitingTimeForSoccer = 1;
 const showDetailDebug = 0;
+const showDeleteButton = 0;
 
 const API_ROUTE_DEVELOPMENT ='http://localhost:5000';
 const API_ROUTE_PRODUCTION = 'https://agadmin.sport.local';
@@ -17,5 +18,6 @@ export default {
     IS_DEBUG_MODE: debugMode,
     SHOW_TIMER: showTimer,
     USE_DIFFERENT_WAITING_TIME_SOCCER: useDifferentWaitingTimeForSoccer,
-    SHOW_DETAIL_DEBUG: showDetailDebug
+    SHOW_DETAIL_DEBUG: showDetailDebug,
+    SHOW_DELETE_ICON: showDeleteButton
 }

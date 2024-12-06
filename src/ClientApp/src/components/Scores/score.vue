@@ -28,7 +28,7 @@
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())" class="score-final">
                 <span>{{ 'HALFTIME' }}</span>
               </span>
-              <button @click="deleteScore(item.Header)">X</button>
+              <button v-if="showCloseButton" @click="deleteScore(item.Header)">X</button>
             </div>
           </div>
         </div>
@@ -90,7 +90,8 @@
           initialTime: null,
           dateTimeToDisplay: null,
           useDifferentWaitingTimeForSoccer: config.USE_DIFFERENT_WAITING_TIME_SOCCER,
-          showDetail: config.SHOW_DETAIL_DEBUG
+          showDetail: config.SHOW_DETAIL_DEBUG,
+          showCloseButton: config.SHOW_DELETE_ICON
         }
       },
       props:['item','isOnMobile','viewModeFull','debug'],

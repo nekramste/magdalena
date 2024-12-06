@@ -56,8 +56,8 @@ export default {
   components: {Score,Navigation,ConnectedSection,FilterDropDown,ViewModeButton},
     data() {
       return {
-        buttons: ['ALL','LIVE','UNMATCH','GRADED'],
-        //buttons: ['LIVE','GRADED'],
+        //buttons: ['ALL','LIVE','UNMATCH','GRADED'],
+        buttons: ['LIVE','GRADED'],
         selected: 'LIVE',
         isOnMobile_: false,
         isOnMobileSM_: false,
