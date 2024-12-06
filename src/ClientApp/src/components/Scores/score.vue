@@ -5,7 +5,7 @@
           <div class="col-6 text-left league">
             <div class="row">
               <div class="col-4 col-sm-2 col-md-3 col-lg-3 pr-0 text-left">
-                <div style="display: table-cell;" :class="searchIcon(item.Header.SportType)"></div> 
+                <div style="display: table-cell; cursor:pointer;" @click="copy(`${JSON.stringify(item.Header)}`)" :class="searchIcon(item.Header.SportType)"></div> 
               </div>
               <div class="col-8 col-sm-8 col-md-9 col-lg-9 px-0 text-left sportSybType ellipsis">
                 <span> {{item.Header.SportSubType}} </span>
@@ -28,6 +28,7 @@
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())" class="score-final">
                 <span>{{ 'HALFTIME' }}</span>
               </span>
+              <button @click="deleteScore(item.Header)">X</button>
             </div>
           </div>
         </div>
@@ -60,13 +61,20 @@
 </template>
 
 <script>
+
+    import { ref } from "vue";
+    import { useClipboard } from '@vueuse/core';
     import ScoreDetail from './Detail/score-detail';
     import Timer from './Timer.vue';
     import config from '../../common/config';
+    import { mapActions } from 'vuex';
 
     const WAIT_SECONDS_ANIMATION = 15;
     const WAIT_SECONDS_TO_HIDE_DETAIL = 30;
     const WAIT_SECONDS_TO_HIDE_DETAIL_SOCCER = 45;
+
+    const source = ref('msg')
+    const { copy } = useClipboard({ source });
 
     export default {
       components: {ScoreDetail,Timer},
@@ -119,8 +127,11 @@
           } 
         }
       },
-      
       methods: {
+        ...mapActions(['deleteScore']),
+        copy(data){
+          copy(data);
+        },
         showIfNotTime(data){
           if(data){
             let detailParts = data.split(':');

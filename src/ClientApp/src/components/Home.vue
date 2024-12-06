@@ -8,8 +8,8 @@
               <ConnectedSection :alive="alive" :isOnMobile="isOnMobile"/>
             </template>
             <template v-slot:sports>
-              <div v-bind:class="{'filters-section':!isOnMobile,'filter-section-mobile':isOnMobile}">
-                <FilterDropDown :filterName="'Sports'" :isOnMobile="isOnMobile_" :dataFilter="sportsID_Filter"></FilterDropDown>
+              <div v-if="showSportsFilter" v-bind:class="{'filters-section':!isOnMobile,'filter-section-mobile':isOnMobile}">
+                <FilterDropDown :filterName="'Sports'" :isOnMobile="isOnMobile_" :defaultValues="defaultSelectedValues" :dataFilter="sportsID_Filter"></FilterDropDown>
               </div>
             </template>
             <template v-slot:filters>
@@ -37,6 +37,7 @@
 
 <script>
 
+//import { toRaw } from 'vue';
 import { mapActions, mapState } from 'vuex';
 import Score from './Scores/score';
 import Navigation from './Menu/Navigation.vue';
@@ -55,8 +56,8 @@ export default {
   components: {Score,Navigation,ConnectedSection,FilterDropDown,ViewModeButton},
     data() {
       return {
-        /* buttons: ['ALL','LIVE','UNMATCH','GRADED'], */
-        buttons: ['LIVE','GRADED'],
+        buttons: ['ALL','LIVE','UNMATCH','GRADED'],
+        //buttons: ['LIVE','GRADED'],
         selected: 'LIVE',
         isOnMobile_: false,
         isOnMobileSM_: false,
@@ -68,9 +69,19 @@ export default {
 
         debug: config.IS_DEBUG_MODE,
         messages: '',
+
+        showSportsFilter: true,
+        defaultSelectedValues: []
       }
     },
-
+    watch:{
+      updateDefaultSports(newValue,oldValue){
+        if(newValue !== oldValue){
+          const clone = { ...this.defaultSelectedSports }
+          this.defaultSelectedValues = clone;
+        }
+      }
+    },
     computed: {
       ...mapState({
         currentScores: state => state.scores_all,
@@ -80,11 +91,13 @@ export default {
         user: state => state.user,
         alive: state => state.alive,
         viewModeFull: state => state.viewModeFull,
-        debugFilters: state => state.debugFilters
+        debugFilters: state => state.debugFilters,
+        updateDefaultSports: state => state.updateDefaultSports,
+        defaultSelectedSports: state => state.defaultSelectedSports
       }),
       sportsID_Filter() {
         return [{name: 'Sport', list: this.getSports() }]
-      },      
+      },
       filteredScores:function () {      
         return this.selected === 'LIVE'?
           this.currentScores.filter(item => item.Header.EventNumber != 0 && this.getSelectedSportsFilter(item)) :
@@ -120,7 +133,7 @@ export default {
           this.messages = "";
         }
         return show;
-      },      
+      },       
       getSelectedSportsFilter(item){
         if((this.selectedSports.length === 0) || (this.selectedSports.length === this.sports.length)){
           return true;

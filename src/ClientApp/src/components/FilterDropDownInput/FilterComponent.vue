@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="showControl">
         <FilterDropDown
             :ref="filterName"
             v-model="values"
@@ -14,7 +14,9 @@
             :selectOptions="dataFilter"
             :btnClass="showAsModal?'showModalClass':''"
             :showFilterIcon="showFilterIcon"
-            :isOnMobile="isOnMobile">
+            :isOnMobile="isOnMobile"
+            :defaultOptions="defaultValues"
+            >
             <template v-slot:option="{option}">
                 <div>
                     <input type="checkbox" :checked="option.selected" />
@@ -40,6 +42,10 @@
             default: ''
         },
         dataFilter: {
+            type: Array,
+            default: function() { return [] }              
+        },
+        defaultValues: {
             type: Array,
             default: function() { return [] }              
         },
@@ -69,7 +75,15 @@
             if(newValue !== oldValue){
                 this.refresValues();
             }
-        }
+        },
+        async defaultValues(newValue, oldValue){
+            if(newValue !== oldValue){
+                this.showControl = false;                
+                this.values = newValue;
+                //await new Promise(resolve => setTimeout(resolve, 1000));                 
+                this.showControl = true;
+            }
+        },
     },
     data () {
         return {        
@@ -89,6 +103,7 @@
                 groups: true,
                 cssSelected: option => (option.selected ? { 'background-color': '#FF4A70', 'color': 'white' } : ''),                
             },
+            showControl: true
         }
     },    
     methods: {
@@ -97,8 +112,10 @@
         },
         refresValues() {
             if(this.applyExternalFilters){
-                if(this.filterName.length>0){                    
-                    this.$parent.refreshFilters(this.values);                    
+                if(this.filterName.length>0){   
+                    if(this.$parent && this.$parent.refreshFilters){                 
+                        this.$parent.refreshFilters(this.values);                    
+                    }
                 }
             }
         }

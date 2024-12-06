@@ -59,7 +59,10 @@ export default createStore({
 
         debugFilters: {EventNumber: 0, ExternalGameNumber: 0, Source: '', TeamAway: '', TeamHome: '', RotationAway: 0, RotationHome: 0},
 
-        retryAttempts: 0
+        retryAttempts: 0,
+
+        updateDefaultSports: false,
+        defaultSelectedSports: [],
 
     },
     mutations: {
@@ -114,7 +117,7 @@ export default createStore({
             }else{          
               console.log('OMITIR');
               console.log(score)
-            } */
+            } */              
           
             if(index>=0){
               //Move to grade queue
@@ -217,15 +220,39 @@ export default createStore({
         commit(SCORES, obj)
       },
       refreshSports({ state }){
-        state.scores_all.forEach(score => {
-          state.sports = [];
+        state.sports = [];
+
+        state.scores_all.forEach(score => {          
           if(!(state.sports.findIndex(sport => score.Header.SportType === sport)>-1)){
             if(score.Header.SportType){
               state.sports.push(score.Header.SportType);
             }
-          }
+          }          
         })
+
+        state.scores_graded.forEach(score => {          
+          if(!(state.sports.findIndex(sport => score.Header.SportType === sport)>-1)){
+            if(score.Header.SportType){
+              state.sports.push(score.Header.SportType);
+            }
+          }          
+        })
+
         state.sports.sort();
+        
+        if(state.selectedSports.length>0){
+          let newSelectedSports = [];
+          state.selectedSports.forEach(sport => {
+            let newSport = state.sports.filter(item => { return item === sport.name })
+            if(newSport && newSport.length>0){
+              newSelectedSports.push({name: sport.name});
+            }
+          })
+          //state.selectedSports = newSelectedSports;
+          state.defaultSelectedSports = newSelectedSports;
+          state.updateDefaultSports = !state.updateDefaultSports;
+        }        
+        
       },
       async startCleaner({dispatch,state}) {        
         while (state.keep_checking) {
@@ -275,11 +302,29 @@ export default createStore({
       setSelected({ commit },option) { 
         commit('setSelected',option);
       },
+      deleteScore({ state, dispatch },header) { 
+
+        let index = state.scores_all.findIndex(item => (item.Header.EventNumber === header.EventNumber &&
+          item.Header.ExternalGameNumber === header.ExternalGameNumber &&
+          item.Header.Source === header.Source));
+        
+        let index_graded = state.scores_graded.findIndex(item => (item.Header.EventNumber === header.EventNumber &&
+          item.Header.ExternalGameNumber === header.ExternalGameNumber &&
+          item.Header.Source === header.Source));
+
+        if(index >= 0){
+          state.scores_all.splice(index,1);
+        }
+        if(index_graded >= 0){
+          state.scores_graded.splice(index_graded,1);
+        }
+
+        dispatch('refreshSports');
+      },
       setSelectedSports({ commit },sports) { 
         commit('setSelectedSports',sports);
       },
       setDebugFilters({commit},filters){
-        console.log(filters)
         commit('setDebugFilters',filters);
       },
       setViewModeFull({ state },mode){

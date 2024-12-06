@@ -10,7 +10,7 @@ export default {
     options: {
       type: Object,
       default: () => ({}),
-    },
+    },    
     filters: {
       type: Array,
       default: () => [],
@@ -86,7 +86,11 @@ export default {
     isOnMobile: {
       type: Boolean,
       default: false
-    }    
+    },
+    defaultOptions: {
+      type: Array,
+      default: () => [],
+    },    
   },
   data() {
     return {
@@ -241,7 +245,7 @@ export default {
     },
     
     selectOption(option) {
-      if (option[this.labelDisabled]) {
+      if (option[this.labelDisabled]) {        
         return;
       }
       if (!option[this.labelSelected]) {
@@ -267,14 +271,42 @@ export default {
       this.filter();
       this.setSelectedSports(JSON.parse(JSON.stringify(this.valueSelected)));
     },
+
+
+    selectOptionDefault(option) {
+      if (option[this.labelDisabled]) {        
+        return;
+      }      
+      this.pushOption(option);        
+      this.$emit('input', this.valueSelected.slice(0));
+      this.$emit(this.eventName, this.valueSelected.slice(0));
+      option[this.labelSelected] = true;
+      this.setSelectedSports(JSON.parse(JSON.stringify(this.valueSelected)));
+      this.globalModel[this.idSelectedTab][this.list][this.getPositionGlobalMode(option.name)].selected = true;
+      this.$forceUpdate();
+    },
+
+    getPositionGlobalMode(value){
+      let position = 0;
+      for (let i = 0; i < this.globalModel[this.idSelectedTab][this.list].length; i += 1) {
+        if(this.globalModel[this.idSelectedTab][this.list][i].name === value){
+          position = i;
+        }
+      }
+      return position;
+    },
+
     pushOption(option) {
       if (this.simpleArray) {
         this.valueSelected.push(option[this.labelValue]);
       } else {
-        const opt = { ...option };
-        delete opt[this.labelSelected];
-        delete opt.visible;
-        this.valueSelected.push(opt);
+        let founded = this.valueSelected.find(item => { return item.name === option.name });        
+        let option_ = { ...option };
+        option_['selected'] = true;
+        const opt = { ...option_ };
+        if(founded === undefined){
+          this.valueSelected.push(opt);
+        }
       }
     },
     popOption(opt) {
@@ -393,6 +425,14 @@ export default {
       const event = status ? 'open' : 'close';
       this.$emit(event);
     },
+    loadDefaultSelections(){
+      let defaultOptions =  this.cloneData(this.defaultOptions);
+      if(defaultOptions){
+        for (let i = 0; i < Object.keys(defaultOptions).length; i += 1) {
+          this.selectOptionDefault({name:defaultOptions[i].name,selected:true,visible:true});
+        }
+      }
+    }
   },
   computed: {
     getBtnLabel() {
@@ -417,6 +457,11 @@ export default {
     },
   },
   watch: {
+    defaultOptions(newValue, oldValue) {
+      if(newValue !== oldValue){
+        this.loadDefaultSelections();
+      }
+    },
     selectOptions: {
       handler() {
         this.setConfig();
@@ -446,5 +491,8 @@ export default {
       },
       deep: true,
     },
-  }    
+  },
+  mounted(){
+    //this.loadDefaultSelections();
+  }
 };
