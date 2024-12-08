@@ -155,8 +155,6 @@
             @click="selectOption(option)"
             :style="cssSelected(option)">
             <div name="option" v-bind:option="option">
-              {{ JSON.stringify(option.selected) }}
-              <!-- {{ JSON.stringify(labelDisabled) }} -->
               <span class="right margin-right-10" v-if="option[labelSelected]">✓</span>
               <span class="margin-left-20" style="font-size:16px !important;">{{option[labelName]}}</span>
             </div>

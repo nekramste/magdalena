@@ -152,7 +152,7 @@
           }
         },
         isSoccer(){
-          if(this.item && !Object.hasOwn(this.item, 'Header') && !Object.hasOwn(this.item, 'SportType')){
+          if(this.item && Object.hasOwn(this.item, 'Header') && Object.hasOwn(this.item.Header, 'SportType')){
             return (this.item.Header.SportType.toLowerCase().indexOf("soccer")>-1);
           }else{
             return false;
