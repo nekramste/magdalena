@@ -15,12 +15,20 @@
           <div class="col-6" v-bind:style="{minHeight: viewModeFull?'40px':'0px'}">
             <div class="float-right" style="display: inline-flex;">
               <span style="font-size: 12px; min-height: 0px;" v-if="!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)">
-                <Timer v-if="finalDateTime" :initialTime="initialTime" :intervalTime="countDownTime" :increase="isSoccer()" :date="finalDateTime" @onFinish="hideDetail" @onUpdateTimerDisplay="refreshTimeToDisplay"/>
+                <Timer 
+                  v-if="finalDateTime"
+                  :initialTime="initialTime"
+                  :intervalTime="countDownTime"
+                  :increase="isSoccer()"
+                  :date="finalDateTime" 
+                  @onFinish="hideDetail"
+                  @onUpdateTimerDisplay="refreshTimeToDisplay"
+                />
               </span>
               <span v-if="(!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)) &&
                            !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())"
                     class="score-period">
-                {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? item.CurrentScore.Period.Description : '' }} {{ showDetail? (item.Detail + ' - '):'' }} {{`${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay: showIfNotTime(item.Detail)}`}}
+                {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? !item.IsOvertime?item.CurrentScore.Period.Description : '' : '' }} {{ showDetail? (item.Detail + ' - '):'' }} {{`${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay: showIfNotTime(item.Detail)}`}}
               </span>              
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final">
                 <span>{{ 'Final' }}</span>
