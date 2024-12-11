@@ -28,7 +28,8 @@
               <span v-if="(!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)) &&
                            !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())"
                     class="score-period">
-                {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')? !item.IsOvertime?item.CurrentScore.Period.Description : '' : '' }} {{ showDetail? (item.Detail + ' - '):'' }} {{`${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay: showIfNotTime(item.Detail)}`}}
+                {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')?
+                     (!isOvertime(item))?item.CurrentScore.Period.Description : '' : '' }} {{ showDetail? (item.Detail + ' - '):'' }} {{`${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay: showIfNotTime(item.Detail)}`}}
               </span>              
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final">
                 <span>{{ 'Final' }}</span>
@@ -140,6 +141,9 @@
         ...mapActions(['deleteScore']),
         copy(data){
           copy(data);
+        },
+        isOvertime(item){
+          return ((item.Scores && (item.Scores.length>0) && item.Scores[item.CurrentScore.Period.Number].Period.IsOvertime));
         },
         showIfNotTime(data){
           if(data){
