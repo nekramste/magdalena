@@ -143,7 +143,7 @@
           copy(data);
         },
         isOvertime(item){
-          return ((item.Scores && (item.Scores.length>0) && item.Scores[item.CurrentScore.Period.Number].Period.IsOvertime));
+          return ((item.Scores && (item.Scores.length>0) && item.Scores[item.CurrentScore.Period.Number].Period && item.Scores[item.CurrentScore.Period.Number].Period.IsOvertime));
         },
         showIfNotTime(data){
           if(data){
@@ -187,8 +187,9 @@
           this.setCountDownTime();
           await new Promise(resolve => setTimeout(resolve, 500));
           if(item.Detail){
+            let detailPartsWithSpace = item.Detail.split(' ');
             let detailParts = item.Detail.split(':');
-            if(detailParts.length === 2){
+            if(detailPartsWithSpace.length === 1 && detailParts.length === 2){
               var newDate = new Date();
               newDate.setSeconds(newDate.getSeconds() + this.countDownTime);
               this.initialTime = { minutes: detailParts[0], seconds: detailParts[1] };
