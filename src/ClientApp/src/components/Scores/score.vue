@@ -29,7 +29,7 @@
                            !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())"
                     class="score-period">
                 {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')?
-                     (!isOvertime(item))?item.CurrentScore.Period.Description : '' : '' }} {{ showDetail? (item.Detail + ' - '):'' }} {{`${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay: showIfNotTime(item.Detail)}`}}
+                     (!isOvertime(item))?item.CurrentScore.Period.Description : '' : '' }} {{  showDetail? (item.Detail + ' - '):'' }} {{ isOvertime(item)?(item.Detail):  `${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay: showIfNotTime(item.Detail)}`}}
               </span>              
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final">
                 <span>{{ 'Final' }}</span>
@@ -143,7 +143,7 @@
           copy(data);
         },
         isOvertime(item){
-          return ((item.Scores && (item.Scores.length>0) && item.Scores[item.CurrentScore.Period.Number].Period && item.Scores[item.CurrentScore.Period.Number].Period.IsOvertime));
+          return ((item.Scores && (item.Scores.length>0) && item.Scores[0].Period && item.Scores[0].Period.IsOvertime));
         },
         showIfNotTime(data){
           if(data){
