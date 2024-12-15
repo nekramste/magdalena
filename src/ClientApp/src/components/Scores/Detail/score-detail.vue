@@ -31,14 +31,14 @@
           </div>
           <div class="col-7 col-md-7 text-right justify-content-center">
             <div class="period-cell text-center justify-content-center" v-for="(score, index) in sortedScores" :index="index" :key="index" data-toggle="tooltip" data-placement="top" :title="getTooltipContent(score.status,score.IsFinal)">
-              <template v-if="item.CurrentScore.Period.Number === score.Period.Number">
-                <div style="margin-bottom:-10px; margin-right: -7px;">
+              <template v-if="(item.CurrentScore.Period.Number === score.Period.Number) || ((score.Period.Number === 0) && (score.Period.IsOvertime))">
+                <div v-if="(!score.Period.IsOvertime)" style="margin-bottom:-10px; margin-right: -7px;">
+                  <svg style="transform: rotate(270deg); margin-bottom: 3px;" class="" aria-label="Winner" height="8" role="img" width="6"><polygon fill="#FFF" points="6,0 6,8 0,4"></polygon></svg>
+                </div>
+                <div v-if="(score.Period.Number === 0) && (score.Period.IsOvertime)" style="margin-bottom:-10px; margin-right: -7px;">
                   <svg style="transform: rotate(270deg); margin-bottom: 3px;" class="" aria-label="Winner" height="8" role="img" width="6"><polygon fill="#FFF" points="6,0 6,8 0,4"></polygon></svg>
                 </div>
               </template>
-              <!-- <template v-if="item.CurrentScore.Period.Number === 0 && score.IsFinal">
-                <span>Final</span>
-              </template> -->
             </div>
           </div>
         </div>

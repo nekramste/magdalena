@@ -1,3 +1,5 @@
+import mySound from '../assets/guitar.wav';
+
 export default {
     compareSimpleArray(value1, value2) {
       if (value1.length !== value2.length) return false;
@@ -10,6 +12,11 @@ export default {
     },
     propertyExists(myobject,prop){
       return Object.prototype.hasOwnProperty.call(myobject,prop);
+    },
+    notifyAudio(){
+      const audio = new Audio(mySound);
+      audio.volume = 0.2;
+      audio.play();
     }
 };
 

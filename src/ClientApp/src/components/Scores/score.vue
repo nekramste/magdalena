@@ -77,6 +77,7 @@
     import Timer from './Timer.vue';
     import config from '../../common/config';
     import { mapActions } from 'vuex';
+    //import helpers from '../../common/helpers.js'
 
     const WAIT_SECONDS_ANIMATION = 15;
     const WAIT_SECONDS_TO_HIDE_DETAIL = 30;
@@ -116,6 +117,12 @@
               newValue.Header.SportType === oldValue.Header.SportType){
               
               this.restartCountDown(this.item);
+              
+              /* if(newValue.Detail && newValue.Detail.includes('OT')){
+                helpers.notifyAudio();
+                console.log('OT Recibido')
+                console.log(newValue.Detail)
+              } */
               
               if(this.item.Header.EventNumber === 0){
                 if(newValue.CurrentScore.Away.Score !== oldValue.CurrentScore.Away.Score){                
@@ -185,15 +192,19 @@
           this.finalDateTime = null;          
           this.initialTime = { minutes: 0, seconds: 0 };
           this.setCountDownTime();
-          await new Promise(resolve => setTimeout(resolve, 500));
+          await new Promise(resolve => setTimeout(resolve, 200));
           if(item.Detail){
             let detailPartsWithSpace = item.Detail.split(' ');
-            let detailParts = item.Detail.split(':');
-            if(detailPartsWithSpace.length === 1 && detailParts.length === 2){
+            let detailPartsTime = detailPartsWithSpace.length === 1? item.Detail.split(':') : detailPartsWithSpace[1].split(':');
+            if(detailPartsWithSpace.length === 1 && detailPartsTime.length === 2){
               var newDate = new Date();
               newDate.setSeconds(newDate.getSeconds() + this.countDownTime);
-              this.initialTime = { minutes: detailParts[0], seconds: detailParts[1] };
+              this.initialTime = { minutes: detailPartsTime[0], seconds: detailPartsTime[1] };
               this.finalDateTime=newDate;
+            }else{
+              this.finalDateTime = null;
+              this.dateTimeToDisplay = null;
+              this.hide_detail = true;
             }
           }
         },

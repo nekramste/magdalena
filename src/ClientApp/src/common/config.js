@@ -2,7 +2,7 @@ const isProduction = 1;
 const debugMode = 0;
 const showTimer = 0;
 const useDifferentWaitingTimeForSoccer = 1;
-const showDetailDebug = 0;
+const showDetailDebug = 1;
 const showDeleteButton = 0;
 
 const API_ROUTE_DEVELOPMENT ='http://localhost:5000';

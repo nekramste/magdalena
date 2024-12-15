@@ -80,13 +80,13 @@ export default createStore({
                     
           if (score) {
 
-            //Filter
+            //Filter            
 
             if(config.IS_DEBUG_MODE){
 
               //console.log(state.debugFilters)
               //console.log(score.Participants.Away.Rotation)
-
+             
               let show = 
                 ((((!state.debugFilters.EventNumber) || (state.debugFilters.EventNumber === 0)) || (score.Header.EventNumber == state.debugFilters.EventNumber)) &&
                 (((!state.debugFilters.ExternalGameNumber) || (state.debugFilters.ExternalGameNumber === 0)) || (score.Header.ExternalGameNumber === state.debugFilters.ExternalGameNumber)) &&
