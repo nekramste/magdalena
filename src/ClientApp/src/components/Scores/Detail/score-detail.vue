@@ -154,17 +154,43 @@
           }
         },
         isAwayGreater(){
-           let awayScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Away.Score:0: this.item.CurrentScore.Away.Score;
-           let homeScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Home.Score:0: this.item.CurrentScore.Home.Score;
-           return (awayScore>homeScore);
+          let scores = this.getScores();
+          return (scores.awayScore>scores.homeScore);
         },
         isHomeGreater(){
-           let awayScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Away.Score:0: this.item.CurrentScore.Away.Score;
-           let homeScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Home.Score:0: this.item.CurrentScore.Home.Score;
-           return (homeScore>awayScore);
+          let scores = this.getScores();
+          return (scores.homeScore>scores.awayScore);
         }
       },
       methods: {
+        getTennisScores(){
+          let scores_ = {awayScore:0,homeScore:0};
+          if((this.item.Header.EventNumber !== 0)){
+            const clone = { ...this.item }
+            if(helpers.propertyExists(clone,'Scores')){
+              if(clone.Scores.length>1){
+                for(let i = 1; i<(clone.Scores.length); i++){
+                  if(clone.Scores[i].Away.Score > clone.Scores[i].Home.Score){
+                    scores_.awayScore++;
+                  }
+                  if(clone.Scores[i].Away.Score < clone.Scores[i].Home.Score){
+                    scores_.homeScore++;
+                  }
+                }                
+              }
+            }
+          }
+          return scores_;
+        },
+        getScores(){
+          if(this.item.Header.SportType === "Tennis"){
+            return this.getTennisScores();
+          }else{
+            let awayScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Away.Score:0: this.item.CurrentScore.Away.Score;
+            let homeScore = (this.item.Header.EventNumber !== 0)?(this.item.Scores&&this.item.Scores.length>0)?this.item.Scores[0].Home.Score:0: this.item.CurrentScore.Home.Score;
+            return {awayScore:awayScore,homeScore:homeScore};
+          }
+        },
         copy(data){
           copy(data);
         },
