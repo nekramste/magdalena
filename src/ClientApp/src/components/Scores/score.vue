@@ -28,17 +28,21 @@
               <span v-if="(!(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)) &&
                            !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())"
                     class="score-period">
-
-                    {{ (item.Header.SportType && item.Header.SportType.toLowerCase() !== 'tennis')?
-                        (!isOvertime(item))?item.CurrentScore.Period.Description : '' 
-                        : (!isOvertime(item))?item.CurrentScore.Period.Description : '' 
+                    {{ 
+                        ((!isOvertime(item))?item.CurrentScore.Period.Description : '')
                     }} 
                     {{ showDetail? (item.Detail + ' - '):'' }}
-                    {{ isOvertime(item)?(item.Detail): `${hide_detail?'':dateTimeToDisplay?dateTimeToDisplay: showIfNotTime(item.Detail)}` }}
-
+                    {{ isOvertime(item)?
+                        (item.Detail):
+                        `${hide_detail?
+                          '':
+                          dateTimeToDisplay?
+                            dateTimeToDisplay:
+                            (!isTennis())? showIfNotTime(item.Detail):''}` 
+                    }}
               </span>              
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final">
-                <span>{{ 'Final' }}</span>
+                <span>{{ `Final ${isOvertime()?'/OT':''}` }}</span>
               </span>
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())" class="score-final">
                 <span>{{ 'HALFTIME' }}</span>
@@ -83,7 +87,7 @@
     import Timer from './Timer.vue';
     import config from '../../common/config';
     import { mapActions } from 'vuex';
-    //import helpers from '../../common/helpers.js'
+    import helpers from '../../common/helpers.js'
 
     const WAIT_SECONDS_ANIMATION = 15;
     const WAIT_SECONDS_TO_HIDE_DETAIL = 30;
@@ -156,7 +160,11 @@
           copy(data);
         },
         isOvertime(item){
-          return ((item.Scores && (item.Scores.length>0) && item.Scores[0].Period && item.Scores[0].Period.IsOvertime));
+          if(item && helpers.propertyExists(item,'Scores')){
+            return ((item.Scores && (item.Scores.length>0) && item.Scores[0].Period && item.Scores[0].Period.IsOvertime));
+          }else{
+            return false;
+          }
         },
         showIfNotTime(data){
           if(data){
@@ -174,6 +182,13 @@
             this.dateTimeToDisplay = dateTime;
           }else{
             this.dateTimeToDisplay = this.item.Detail?this.item.Detail:'';
+          }
+        },
+        isTennis(){
+          if(this.item && Object.hasOwn(this.item, 'Header') && Object.hasOwn(this.item.Header, 'SportType')){
+            return (this.item.Header.SportType.toLowerCase().indexOf("tennis")>-1);
+          }else{
+            return false;
           }
         },
         isSoccer(){
@@ -219,7 +234,11 @@
           this.hide_detail = true;          
         },
         isFinal(item){
-          return ((item.Scores && (item.Scores.length>0) && item.Scores[0].IsFinal));
+          if(item && helpers.propertyExists(item,'Scores')){
+            return ((item.Scores && (item.Scores.length>0) && item.Scores[0].IsFinal));
+          }else{
+            return false;
+          }
         },
         async startAnimationA(type){
           this.evaluateAnimation(type,true);
