@@ -297,6 +297,8 @@
               iconName = "sport icon-trophy"; 
             }else if(sportName_.indexOf("simulation")>-1){
               iconName = "sport icon-simulation";
+            }else if(sportName_.indexOf("fighting")>-1){
+              iconName = "sport icon-boxing";
             }else{
               iconName = "fa-folder";
             }
