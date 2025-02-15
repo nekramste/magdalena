@@ -44,7 +44,7 @@
               <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 0)" class="score-final">
                 <span>{{ `Final ${isOvertime()?'/OT':''}` }}</span>
               </span>
-              <span v-if="(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())" class="score-final">
+              <span v-if="(item.CurrentScore.IsFinal && (item.CurrentScore.Period.Number === 1) && isNotBaseballHockey())" class="score-final">
                 <span>{{ 'HALFTIME' }}</span>
               </span>
               <button v-if="showCloseButton" @click="deleteScore(item.Header)">X</button>
@@ -199,7 +199,7 @@
           }
         },
         isNotBaseballHockey(){
-          return !((this.item.Header.SportType.toLowerCase().indexOf("baseballl")>-1) || (this.item.Header.SportType.toLowerCase().indexOf("hockey")>-1));
+          return !((this.item.Header.SportType.toLowerCase().indexOf("baseball")>-1) || (this.item.Header.SportType.toLowerCase().indexOf("hockey")>-1));
         },
         setCountDownTime(){
           if(this.isSoccer() && this.useDifferentWaitingTimeForSoccer){
