@@ -201,6 +201,9 @@
         isNotBaseballHockey(){
           return !((this.item.Header.SportType.toLowerCase().indexOf("baseball")>-1) || (this.item.Header.SportType.toLowerCase().indexOf("hockey")>-1));
         },
+        isNotBaseball(){
+          return !((this.item.Header.SportType.toLowerCase().indexOf("baseball")>-1));
+        },
         setCountDownTime(){
           if(this.isSoccer() && this.useDifferentWaitingTimeForSoccer){
             this.countDownTime = WAIT_SECONDS_TO_HIDE_DETAIL_SOCCER;
@@ -216,16 +219,18 @@
           await new Promise(resolve => setTimeout(resolve, 200));
           if(item.Detail){
             let detailPartsWithSpace = item.Detail.split(' ');
-            let detailPartsTime = detailPartsWithSpace.length === 1? item.Detail.split(':') : detailPartsWithSpace[1].split(':');
-            if(detailPartsWithSpace.length === 1 && detailPartsTime.length === 2){
-              var newDate = new Date();
-              newDate.setSeconds(newDate.getSeconds() + this.countDownTime);
-              this.initialTime = { minutes: detailPartsTime[0], seconds: detailPartsTime[1] };
-              this.finalDateTime=newDate;
-            }else{
-              this.finalDateTime = null;
-              this.dateTimeToDisplay = null;
-              this.hide_detail = true;
+            if(this.isNotBaseball()){
+              let detailPartsTime = detailPartsWithSpace.length === 1? item.Detail.split(':') : detailPartsWithSpace[1].split(':');
+              if(detailPartsWithSpace.length === 1 && detailPartsTime.length === 2){
+                var newDate = new Date();
+                newDate.setSeconds(newDate.getSeconds() + this.countDownTime);
+                this.initialTime = { minutes: detailPartsTime[0], seconds: detailPartsTime[1] };
+                this.finalDateTime=newDate;
+              }else{
+                this.finalDateTime = null;
+                this.dateTimeToDisplay = null;
+                this.hide_detail = true;
+              }
             }
           }
         },
