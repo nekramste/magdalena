@@ -29,7 +29,7 @@
                            !(item.CurrentScore.IsFinal && item.CurrentScore.Period.Number === 1 && isNotBaseballHockey())"
                     class="score-period">
                     {{ 
-                        ((!isOvertime(item))?item.CurrentScore.Period.Description : '')
+                        ((!isOvertime(item))? isNotBaseball()? item.CurrentScore.Period.Description : (hide_detail)?item.CurrentScore.Period.Description : '' : '')
                     }} 
                     {{ showDetail? (item.Detail + ' - '):'' }}
                     {{ isOvertime(item)?
