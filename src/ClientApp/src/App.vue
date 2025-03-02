@@ -9,6 +9,9 @@ export default {
   name: 'App',
   components: {
     Home
+  },
+  mounted(){
+    console.log(process.env.BUILD_TIMESTAMP);
   }
 }
 </script>

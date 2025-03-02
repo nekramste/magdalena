@@ -222,15 +222,19 @@
             if(this.isNotBaseball()){
               let detailPartsTime = detailPartsWithSpace.length === 1? item.Detail.split(':') : detailPartsWithSpace[1].split(':');
               if(detailPartsWithSpace.length === 1 && detailPartsTime.length === 2){
-                var newDate = new Date();
-                newDate.setSeconds(newDate.getSeconds() + this.countDownTime);
+                var newDateA = new Date();
+                newDateA.setSeconds(newDateA.getSeconds() + this.countDownTime);
                 this.initialTime = { minutes: detailPartsTime[0], seconds: detailPartsTime[1] };
-                this.finalDateTime=newDate;
+                this.finalDateTime=newDateA;
               }else{
                 this.finalDateTime = null;
                 this.dateTimeToDisplay = null;
                 this.hide_detail = true;
               }
+            }else{
+              var newDateB = new Date();
+              newDateB.setSeconds(newDateB.getSeconds() + this.countDownTime);
+              this.finalDateTime=newDateB;
             }
           }
         },
