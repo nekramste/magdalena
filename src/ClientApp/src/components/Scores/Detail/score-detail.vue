@@ -1,5 +1,5 @@
 <template>    
-    <div class="row scores-detail" v-if="item.Scores.length">
+    <div class="row scores-detail" v-if="item.Scores && item.Scores.length">
       <div class="col-12">
         <div class="row" v-bind:style="{minHeight: viewModeFull?'30px':'0px'}">
           <div v-if="debug" class="col-12 detail pr-0 text-left">
@@ -123,7 +123,6 @@
     import SubRowScore from './score-sub-detail-row.vue';
     import moment from 'moment';
     import "moment-timezone";
-    import helpers from '../../../common/helpers.js'
 
     const source = ref('msg')
     const { copy } = useClipboard({ source });
@@ -140,7 +139,7 @@
         sortedScores(){
           const item = toRaw(this.item);
           const clone = { ...item }
-          if(helpers.propertyExists(clone,'Scores')){
+          if(Array.isArray(clone.Scores)){
             let scores = [];
             if(clone.Scores.length>1){
               for(let i = 1; i<(clone.Scores.length); i++){ scores.push(clone.Scores[i]) }
@@ -167,7 +166,7 @@
           let scores_ = {awayScore:0,homeScore:0};
           if((this.item.Header.EventNumber !== 0)){
             const clone = { ...this.item }
-            if(helpers.propertyExists(clone,'Scores')){
+            if(Array.isArray(clone.Scores)){
               if(clone.Scores.length>1){
                 for(let i = 1; i<(clone.Scores.length); i++){
                   if(clone.Scores[i].Away.Score > clone.Scores[i].Home.Score){

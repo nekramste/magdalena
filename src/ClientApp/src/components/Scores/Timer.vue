@@ -22,19 +22,28 @@
         now: Math.trunc((new Date()).getTime() / 1000),
         event: this.date,
         finish: false,
-        displayTime: config.SHOW_TIMER,        
+        displayTime: config.SHOW_TIMER,
       }
     },
+    created () {
+      // Kept outside data() on purpose: it does not need to be reactive.
+      this.intervalId = null
+    },
     mounted () {
-      const _self = this
-      window.setInterval(() => {
+      this.intervalId = window.setInterval(() => {
         this.now = Math.trunc((new Date()).getTime() / 1000)
-        this.$emit('onUpdateTimerDisplay',_self.timeToDisplay());
+        this.$emit('onUpdateTimerDisplay', this.timeToDisplay());
         if (!this.finish && this.calculatedDate - this.now <= 0) {
-          _self.finish = true
-          _self.$emit('onFinish')
-        }        
+          this.finish = true
+          this.$emit('onFinish')
+        }
       }, 1000)
+    },
+    beforeUnmount () {
+      if (this.intervalId !== null) {
+        window.clearInterval(this.intervalId)
+        this.intervalId = null
+      }
     },
     computed: {
       secondCount () {

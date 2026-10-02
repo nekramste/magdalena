@@ -27,7 +27,7 @@
         <div v-bind:class="{'col-12': debug,
                             'col-xl-4 col-lg-6 col-md-6': !debug && viewModeFull,
                             'col-xl-3 col-lg-4 col-md-6': !debug && !viewModeFull,
-                            }" class="col-12" v-for="(subitem, index_) in filteredScores" :index="index_" :key="index_">
+                            }" class="col-12" v-for="(subitem, index_) in filteredScores" :index="index_" :key="scoreKey(subitem)">
           <Score v-if="subitem && debugFilter(subitem.Header,subitem)" :item="subitem" :isOnMobile="isOnMobile_" :viewModeFull="viewModeFull" :debug="debug"/>
         </div>        
       </div>
@@ -159,6 +159,10 @@ export default {
       },
       select_option(option){
         this.selected = option;
+      },
+      scoreKey(item){
+        const header = (item && item.Header) || {};
+        return `${header.Source}|${header.EventNumber}|${header.ExternalGameNumber}`;
       },
       reverseArr(input) {
           var ret = new Array;

@@ -143,11 +143,15 @@
                 }
               }else{
                 let periodNumber = 0;
-                if(newValue.Scores[periodNumber].Away.Score !== oldValue.Scores[periodNumber].Away.Score){                
-                  this.startAnimationA('AWAY');
-                }
-                if(newValue.Scores[periodNumber].Home.Score !== oldValue.Scores[periodNumber].Home.Score){                
-                  this.startAnimationB('HOME');
+                const newPeriod = (newValue.Scores && newValue.Scores.length > periodNumber) ? newValue.Scores[periodNumber] : null;
+                const oldPeriod = (oldValue.Scores && oldValue.Scores.length > periodNumber) ? oldValue.Scores[periodNumber] : null;
+                if(newPeriod && oldPeriod){
+                  if(newPeriod.Away.Score !== oldPeriod.Away.Score){
+                    this.startAnimationA('AWAY');
+                  }
+                  if(newPeriod.Home.Score !== oldPeriod.Home.Score){
+                    this.startAnimationB('HOME');
+                  }
                 }
               }
             }
