@@ -143,6 +143,8 @@
                 }
               }else{
                 let periodNumber = 0;
+                // Either update may come without Scores (null or empty); there is
+                // nothing to compare then, so skip the animation instead of throwing.
                 const newPeriod = (newValue.Scores && newValue.Scores.length > periodNumber) ? newValue.Scores[periodNumber] : null;
                 const oldPeriod = (oldValue.Scores && oldValue.Scores.length > periodNumber) ? oldValue.Scores[periodNumber] : null;
                 if(newPeriod && oldPeriod){
@@ -188,25 +190,26 @@
             this.dateTimeToDisplay = this.item.Detail?this.item.Detail:'';
           }
         },
+        // Lower-cased SportType, or '' when it is missing.
+        // Some feeds (e.g. DonBest) send "SportType": null; the property exists, so
+        // Object.hasOwn() was true and .toLowerCase() threw, breaking the whole render.
+        // With '' the game is treated as an unknown sport (no tennis/soccer/baseball rules).
+        sportTypeLower(){
+          const header = this.item && this.item.Header;
+          return (header && typeof header.SportType === 'string') ? header.SportType.toLowerCase() : '';
+        },
         isTennis(){
-          if(this.item && Object.hasOwn(this.item, 'Header') && Object.hasOwn(this.item.Header, 'SportType')){
-            return (this.item.Header.SportType.toLowerCase().indexOf("tennis")>-1);
-          }else{
-            return false;
-          }
+          return (this.sportTypeLower().indexOf("tennis")>-1);
         },
         isSoccer(){
-          if(this.item && Object.hasOwn(this.item, 'Header') && Object.hasOwn(this.item.Header, 'SportType')){
-            return (this.item.Header.SportType.toLowerCase().indexOf("soccer")>-1);
-          }else{
-            return false;
-          }
+          return (this.sportTypeLower().indexOf("soccer")>-1);
         },
         isNotBaseballHockey(){
-          return !((this.item.Header.SportType.toLowerCase().indexOf("baseball")>-1) || (this.item.Header.SportType.toLowerCase().indexOf("hockey")>-1));
+          const sportType = this.sportTypeLower();
+          return !((sportType.indexOf("baseball")>-1) || (sportType.indexOf("hockey")>-1));
         },
         isNotBaseball(){
-          return !((this.item.Header.SportType.toLowerCase().indexOf("baseball")>-1));
+          return !((this.sportTypeLower().indexOf("baseball")>-1));
         },
         setCountDownTime(){
           if(this.isSoccer() && this.useDifferentWaitingTimeForSoccer){
