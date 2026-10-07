@@ -1,5 +1,26 @@
 const isProduction = 1;
-const debugMode = 0;
+// Default used when the URL has no "debug" parameter.
+const defaultDebugMode = 0;
+
+function readDebugModeFromUrl(defaultValue) {
+    if (typeof window === 'undefined' || !window.location) {
+        return defaultValue;
+    }
+    const value = new URLSearchParams(window.location.search).get('debug');
+    if (value === null) {
+        return defaultValue;
+    }
+    const normalized = value.trim().toLowerCase();
+    if (normalized === 'true' || normalized === '1') {
+        return 1;
+    }
+    if (normalized === 'false' || normalized === '0') {
+        return 0;
+    }
+    return defaultValue;
+}
+
+const debugMode = readDebugModeFromUrl(defaultDebugMode);
 const showTimer = 0;
 const useDifferentWaitingTimeForSoccer = 1;
 const showDetailDebug = 0;
