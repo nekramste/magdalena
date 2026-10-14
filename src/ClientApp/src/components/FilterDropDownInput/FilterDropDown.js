@@ -425,6 +425,38 @@ export default {
       const event = status ? 'open' : 'close';
       this.$emit(event);
     },
+    getSelectedValues() {
+      return this.valueSelected.map((item) => (
+        item !== null && typeof item === 'object' ? item[this.labelValue] : item));
+    },    
+    restoreSelection(selectedValues) {
+      if (!selectedValues || selectedValues.length === 0) {
+        return;
+      }
+      const wanted = new Set(selectedValues);
+      for (let i = 0; i < this.globalModel.length; i += 1) {
+        for (let j = 0; j < this.globalModel[i][this.list].length; j += 1) {
+          const option = this.globalModel[i][this.list][j];
+          if (wanted.has(option[this.labelValue])
+            && !option[this.labelDisabled]
+            && !option[this.labelSelected]) {
+            option[this.labelSelected] = true;
+            this.pushOption(option);
+          }
+        }
+      }
+      
+      if (this.searchInput) {
+        this.searchfn();
+      } else {
+        this.filter();
+      }
+      this.$emit('input', this.valueSelected.slice(0));
+      this.$emit(this.eventName, this.valueSelected.slice(0));
+      if (this.valueSelected.length !== selectedValues.length) {
+        this.setSelectedSports(JSON.parse(JSON.stringify(this.valueSelected)));
+      }
+    },
     loadDefaultSelections(){
       let defaultOptions =  this.cloneData(this.defaultOptions);
       if(defaultOptions){
@@ -464,7 +496,9 @@ export default {
     },
     selectOptions: {
       handler() {
+        const previousSelection = this.getSelectedValues();
         this.setConfig();
+        this.restoreSelection(previousSelection);
       },
       deep: true,
     },

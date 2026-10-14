@@ -11,7 +11,7 @@
             v-bind:class="{ 'animation': ((!viewModeFull) && (score.Period.Abbr === 'FG') && (score.Status !== 'WasSendToGrade') && animate_score),
                             'blink_me': (score.IsFinal && score.Status === 'WasSendToGrade'),
                             'graded': (score.IsFinal && score.Status === 'Graded'),
-                            'noline': (score.Status.toLowerCase() === 'noline'),
+                            'noline': ((score.Status || '').toLowerCase() === 'noline'),
                             'missmatch': (score.IsFinal && score.Status === 'MismatchFound'),
                         }">
                 {{score[type].Score}}

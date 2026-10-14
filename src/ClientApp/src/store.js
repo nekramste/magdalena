@@ -14,6 +14,9 @@ const TIME_TO_WAIT_FOR_RECONNECTION = 10;
 const protocol = location.protocol === "https:" ? "wss:" : "ws:";
 const wsUri = config.IS_PRODUCTION?`${config.WS_URL}/scores` : protocol + "//" + window.location.host + '/scores';
 
+const MAX_RECONNECT_DELAY_SECONDS = 10;
+const CONNECT_TIMEOUT_SECONDS = 10;
+
 async function tryReady(id) {  
   let user = '-----';
   try {
@@ -30,7 +33,17 @@ async function tryReady(id) {
 }
 
 function backoffDelay(retryAttempts,initialDelay){
-  return Math.pow(2, retryAttempts - 1) * initialDelay;
+  return Math.min(Math.pow(2, retryAttempts - 1) * initialDelay, MAX_RECONNECT_DELAY_SECONDS*1000);
+}
+
+let reconnectTimer = null;
+let socketCreatedAt = null;
+
+function cancelPendingReconnect(){
+  if(reconnectTimer !== null){
+    clearTimeout(reconnectTimer);
+    reconnectTimer = null;
+  }
 }
 
 export default createStore({
@@ -293,8 +306,16 @@ export default createStore({
         while (state.keep_checking) {
           await new Promise(resolve => setTimeout(resolve, CHECK_ALIVE_EVERY_SECONDS*1000));
           if(moment(moment().format()).isAfter(moment(state.dateTimeToDisconect).format())){
-            state.alive = false;  
+            state.alive = false;
+            if(reconnectTimer !== null){
+              continue;
+            }
+            if(state.socket && state.socket.readyState === WebSocket.CONNECTING &&
+               !moment(moment().format()).isAfter(moment(socketCreatedAt).add(CONNECT_TIMEOUT_SECONDS, 'seconds').format())){
+              continue;
+            }
             console.log('delayd response detected...');
+            state.retryAttempts = state.retryAttempts + 1;
             dispatch('tryRestartConnection',backoffDelay(state.retryAttempts,1000));
           }
         }
@@ -335,24 +356,40 @@ export default createStore({
         dispatch('startConnection');
       },
       tryRestartConnection({state,dispatch},waitTime){
+        if(reconnectTimer !== null){
+          return;
+        }
         console.log(`try connecting... (attempt:${state.retryAttempts})`)
-        setTimeout(() => {dispatch('startConnection')},waitTime);
+        reconnectTimer = setTimeout(() => {
+          reconnectTimer = null;
+          dispatch('startConnection');
+        },waitTime);
       },
-      openSocket({state}){
-        state.socket = null;
+      openSocket({state,dispatch}){
+        // Never keep more than one socket: always close the previous one first.
+        dispatch('closeSocket');
+        socketCreatedAt = moment().format();
         state.socket = new WebSocket(wsUri);
       },
       closeSocket({state}){
         if(state.socket){
-          state.socket.close();
+          const oldSocket = state.socket;
+          oldSocket.onmessage = null;
+          oldSocket.onerror = null;
+          oldSocket.onclose = null;
+          oldSocket.close();
           state.socket = null;
-        }            
+        }
       },
       async startConnection({state,dispatch}){
         try{
 
+          cancelPendingReconnect();
+
           dispatch('openSocket');
           
+          let connectionIdReceived = false;
+
           state.socket.onmessage = function (event) {
             state.alive = true;
             state.retryAttempts = 0;
@@ -360,17 +397,33 @@ export default createStore({
             state.dateTimeToDisconect = moment(moment(new Date())).add(TIME_TO_WAIT_FOR_ACTIVE, 'seconds').format();
             //console.log('incomming message/score');
             //console.log(incomingScore);
+            
+            const isPlainText = typeof incomingScore === 'string' && !incomingScore.includes('{');
+            if(isPlainText){
+              if(connectionIdReceived){
+                return; // another client's connection announcement
+              }
+              connectionIdReceived = true;
+            }
+
             dispatch('setReceivedScore',{score: incomingScore});
           };
 
           state.socket.onerror = function() {
             state.alive = false;
             console.log('connection fail detected!!!')
-            if(!state.started){
-              dispatch('closeSocket')
-              state.retryAttempts=state.retryAttempts+1;
-              dispatch('tryRestartConnection', backoffDelay(state.retryAttempts,TIME_TO_WAIT_FOR_RECONNECTION*1000));
+          };
+
+          state.socket.onclose = function() {
+            state.alive = false;
+            state.socket = null;
+            console.log('connection closed');
+            if(reconnectTimer !== null){
+              return;
             }
+            state.retryAttempts = state.retryAttempts + 1;
+            const initialDelay = state.started ? 1000 : TIME_TO_WAIT_FOR_RECONNECTION*1000;
+            dispatch('tryRestartConnection', backoffDelay(state.retryAttempts, initialDelay));
           };
 
         }catch(error){
